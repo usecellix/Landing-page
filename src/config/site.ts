@@ -25,4 +25,4 @@ export const xUrl = import.meta.env.VITE_X_URL ?? ''
 
 /** cellix_backend — same env var name the Excel add-in (frontend/) uses. */
 export const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL ?? 'api.usecellix.com'
+  import.meta.env.VITE_API_BASE_URL ?? 'https://api.usecellix.com'
