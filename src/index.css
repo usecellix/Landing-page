@@ -1,0 +1,109 @@
+@import './fonts/geist.css';
+
+@import 'tailwindcss';
+@config '../tailwind.config.ts';
+@plugin "tailwindcss-animate";
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 210 14% 17%;
+  --primary: 210 14% 17%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96%;
+  /* L=43% keeps AA contrast (4.95:1 on white, 4.54:1 on secondary panels) */
+  --muted-foreground: 184 5% 43%;
+  /* Product primary purple — #4338CA */
+  --primary-purple: #4338ca;
+  --accent: 245 58% 51%;
+  --accent-foreground: 0 0% 100%;
+  --border: 0 0% 90%;
+  --ring: 245 58% 51%;
+  --radius: 0.5rem;
+  /* Single typeface for the whole product */
+  --font-geist: 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-geist);
+  --font-body: var(--font-geist);
+  --shadow-dashboard: 0 25px 80px -12px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+html {
+  overflow-x: hidden;
+  font-family: var(--font-geist);
+  /* Anchor links glide instead of jump-cutting (reset under reduce-motion below) */
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: var(--font-geist);
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+}
+
+#root,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+li,
+label,
+th,
+td {
+  font-family: inherit;
+}
+
+/**
+ * Ambient hero wash for touch devices. The splash effect is cursor-driven and
+ * cannot run there, so two slow radial drifts stand in for it — transform-only,
+ * so it composites on the GPU instead of repainting.
+ */
+@keyframes hero-drift-a {
+  0%,
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, 7%, 0) scale(1.18);
+  }
+}
+
+@keyframes hero-drift-b {
+  0%,
+  100% {
+    transform: translate3d(7%, 5%, 0) scale(1.12);
+  }
+  50% {
+    transform: translate3d(-9%, -6%, 0) scale(1);
+  }
+}
+
+/* Respect the OS "reduce motion" setting (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CELLIX — A Concept Note for Chartered Accountants</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #faf7f2;
+  --paper: #f4f0e8;
+  --ink: #1c1a16;
+  --ink-soft: #3d3a33;
+  --ink-muted: #7a7464;
+  --rule: #d8d1c0;
+  --accent: #1a5c3a;
+  --accent-warm: #b85c1a;
+  --highlight: #eef6f1;
+}
+
+html { font-size: 16px; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 400;
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* PRINT-LIKE WRAPPER */
+.document {
+  max-width: 760px;
+  margin: 3rem auto;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  box-shadow: 0 4px 40px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.06);
+  padding: 0;
+}
+
+/* LETTERHEAD */
+.letterhead {
+  background: var(--accent);
+  padding: 2.5rem 3.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.letterhead::after {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+.brand {
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 2rem;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.brand-sub {
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  font-weight: 400;
+}
+.doc-meta {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+.doc-meta span {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.doc-meta strong {
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+}
+
+/* BODY */
+.body {
+  padding: 3rem 3.5rem;
+}
+
+/* SALUTATION BLOCK */
+.salutation {
+  border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+  background: var(--highlight);
+  border-radius: 0 4px 4px 0;
+}
+.salutation p {
+  font-family: 'Lora', serif;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  font-style: italic;
+}
+.salutation p strong {
+  font-style: normal;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* SECTION STRUCTURE */
+.section {
+  margin-bottom: 2.75rem;
+}
+.section-label {
+  font-size: 0.68rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+h2 {
+  font-family: 'Lora', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 0.85rem;
+}
+p {
+  font-size: 0.97rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.9rem;
+  line-height: 1.85;
+}
+p:last-child { margin-bottom: 0; }
+
+/* DIVIDER */
+.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+/* SCENARIO BOXES — the "Before" and "After" */
+.scenario-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.75rem 0;
+}
+.scenario-box {
+  border-radius: 4px;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--rule);
+}
+.scenario-box.before {
+  background: #fdf5f0;
+  border-color: #e8c4aa;
+}
+.scenario-box.after {
+  background: var(--highlight);
+  border-color: #a8d4b8;
+}
+.scenario-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.scenario-box.before .scenario-label { color: var(--accent-warm); }
+.scenario-box.after .scenario-label { color: var(--accent); }
+.scenario-box ul {
+  list-style: none;
+  padding: 0;
+}
+.scenario-box ul li {
+  font-size: 0.87rem;
+  color: var(--ink-soft);
+  padding: 4px 0;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  line-height: 1.55;
+}
+.scenario-box.before ul li::before { content: '✕'; color: #c0623a; font-weight: 700; flex-shrink: 0; font-size: 0.8rem; margin-top: 2px; }
+.scenario-box.after ul li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; font-size: 0.8rem; margin-top: 2px; }
+
+/* WORKFLOW STEPS */
+.workflow {
+  counter-reset: step;
+  margin: 1.75rem 0;
+}
+.workflow-step {
+  counter-increment: step;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.workflow-step:last-child { border-bottom: none; }
+.step-num {
+  flex-shrink: 0;
+  width: 32px; height: 32px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.step-body h4 {
+  font-family: 'Lora', serif;
+  font-weight: 600;
+  font-size: 0.97rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.step-body p {
+  font-size: 0.87rem;
+  color: var(--ink-muted);
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* PAIN POINTS LIST */
+.pain-list {
+  list-style: none;
+  margin: 1.25rem 0;
+}
+.pain-list li {
+  padding: 0.85rem 1.1rem;
+  border-left: 3px solid var(--rule);
+  margin-bottom: 0.6rem;
+  background: #faf8f5;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+.pain-list li strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+  margin-bottom: 2px;
+  font-size: 0.9rem;
+}
+.pain-list li.active {
+  border-left-color: var(--accent);
+  background: var(--highlight);
+}
+
+/* FEATURE ROWS */
+.feature-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.feature-row:last-child { border-bottom: none; }
+.feature-icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+  margin-top: 2px;
+  width: 36px;
+  text-align: center;
+}
+.feature-body h4 {
+  font-family: 'Lora', serif;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+.feature-body p {
+  font-size: 0.87rem;
+  color: var(--ink-muted);
+  margin: 0;
+  line-height: 1.65;
+}
+
+/* FEEDBACK TABLE */
+.feedback-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.87rem;
+}
+.feedback-table th {
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.3px;
+}
+.feedback-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.feedback-table tr:nth-child(even) td { background: #faf8f5; }
+.feedback-table tr:last-child td { border-bottom: none; }
+
+/* CLOSING */
+.closing {
+  background: var(--accent);
+  padding: 2.5rem 3.5rem;
+  margin-top: 0;
+}
+.closing p {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+.closing p:last-child { margin-bottom: 0; }
+.closing strong { color: #fff; font-weight: 500; }
+.closing .sign-name {
+  font-family: 'Lora', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: #fff;
+  margin-top: 1.5rem;
+  display: block;
+}
+.closing .sign-role {
+  font-size: 0.78rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-top: 4px;
+  display: block;
+}
+
+/* QUOTE BLOCK */
+.pull-quote {
+  border-top: 2px solid var(--accent);
+  border-bottom: 1px solid var(--rule);
+  padding: 1.5rem 0;
+  margin: 2rem 0;
+  text-align: center;
+}
+.pull-quote p {
+  font-family: 'Lora', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.6;
+  margin: 0;
+}
+.pull-quote p span {
+  display: block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-style: normal;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-top: 0.6rem;
+}
+
+/* TAG */
+.tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 2px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.tag-planned { background: #fef3c7; color: #92400e; }
+.tag-core { background: #d1fae5; color: #065f46; }
+
+/* CALLOUT */
+.callout {
+  background: var(--highlight);
+  border: 1px solid #a8d4b8;
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.callout p {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.callout p strong { color: var(--accent); }
+
+/* PAGE PRINT STYLES */
+@media print {
+  body { background: white; }
+  .document { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+  .letterhead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .closing { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+@media (max-width: 640px) {
+  .body { padding: 2rem 1.5rem; }
+  .letterhead { padding: 2rem 1.5rem 1.5rem; }
+  .closing { padding: 2rem 1.5rem; }
+  .scenario-pair { grid-template-columns: 1fr; }
+  .brand { font-size: 1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="document">
+
+  <!-- LETTERHEAD -->
+  <div class="letterhead">
+    <span class="brand">CELLIX</span>
+    <span class="brand-sub">AI Assistant for Spreadsheet Work</span>
+    <div class="doc-meta">
+      <span><strong>Document Type</strong> — Concept Note</span>
+      <span><strong>Audience</strong> — Chartered Accountants &amp; Commerce Professionals</span>
+      <span><strong>Purpose</strong> — Feedback &amp; Domain Input</span>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- SALUTATION -->
+    <div class="salutation">
+      <p>Dear Friend, <br>I am building a product called <strong>CELLIX</strong> — an AI-powered assistant that lives inside Google Sheets and Microsoft Excel and helps finance professionals work faster, safer, and with full accountability. I am sharing this note because <strong>your domain knowledge and daily experience matter more than any market research</strong> when it comes to making this product genuinely useful. I would deeply appreciate your honest thoughts, corrections, and suggestions.</p>
+    </div>
+
+    <!-- SECTION: WHAT IS CELLIX -->
+    <div class="section">
+      <div class="section-label">What is CELLIX</div>
+      <h2>Intelligent Excel AI built for Indian CAs and finance professionals</h2>
+      <p>CELLIX is a tool that works as a sidebar inside Google Sheets and Microsoft Excel. You do not switch to another app or website. You do not copy-paste your data anywhere. You simply open a side panel within your existing spreadsheet, describe what you need in plain language, and CELLIX suggests what to do — one step at a time, with your full review and approval before anything changes.</p>
+      <p>Think of it as having an experienced assistant sitting next to you while you work. That assistant can read your entire spreadsheet, understand its structure, suggest the right formulas, flag errors, and help you complete tasks that currently take hours — without ever touching a single cell without your permission.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION: THE PROBLEM -->
+    <div class="section">
+      <div class="section-label">The Problem We Are Solving</div>
+      <h2>The spreadsheet work that consumes CA practices today</h2>
+      <p>Every practicing CA and finance professional in India knows how much time disappears into spreadsheet tasks every month. Not the thinking work — the mechanical, repetitive, error-prone work that does not require professional judgment but still consumes professional time.</p>
+
+      <ul class="pain-list">
+        <li class="active">
+          <strong>GST Reconciliation — GSTR-2A / 2B vs Purchase Register</strong>
+          Matching hundreds or thousands of rows from the GSTN portal against your purchase register. Supplier invoice numbers that don't match exactly. Amounts split across two entries. Credit notes with negative values. Date format differences. This work takes 3 to 6 hours per client every single month — and a small mistake means a missed ITC claim.
+        </li>
+        <li class="active">
+          <strong>Tally Export Cleanup</strong>
+          When you export a ledger from Tally, what you get is rarely clean. The rupee symbol sits inside numeric columns. Dates come in three different formats in the same file. Merged cells break any formula you try to apply. Blank rows are scattered throughout. Cleaning this before you can use the data takes hours of junior staff time every week.
+        </li>
+        <li class="active">
+          <strong>Audit Working Papers and Documentation</strong>
+          After every change made to a client file, there should be a record of what changed, when, and who approved it. In practice, this documentation is either done manually, done incompletely, or not done at all. Reconstruction during an ICAI review is painful.
+        </li>
+        <li>
+          <strong>ITC Computation and Verification</strong>
+          Calculating eligible Input Tax Credit, applying reversal rules, and cross-checking with GSTR-2B data requires understanding both the law and the spreadsheet structure simultaneously. One wrong column reference or one missed rule creates a cascading error.
+        </li>
+        <li>
+          <strong>Ind-AS and Schedule III Preparation</strong>
+          Mapping a trial balance to a Schedule III balance sheet or an Ind-AS compliant P&amp;L involves knowing exactly which line item belongs where — and then building the spreadsheet structure and formulas to pull everything together correctly.
+        </li>
+        <li>
+          <strong>Client MIS Reports</strong>
+          Monthly management information reports — P&amp;L summaries, cash flow statements, budget vs actual dashboards — are often rebuilt from scratch or heavily reformatted every month even though the structure rarely changes.
+        </li>
+      </ul>
+
+      <p>None of these tasks require a bad CA to make an error. A good CA with 10 years of experience still spends the same hours on these mechanical tasks as a first-year articled assistant. The difference is that the senior CA's time is worth far more — and is being consumed by work that should not require their expertise at all.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- PULL QUOTE -->
+    <div class="pull-quote">
+      <p>"CELLIX does not replace the CA's judgment. It removes the mechanical burden that consumes the CA's time — so the judgment can be applied where it actually matters."
+        <span>— The core idea behind CELLIX</span>
+      </p>
+    </div>
+
+    <!-- SECTION: HOW IT WORKS -->
+    <div class="section">
+      <div class="section-label">How It Works</div>
+      <h2>Simple in experience, careful in execution</h2>
+      <p>CELLIX is designed around one principle: <strong>nothing changes in your spreadsheet unless you explicitly approve it.</strong> Here is what a typical interaction looks like, from start to finish.</p>
+
+      <div class="workflow">
+        <div class="workflow-step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>You open the CELLIX sidebar inside your Sheets or Excel file</h4>
+            <p>There is no separate app to open. A small panel appears on the right side of your spreadsheet — the same way any other add-on panel appears. Your data stays exactly where it is. Nothing is sent anywhere automatically.</p>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>You describe what you need in plain language</h4>
+            <p>You type something like: "Reconcile my purchase register against my GSTR-2A data and show me the mismatches" — or — "My Tally export has rupee symbols in the amount columns, fix them and standardize the date format" — or — "Create a GSTR-3B summary from this data." You do not need to know any formula or technical command.</p>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>CELLIX reads your spreadsheet and prepares a plan</h4>
+            <p>CELLIX looks at your sheet — the column headers, the data structure, the existing formulas — and creates a step-by-step plan for what it proposes to do. It does not start making changes yet. It shows you the plan first, in plain language that you can read and evaluate.</p>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>You see a preview of every proposed change before anything is applied</h4>
+            <p>For each proposed change, CELLIX shows you: which cells or columns will be affected, what the current value or formula is, what the new formula or value will be, and why it is suggesting this change. It also tells you if any suggestion carries a risk — if it is confident, it says so; if something is uncertain, it flags it.</p>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>You approve or reject each suggestion, one at a time</h4>
+            <p>Nothing is applied automatically. You click Approve for what you want and Reject for what you do not. You can approve all, reject all, or review each one individually. Your professional judgment stays in control throughout. CELLIX never overrides your decision.</p>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <h4>Every approved change is logged automatically in an audit trail</h4>
+            <p>Once you approve a change and it is applied to the spreadsheet, CELLIX records it: what changed, which cell or range, what the formula was, when it was applied, and who approved it. This log is always available and can be exported as a document — useful for working paper documentation, internal review, or ICAI purposes.</p>
+          </div>
+        </div>
+        <div class="workflow-step">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <h4>You can undo any change at any point</h4>
+            <p>Even after a change has been applied, it can be reversed. Not just the last action — any action from the session. CELLIX maintains a complete record of everything it has done, so you are never locked into a change you later want to revisit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SCENARIO COMPARISON -->
+    <div class="section">
+      <div class="section-label">Before and After</div>
+      <h2>What changes for a CA using CELLIX</h2>
+      <p>Here is how a common workflow — monthly GST reconciliation — looks with and without CELLIX.</p>
+
+      <div class="scenario-pair">
+        <div class="scenario-box before">
+          <span class="scenario-label">Without CELLIX — Today</span>
+          <ul>
+            <li>Download GSTR-2A from the portal as Excel</li>
+            <li>Open the purchase register in a separate file</li>
+            <li>Copy both into one sheet manually</li>
+            <li>Write VLOOKUP formulas — which fail on partial invoice matches</li>
+            <li>Manually scan each mismatch row by row</li>
+            <li>Handle credit notes and split invoices separately</li>
+            <li>Build a summary table of matched, unmatched, and partially matched entries</li>
+            <li>Document the work manually for the client file</li>
+            <li>3 to 6 hours per client, every single month</li>
+          </ul>
+        </div>
+        <div class="scenario-box after">
+          <span class="scenario-label">With CELLIX</span>
+          <ul>
+            <li>Open both files in Sheets</li>
+            <li>Type: "Reconcile purchase register against GSTR-2A"</li>
+            <li>CELLIX reads both sheets and runs intelligent matching — including partial invoice numbers, slight amount differences, and credit notes</li>
+            <li>A clear preview of matched, partially matched, and unmatched rows is shown</li>
+            <li>You review and approve the reconciliation output</li>
+            <li>A formatted reconciliation statement is created in the sheet</li>
+            <li>The audit trail records what was done and when</li>
+            <li>20 to 40 minutes per client, same quality, full accountability</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION: WHAT CELLIX HANDLES -->
+    <div class="section">
+      <div class="section-label">What CELLIX Is Designed to Handle</div>
+      <h2>Workflows built specifically for Indian accounting practice</h2>
+      <p>CELLIX is not a general-purpose tool that has been adapted for India. It is being designed from the ground up around the actual workflows that Indian CAs and finance professionals deal with every day.</p>
+
+      <div class="feature-row">
+        <div class="feature-icon">🧾</div>
+        <div class="feature-body">
+          <h4>GST Reconciliation </h4>
+          <p>GSTR-2A and GSTR-2B matching against your purchase register. Handles split invoices, credit notes, date mismatches, slight amount differences, and missing entries. Shows you matched, partially matched, and unmatched rows with reasons for each mismatch. Generates a reconciliation statement ready for client files.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">📁</div>
+        <div class="feature-body">
+          <h4>Tally Export Cleanup </h4>
+          <p>Automatically detects and fixes the common problems in Tally ledger exports: rupee symbols embedded in amount fields, inconsistent date formats within the same file, merged cells that break formulas, blank rows, duplicate entries, and column headers that don't match standard naming. Turns a raw Tally export into a clean, formula-ready spreadsheet without you touching each cell manually.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">✅</div>
+        <div class="feature-body">
+          <h4>Audit Trail and Working Paper Log </h4>
+          <p>Every change made through CELLIX — every formula written, every column cleaned, every reconciliation applied — is logged automatically with the date, time, the name of the person who approved it, and exactly what changed. This log can be exported as a PDF document formatted as a working paper. No more manual documentation of spreadsheet work.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">📊</div>
+        <div class="feature-body">
+          <h4>Formula Generation and Verification </h4>
+          <p>You describe what you want the formula to do in plain language and CELLIX writes it. Before showing you the formula, it tests it against the actual data in your sheet to verify the output is what you expected. It also checks for common mistakes — wrong column references, mismatched ranges, circular references — before any formula is proposed to you.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">📋</div>
+        <div class="feature-body">
+          <h4>ITC Computation Templates </h4>
+          <p>Prebuilt templates for Input Tax Credit calculations, including the eligibility split between blocked and eligible credit, reversal computations under Rule 42 and Rule 43, and reconciliation with GSTR-2B data. The rules are encoded into the tool — you supply the data, CELLIX applies the correct logic and shows you how each figure was arrived at.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">📑</div>
+        <div class="feature-body">
+          <h4>Ind-AS Schedule Generation </h4>
+          <p>Provide your trial balance data and CELLIX maps each ledger head to the correct Schedule III classification, generates the balance sheet and profit and loss structure, and builds the formulas that pull everything together. Handles the most common classification decisions — current vs non-current, operating vs non-operating — and flags items where human judgment is needed.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">🔍</div>
+        <div class="feature-body">
+          <h4>Error Detection and Audit Scan </h4>
+          <p>CELLIX scans your spreadsheet for the most common problems in accounting files: broken formula references, division by zero errors, inconsistent ranges, merged cells that are hiding data, columns where numbers and text are mixed, and date fields that are stored as text. For each issue it finds, it explains what the problem is and suggests how to fix it — without making any change until you approve.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">📈</div>
+        <div class="feature-body">
+          <h4>MIS Report Templates </h4>
+          <p>Reusable monthly report templates for P&amp;L summaries, cash flow statements, and budget vs actual comparisons. Once set up for a client, the same template can be refreshed every month by simply updating the source data — the structure, formulas, and formatting carry over automatically.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">🏦</div>
+        <div class="feature-body">
+          <h4>Bank Reconciliation </h4>
+          <p>Match your cash book or ledger entries against your bank statement, handling the usual complications — UPI transactions with partial reference matches, timing differences, bounced instruments, and bank charges that appear in the statement but not yet in the books. Produces a clear reconciliation statement showing matched and unmatched entries with reasons.</p>
+        </div>
+      </div>
+
+      <div class="feature-row">
+        <div class="feature-icon">📬</div>
+        <div class="feature-body">
+          <h4>26AS / TDS Matching </h4>
+          <p>Cross-check your TDS ledger entries against the data in Form 26AS. Flags deductor errors, timing differences between deduction and deposit, and entries that appear in 26AS but are missing from the books — before you discover them at the time of ITR filing.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION: WHAT CELLIX WILL NOT DO -->
+    <div class="section">
+      <div class="section-label">Important Boundaries</div>
+      <h2>What CELLIX is designed never to do</h2>
+      <p>Understanding the boundaries of the product is as important as understanding what it does. These are deliberate design decisions, not limitations.</p>
+
+      <div class="callout">
+        <p><strong>CELLIX will never apply any change to your spreadsheet without your explicit approval.</strong> There is no auto-apply, no background editing, no silent modification. Every proposed change must be reviewed and accepted by you before it touches a single cell.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>CELLIX does not give tax advice or legal opinions.</strong> It applies rules and computations based on the information you provide and the parameters encoded in the tool. Any judgment about how a specific client situation should be treated — whether a particular expense is deductible, whether a particular supply is taxable — remains with you, the professional.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>CELLIX does not store your client data.</strong> The information in your spreadsheet is used only to complete the task you have requested in that session. Nothing is retained or stored on external servers once the session is complete. Enterprise users who need audit log retention can choose that option separately.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>CELLIX does not replace the CA.</strong> It removes the mechanical burden from the CA's work. The professional judgment, the client relationship, the sign-off on every output — that remains entirely with you.</p>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION: WHY INDIA SPECIFIC -->
+    <div class="section">
+      <div class="section-label">Why India, Why Now</div>
+      <h2>Built for the reality of Indian accounting practice, not adapted from elsewhere</h2>
+      <p>Most productivity tools for spreadsheets are built for a Western financial context. They assume clean data, standard column headers, and workflows that do not involve GST, Tally, the ICAI, or the specific compliance requirements of Indian law. When Indian CAs try to use these tools, they find themselves spending time adapting the tool to their context rather than using it to do their work.</p>
+      <p>CELLIX starts from the other end. The workflows it handles — GST reconciliation, Tally cleanup, ITC computation, Ind-AS preparation — are the core of Indian CA practice. The edge cases it is built to handle — split invoices, credit notes, Tally date formats, blocked credit categories — are the edge cases that actually appear in Indian client files, not theoretical examples from a textbook.</p>
+      <p>India has more than 400,000 practicing Chartered Accountants. The vast majority of them use spreadsheets for a significant portion of their client work. There is currently no tool that treats their specific workflows as the primary use case. That is the gap CELLIX is being built to fill.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- SECTION: FEEDBACK REQUEST -->
+    <div class="section">
+      <div class="section-label">Your Input Is the Most Valuable Thing Right Now</div>
+      <h2>What I need from you — honest, specific feedback</h2>
+      <p>I am at the stage of building CELLIX where domain knowledge matters far more than technology. I need to understand whether the problems I have described are the real problems, whether the solutions I have described would actually work in practice, and what I am missing entirely. The table below lists the questions I most need your input on.</p>
+
+      <table class="feedback-table">
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Questions for You</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>GST Reconciliation</strong></td>
+            <td>Is GSTR-2A/2B vs purchase register the most painful step? What are the most common mismatch reasons you encounter? What does a good reconciliation output look like — what columns and summary does it need to have?</td>
+          </tr>
+          <tr>
+            <td><strong>Tally Exports</strong></td>
+            <td>What are the most common problems in a Tally export that waste your time? Are there specific ledger types or report formats from Tally that are particularly messy? Which export format do you use most — Excel, CSV, or something else?</td>
+          </tr>
+          <tr>
+            <td><strong>Audit Trail</strong></td>
+            <td>What does an ICAI-acceptable working paper for spreadsheet work need to contain? Is there a standard format expected, or does it vary by the type of engagement? Have you ever had to reconstruct documentation for a review?</td>
+          </tr>
+          <tr>
+            <td><strong>ITC Computation</strong></td>
+            <td>Which part of ITC computation takes longest? Are the reversal calculations under Rule 42 and 43 the main complexity, or are there other steps that are more time-consuming? How frequently do ITC rules change in ways that require updating your computation approach?</td>
+          </tr>
+          <tr>
+            <td><strong>Approval Workflow</strong></td>
+            <td>Would you be comfortable approving AI-suggested formulas if you could see exactly what each formula does and which cells it affects? Are there certain types of changes where you would always want to review manually, regardless of how confident the tool is?</td>
+          </tr>
+          <tr>
+            <td><strong>Missing Workflows</strong></td>
+            <td>What spreadsheet-based workflows take the most of your time that I have not mentioned above? Are there tasks specific to your practice area — audit, tax, advisory — that you think a tool like this could meaningfully help with?</td>
+          </tr>
+          <tr>
+            <td><strong>Trust and Reliability</strong></td>
+            <td>What would a tool like this need to do — or avoid doing — to earn your trust for client work? What would immediately make you distrust a tool's output?</td>
+          </tr>
+          <tr>
+            <td><strong>Data Privacy</strong></td>
+            <td>Are there types of client data you would never be comfortable running through any external tool, regardless of privacy guarantees? What would make you more comfortable sharing data with a tool like this?</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>You do not need to answer all of these at once. Even a response to one or two questions — based on what you know from your own daily work — is more valuable to me at this stage than any amount of research.</p>
+      <p>If you are willing to share an actual Tally export or a sample reconciliation file (with client names and identifiable information removed), that would help me understand the real data formats I need to work with. But this is entirely optional — your observations and answers in conversation are sufficient.</p>
+    </div>
+
+  </div><!-- end body -->
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>Thank you for taking the time to read through this. I know your time is genuinely valuable and I do not take it for granted.</p>
+    <p>CELLIX is at the stage where the people who shape it matter more than the technology behind it. Your experience — the friction you feel every month-end, the workarounds you have built over the years, the things that frustrate your junior staff — is the raw material this product needs to become something worth using.</p>
+    <p><strong>Please be as critical as you need to be.</strong> If something I have described does not match how the work actually happens in practice, I need to know that now — not after I have built it the wrong way. Your honest critique is far more useful than encouragement.</p>
+    <p>I look forward to hearing from you.</p>
+  </div>
+
+</div><!-- end document -->
+
+</body>
+</html>

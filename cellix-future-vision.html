@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CELLIX — Future Vision: The Finance AI Operating System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;0,900;1,300;1,700&family=Epilogue:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+:root {
+  --void: #080a0f;
+  --deep: #0d1017;
+  --surface: #131720;
+  --surface2: #1a2030;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --text: #c8d0e0;
+  --muted: #5a6580;
+  --bright: #ffffff;
+
+  /* Platform Colors */
+  --excel: #1d6f42;
+  --excel-glow: rgba(29,111,66,0.3);
+  --powerbi: #f2c811;
+  --powerbi-glow: rgba(242,200,17,0.25);
+  --word: #185abd;
+  --word-glow: rgba(24,90,189,0.3);
+  --outlook: #0078d4;
+  --outlook-glow: rgba(0,120,212,0.3);
+  --cellix: #00d4aa;
+  --cellix-glow: rgba(0,212,170,0.3);
+  --cellix2: #0088ff;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Epilogue', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* SUBTLE GRID BG */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,212,170,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(8,10,15,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2.5rem;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 12px;
+}
+.nav-logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 900; font-size: 1.2rem;
+  color: var(--cellix);
+  letter-spacing: -0.5px;
+}
+.nav-badge {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.62rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border2);
+  padding: 2px 8px; border-radius: 3px;
+}
+.nav-links { display: flex; gap: 1.75rem; }
+.nav-links a {
+  font-size: 0.8rem; color: var(--muted);
+  text-decoration: none; transition: color 0.2s; font-weight: 500;
+}
+.nav-links a:hover { color: var(--cellix); }
+
+/* MAIN */
+main { position: relative; z-index: 1; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6rem 2.5rem 4rem;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(0,212,170,0.06) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 860px; position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-block;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--cellix); border: 1px solid rgba(0,212,170,0.3);
+  padding: 5px 14px; border-radius: 3px; margin-bottom: 2rem;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 900; font-size: clamp(2.8rem, 6vw, 5.5rem);
+  line-height: 1.0; color: var(--bright);
+  margin-bottom: 1.5rem; letter-spacing: -1px;
+}
+.hero h1 em {
+  font-style: italic; color: var(--cellix);
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--muted);
+  max-width: 600px; margin: 0 auto 3rem; line-height: 1.7;
+}
+.hero-stats {
+  display: flex; justify-content: center; gap: 3.5rem;
+  flex-wrap: wrap;
+}
+.hero-stat .n {
+  font-family: 'Fraunces', serif; font-weight: 900; font-size: 2.2rem;
+  color: var(--bright); display: block; line-height: 1;
+}
+.hero-stat .l { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+
+/* SECTION */
+.section { padding: 6rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.section.full { max-width: 100%; padding-left: 0; padding-right: 0; }
+.section-tag {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cellix); margin-bottom: 0.5rem;
+}
+h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700; color: var(--bright);
+  line-height: 1.15; margin-bottom: 1rem;
+}
+h3 {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  font-size: 1.15rem; color: var(--bright); margin-bottom: 0.5rem;
+}
+h4 { font-weight: 600; font-size: 0.9rem; color: var(--bright); margin-bottom: 0.35rem; }
+p { color: var(--text); margin-bottom: 0.85rem; line-height: 1.8; }
+p:last-child { margin-bottom: 0; }
+
+hr.sep {
+  border: none; border-top: 1px solid var(--border);
+  margin: 0;
+}
+
+/* PROBLEM SECTION — FRAGMENTATION */
+.frag-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--border); margin: 3rem 0;
+  border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+}
+.frag-card {
+  background: var(--surface); padding: 2rem 1.5rem;
+  position: relative;
+}
+.frag-icon {
+  font-size: 1.75rem; margin-bottom: 0.75rem; display: block;
+}
+.frag-card h4 { margin-bottom: 0.5rem; }
+.frag-card p { font-size: 0.82rem; color: var(--muted); margin: 0; }
+.frag-card .frag-gap {
+  margin-top: 1rem; padding: 0.6rem 0.9rem;
+  background: rgba(255,60,60,0.06);
+  border: 1px solid rgba(255,60,60,0.15);
+  border-radius: 4px;
+  font-size: 0.76rem; color: #ff6b6b;
+  font-family: 'Fira Code', monospace;
+}
+.frag-card::after {
+  content: '✗ Isolated';
+  position: absolute; top: 1rem; right: 1rem;
+  font-size: 0.65rem; color: #ff6b6b; font-weight: 600; letter-spacing: 0.5px;
+  font-family: 'Fira Code', monospace;
+}
+
+/* VISION CALLOUT */
+.vision-box {
+  background: linear-gradient(135deg, rgba(0,212,170,0.06), rgba(0,136,255,0.06));
+  border: 1px solid rgba(0,212,170,0.2);
+  border-radius: 12px; padding: 3rem;
+  text-align: center; margin: 3rem 0;
+  position: relative; overflow: hidden;
+}
+.vision-box::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(0,212,170,0.04), transparent 60%);
+  pointer-events: none;
+}
+.vision-box blockquote {
+  font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 300; font-style: italic;
+  color: var(--bright); line-height: 1.4; margin-bottom: 1rem;
+}
+.vision-box blockquote strong { font-weight: 900; font-style: normal; color: var(--cellix); }
+.vision-box p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+
+/* PLATFORM OVERVIEW */
+.platform-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem; margin-top: 2.5rem;
+}
+.platform-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.platform-card:hover { transform: translateY(-2px); }
+.platform-card.excel { border-color: rgba(29,111,66,0.3); }
+.platform-card.powerbi { border-color: rgba(242,200,17,0.2); }
+.platform-card.word { border-color: rgba(24,90,189,0.3); }
+.platform-card.outlook { border-color: rgba(0,120,212,0.3); }
+
+.platform-header {
+  padding: 1.5rem 1.75rem;
+  display: flex; align-items: center; gap: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.platform-icon {
+  width: 44px; height: 44px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.platform-card.excel .platform-icon { background: rgba(29,111,66,0.15); }
+.platform-card.powerbi .platform-icon { background: rgba(242,200,17,0.12); }
+.platform-card.word .platform-icon { background: rgba(24,90,189,0.15); }
+.platform-card.outlook .platform-icon { background: rgba(0,120,212,0.15); }
+
+.platform-header-text { flex: 1; }
+.platform-name {
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 1rem; color: var(--bright); display: block;
+}
+.platform-role { font-size: 0.76rem; color: var(--muted); }
+.platform-phase {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 3px; font-weight: 500;
+}
+.phase-1 { background: rgba(0,212,170,0.1); color: var(--cellix); }
+.phase-2 { background: rgba(242,200,17,0.1); color: var(--powerbi); }
+.phase-3 { background: rgba(0,120,212,0.1); color: var(--outlook); }
+.phase-4 { background: rgba(24,90,189,0.1); color: #6b9fff; }
+
+.platform-body { padding: 1.5rem 1.75rem; }
+.feat-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+  font-size: 0.84rem;
+}
+.feat-item:last-child { border-bottom: none; }
+.feat-item .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 6px;
+}
+.platform-card.excel .dot { background: var(--excel); }
+.platform-card.powerbi .dot { background: var(--powerbi); }
+.platform-card.word .dot { background: #4a90d9; }
+.platform-card.outlook .dot { background: var(--outlook); }
+.feat-item .feat-text { color: var(--text); }
+.feat-item .feat-sub { color: var(--muted); font-size: 0.74rem; display: block; margin-top: 1px; }
+
+/* CA USE CASES */
+.usecase-list { margin-top: 1.5rem; }
+.usecase {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+}
+.usecase:last-child { border-bottom: none; }
+.usecase-num {
+  flex-shrink: 0; width: 40px; height: 40px;
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fira Code', monospace; font-size: 0.82rem; color: var(--cellix);
+}
+.usecase-body {}
+.usecase-body h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+.usecase-body p { font-size: 0.83rem; color: var(--muted); margin-bottom: 0.5rem; }
+.usecase-flow {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap; margin-top: 0.5rem;
+}
+.flow-step {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem; padding: 3px 10px; border-radius: 3px;
+  font-weight: 500;
+}
+.fs-excel { background: rgba(29,111,66,0.15); color: #4caf50; }
+.fs-powerbi { background: rgba(242,200,17,0.1); color: #f2c811; }
+.fs-word { background: rgba(24,90,189,0.12); color: #6b9fff; }
+.fs-outlook { background: rgba(0,120,212,0.12); color: #60b4ff; }
+.fs-cellix { background: rgba(0,212,170,0.1); color: var(--cellix); }
+.flow-arrow { color: var(--muted); font-size: 0.8rem; }
+
+/* ARCHITECTURE DIAGRAM */
+.arch-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden;
+  margin: 2.5rem 0;
+}
+.arch-top { padding: 2rem 2.5rem; border-bottom: 1px solid var(--border); }
+.arch-top p { font-size: 0.85rem; color: var(--muted); margin: 0; }
+.arch-diagram {
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 0; align-items: center;
+}
+.arch-col { display: flex; flex-direction: column; gap: 10px; }
+.arch-box {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 8px; padding: 0.9rem 1.1rem;
+  text-align: center;
+}
+.arch-box .ab-icon { font-size: 1.1rem; margin-bottom: 4px; }
+.arch-box .ab-name {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.68rem; color: var(--muted);
+  display: block; letter-spacing: 0.5px; text-transform: uppercase;
+}
+.arch-box.highlight {
+  border-color: rgba(0,212,170,0.4);
+  background: rgba(0,212,170,0.05);
+}
+.arch-box.highlight .ab-name { color: var(--cellix); }
+.arch-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 1.5rem;
+}
+.arch-arrow::before {
+  content: '⟷';
+  font-size: 1.5rem; color: var(--border2);
+}
+.arch-center { text-align: center; padding: 0 1rem; }
+.arch-core {
+  background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(0,136,255,0.1));
+  border: 1px solid rgba(0,212,170,0.3);
+  border-radius: 12px; padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+.arch-core .core-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+.arch-core .core-name {
+  font-family: 'Fraunces', serif; font-weight: 900;
+  font-size: 1.1rem; color: var(--cellix); display: block;
+}
+.arch-core .core-sub { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 4px; }
+
+/* 3 LAYERS */
+.layers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.layer-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.layer-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.layer-num {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 4px;
+}
+.layer-header h3 { font-size: 0.95rem; margin: 0; }
+.layer-body { padding: 1.25rem 1.5rem; }
+.layer-item {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 5px 0; font-size: 0.8rem; color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+.layer-item:last-child { border-bottom: none; }
+.layer-item::before { content: '◆'; color: var(--cellix); font-size: 0.5rem; margin-top: 5px; flex-shrink: 0; }
+
+/* CONTEXT ENGINE */
+.context-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+.context-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+  border-top: 2px solid var(--cellix);
+}
+.context-card h4 { font-size: 0.85rem; margin-bottom: 0.75rem; color: var(--cellix); }
+.ctx-item {
+  font-family: 'Fira Code', monospace; font-size: 0.72rem;
+  color: var(--muted); padding: 3px 0;
+  border-bottom: 1px solid var(--border);
+}
+.ctx-item:last-child { border-bottom: none; }
+.ctx-item span { color: var(--text); }
+
+/* ROADMAP TIMELINE */
+.roadmap { margin-top: 2.5rem; }
+.roadmap-phase {
+  display: flex; gap: 2rem; margin-bottom: 2rem;
+  padding-bottom: 2rem; border-bottom: 1px solid var(--border);
+}
+.roadmap-phase:last-child { border-bottom: none; margin-bottom: 0; }
+.phase-marker {
+  flex-shrink: 0; width: 100px; text-align: center;
+  padding-top: 0.5rem;
+}
+.phase-num {
+  font-family: 'Fraunces', serif; font-weight: 900;
+  font-size: 2rem; color: var(--bright); display: block; line-height: 1;
+}
+.phase-tag2 {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 3px; margin-top: 6px;
+  display: inline-block;
+}
+.phase-content { flex: 1; }
+.phase-content h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+.phase-content p { font-size: 0.84rem; color: var(--muted); margin-bottom: 1rem; }
+.phase-tools {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem;
+}
+.tool-chip {
+  font-size: 0.72rem; padding: 3px 10px; border-radius: 3px;
+  font-weight: 600; font-family: 'Fira Code', monospace;
+}
+.tc-excel { background: rgba(29,111,66,0.15); color: #4caf50; }
+.tc-powerbi { background: rgba(242,200,17,0.1); color: #f2c811; }
+.tc-word { background: rgba(24,90,189,0.12); color: #6b9fff; }
+.tc-outlook { background: rgba(0,120,212,0.12); color: #60b4ff; }
+.tc-sheets { background: rgba(66,133,244,0.12); color: #74aaff; }
+.phase-features { list-style: none; }
+.phase-features li {
+  font-size: 0.83rem; color: var(--text); padding: 4px 0;
+  display: flex; gap: 8px; align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+.phase-features li:last-child { border-bottom: none; }
+.phase-features li::before { content: '→'; color: var(--cellix); flex-shrink: 0; }
+
+/* TRUST LAYER */
+.trust-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 2rem; }
+.trust-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.5rem;
+}
+.trust-card h4 { color: var(--bright); margin-bottom: 0.5rem; }
+.trust-card p { font-size: 0.83rem; color: var(--muted); margin: 0; }
+.trust-icon { font-size: 1.4rem; margin-bottom: 0.6rem; display: block; }
+
+/* DEMO COMMAND BOX */
+.demo-cmd {
+  background: var(--deep);
+  border: 1px solid var(--border2);
+  border-radius: 10px; padding: 2rem;
+  margin: 2rem 0;
+  font-family: 'Fira Code', monospace;
+}
+.cmd-prompt {
+  color: var(--cellix); font-size: 0.82rem; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.cmd-prompt::before { content: '›'; font-size: 1rem; }
+.cmd-input {
+  font-size: 1.05rem; color: var(--bright);
+  margin-bottom: 1.5rem; line-height: 1.5;
+}
+.cmd-response { border-top: 1px solid var(--border); padding-top: 1.25rem; }
+.cmd-step {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 6px 0; font-size: 0.8rem;
+}
+.cmd-step-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(0,212,170,0.1); color: var(--cellix);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem; flex-shrink: 0; margin-top: 1px;
+}
+.cmd-step-text { color: var(--text); }
+.cmd-step-text .tool-ref {
+  display: inline-block;
+  padding: 1px 6px; border-radius: 3px;
+  font-size: 0.7rem; margin: 0 2px;
+}
+
+/* BOTTOM VERDICT */
+.verdict-final {
+  background: linear-gradient(135deg, rgba(0,212,170,0.06), rgba(0,136,255,0.06));
+  border: 1px solid rgba(0,212,170,0.2);
+  border-radius: 16px; padding: 3rem;
+  margin: 3rem 0; text-align: center;
+}
+.verdict-final h2 { color: var(--bright); margin-bottom: 1rem; }
+.verdict-final p { color: var(--muted); max-width: 680px; margin: 0 auto; }
+.verdict-final strong { color: var(--cellix); }
+
+/* CALLOUT */
+.callout {
+  border-left: 3px solid var(--cellix);
+  background: rgba(0,212,170,0.04);
+  padding: 1rem 1.5rem; border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+.callout h4 { color: var(--cellix); font-size: 0.8rem; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 4px; }
+.callout p { font-size: 0.84rem; color: var(--muted); margin: 0; }
+.callout.warn { border-color: var(--powerbi); background: rgba(242,200,17,0.04); }
+.callout.warn h4 { color: var(--powerbi); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem; text-align: center;
+  color: var(--muted); font-size: 0.78rem;
+  font-family: 'Fira Code', monospace;
+}
+
+/* SCROLL FADE */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 0.6s ease forwards;
+}
+
+@media (max-width: 900px) {
+  .frag-grid, .platform-grid, .layers, .context-grid, .trust-grid { grid-template-columns: 1fr; }
+  .arch-diagram { grid-template-columns: 1fr; }
+  .arch-arrow { display: none; }
+  .roadmap-phase { flex-direction: column; gap: 1rem; }
+  .phase-marker { width: auto; text-align: left; display: flex; align-items: center; gap: 1rem; }
+  .nav-links { display: none; }
+  .hero-stats { gap: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <span class="nav-logo">CELLIX</span>
+    <span class="nav-badge">Future Vision · Internal Doc</span>
+  </div>
+  <div class="nav-links">
+    <a href="#problem">The Gap</a>
+    <a href="#vision">Vision</a>
+    <a href="#platforms">Platforms</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#trust">Trust Layer</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner fade-up">
+    <div class="hero-tag">CELLIX — Future Product Vision</div>
+    <h1>From Excel Add-in<br>to <em>Finance AI</em><br>Operating System</h1>
+    <p class="hero-sub">CELLIX starts as the deepest Excel AI for Indian CAs. This document maps the full future: how CELLIX expands across Power BI, Word, and Outlook to become the intelligence layer connecting every tool a finance professional uses.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="n">4</span><span class="l">Microsoft tools connected</span></div>
+      <div class="hero-stat"><span class="n">1</span><span class="l">Shared intelligence core</span></div>
+      <div class="hero-stat"><span class="n">0</span><span class="l">Context lost between tools</span></div>
+      <div class="hero-stat"><span class="n">∞</span><span class="l">Workflows that become possible</span></div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ===== SECTION 1: THE PROBLEM ===== -->
+<section class="section" id="problem">
+  <div class="section-tag">01 — The Real Problem</div>
+  <h2>Four Tools, Zero Connection</h2>
+  <p>Every Indian CA uses the same four Microsoft tools every single day. The tragedy is that none of them know what the others are doing. A CA finishes a GST reconciliation in Excel, then manually types the summary into Word, then copies numbers into a Power BI dashboard, then writes an email in Outlook attaching the file. Each step is manual. Each handoff is fragile. Context is rebuilt from scratch every time.</p>
+
+  <div class="frag-grid">
+    <div class="frag-card">
+      <span class="frag-icon">📊</span>
+      <h4>Microsoft Excel</h4>
+      <p>Where all the raw numbers live — GST data, Tally exports, journal entries, reconciliations.</p>
+      <div class="frag-gap">Doesn't know what report will be generated from its data</div>
+    </div>
+    <div class="frag-card">
+      <span class="frag-icon">📈</span>
+      <h4>Power BI</h4>
+      <p>Where dashboards and visuals are created for client presentations and management reporting.</p>
+      <div class="frag-gap">Doesn't know the logic behind Excel calculations</div>
+    </div>
+    <div class="frag-card">
+      <span class="frag-icon">📝</span>
+      <h4>Microsoft Word</h4>
+      <p>Where audit reports, management letters, and working paper narratives are written.</p>
+      <div class="frag-gap">Doesn't know which numbers came from which Excel formulas</div>
+    </div>
+    <div class="frag-card">
+      <span class="frag-icon">📧</span>
+      <h4>Microsoft Outlook</h4>
+      <p>Where client communication happens — sending reports, sharing findings, requesting data.</p>
+      <div class="frag-gap">Doesn't understand the attachments it sends or receives</div>
+    </div>
+  </div>
+
+  <p>The result is that a CA doing a single engagement — say, a GST audit for a client — touches all four tools in a single session, rebuilding context manually each time. The average Indian CA firm loses 8–12 hours per client per month to this invisible friction. Not to difficult intellectual work. To <em>copying, pasting, and reformatting the same information across four disconnected tools.</em></p>
+
+  <div class="callout">
+    <h4>The Core Insight</h4>
+    <p>The problem isn't that any one of these tools is bad. Excel is powerful. Power BI is excellent for visualization. Word and Outlook work fine. The problem is that there is no shared memory, no shared context, and no intelligence that lives between them. CELLIX becomes that intelligence.</p>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ===== SECTION 2: THE VISION ===== -->
+<section class="section" id="vision">
+  <div class="section-tag">02 — The Product Vision</div>
+  <h2>Not an Add-in. An Intelligence Layer.</h2>
+
+  <div class="vision-box">
+    <blockquote>"Prepare the GST reconciliation, create a summary dashboard, generate the audit report, and <strong>send the mismatch summary to the client</strong>."</blockquote>
+    <p>One sentence. Four tools. Zero manual copying. This is where CELLIX goes.</p>
+  </div>
+
+  <p>The most important architectural insight in this entire document is this: CELLIX should not be thought of as four separate add-ins for four separate tools. That approach leads to four mediocre products that don't talk to each other. CELLIX must be built as a single intelligence core that happens to have four interfaces — one for each tool.</p>
+  <p>The Excel add-in is not the product. The AI core is the product. The Excel add-in is just the entry point — the place where CAs first encounter CELLIX because it's where they spend most of their time. But the intelligence that understands a client's financial data, the reconciliation that was just run, the mismatches that were found, and the approval that was given — that all lives in the CELLIX core, not inside Excel.</p>
+  <p>When the CA switches from Excel to Outlook, CELLIX doesn't forget what happened in Excel. When they open Word to write the audit report, CELLIX already knows which numbers to insert and where they came from. This is the vision: <strong>shared context across every tool in a CA's workflow.</strong></p>
+</section>
+
+<hr class="sep">
+
+<!-- ===== SECTION 3: PLATFORMS ===== -->
+<section class="section" id="platforms">
+  <div class="section-tag">03 — Platform Breakdown</div>
+  <h2>What CELLIX Does in Each Tool</h2>
+  <p>Each platform integration is not a copy of the Excel experience. Each one is purpose-built for what that specific tool is actually used for in a CA or finance professional's workflow.</p>
+
+  <div class="platform-grid">
+
+    <!-- EXCEL -->
+    <div class="platform-card excel">
+      <div class="platform-header">
+        <div class="platform-icon">📊</div>
+        <div class="platform-header-text">
+          <span class="platform-name">Microsoft Excel</span>
+          <span class="platform-role">The Foundation — Raw Data, Calculations, Reconciliations</span>
+        </div>
+        <span class="platform-phase phase-1">Phase 1 — Now</span>
+      </div>
+      <div class="platform-body">
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">GST Reconciliation Engine</span>
+            <span class="feat-sub">GSTR-2A/2B vs purchase register with fuzzy matching, split invoices, credit notes — all within Excel</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Tally Export Cleanup</span>
+            <span class="feat-sub">Auto-detects and fixes ₹ symbols in numeric columns, inconsistent dates, merged cells, blank rows</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Formula Generation + Verifier Layer</span>
+            <span class="feat-sub">Natural language → JSON patch → tested on sample rows → confidence score → preview before apply</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">ITC Computation Templates</span>
+            <span class="feat-sub">Encoded eligibility rules, reversal logic (Rule 42/43), GSTR-2B matching — updated per CBIC notifications</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Ind-AS Schedule III Generation</span>
+            <span class="feat-sub">Trial balance → Schedule III mapping → preview → approve → formatted output</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Mandatory Audit Trail</span>
+            <span class="feat-sub">Every AI action logged: timestamp, user, cell range, before/after values, approval status — exportable as ICAI working paper PDF</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Preview → Approve → Apply Workflow</span>
+            <span class="feat-sub">Nothing writes to any cell without explicit CA approval — the compliance safety moat</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Context Export to CELLIX Core</span>
+            <span class="feat-sub">When work is done, CELLIX captures: client name, financial year, task type, findings, data structure — for use in Power BI, Word, Outlook</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- POWER BI -->
+    <div class="platform-card powerbi">
+      <div class="platform-header">
+        <div class="platform-icon">📈</div>
+        <div class="platform-header-text">
+          <span class="platform-name">Microsoft Power BI</span>
+          <span class="platform-role">The Visualizer — Dashboards, Charts, Client Presentations</span>
+        </div>
+        <span class="platform-phase phase-2">Phase 2</span>
+      </div>
+      <div class="platform-body">
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">One-Command Dashboard Generation</span>
+            <span class="feat-sub">CA says "create client GST dashboard" — CELLIX reads Excel output, pushes structured data to Power BI, builds the dashboard automatically</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Context-Aware Visualizations</span>
+            <span class="feat-sub">Because CELLIX knows the Excel data structure, charts are semantically correct — not just generic bar charts but "GST mismatch by supplier" or "ITC utilization trend"</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">GST Compliance Dashboard</span>
+            <span class="feat-sub">Pre-built template: monthly GSTR-2A vs 2B trend, supplier-wise ITC utilization, mismatch value over time — auto-populated from Excel reconciliation data</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">MIS Reporting Packs</span>
+            <span class="feat-sub">Standard P&L, cash flow, budget vs actual visuals generated from Excel MIS data — CA-branded, client-ready in one click</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Audit Findings Visualization</span>
+            <span class="feat-sub">Error counts by sheet, risk distribution, reconciliation status — turns Excel audit output into visual evidence for client meetings</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Annotation and Approval Layer</span>
+            <span class="feat-sub">All Power BI outputs go through the same preview-approve flow — no chart is published to a client dashboard without CA sign-off</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Refresh from Source Data</span>
+            <span class="feat-sub">When the underlying Excel data is updated (next month's Tally export), one command refreshes all connected Power BI visuals without rebuilding</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORD -->
+    <div class="platform-card word">
+      <div class="platform-header">
+        <div class="platform-icon">📝</div>
+        <div class="platform-header-text">
+          <span class="platform-name">Microsoft Word</span>
+          <span class="platform-role">The Documenter — Audit Reports, Management Letters, Working Papers</span>
+        </div>
+        <span class="platform-phase phase-3">Phase 3</span>
+      </div>
+      <div class="platform-body">
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Context-Aware Report Drafting</span>
+            <span class="feat-sub">CA says "draft the GST audit report" — CELLIX already knows which client, which period, which mismatches were found, which were resolved. The draft is pre-populated with real numbers, not placeholders.</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">ICAI Working Paper Templates</span>
+            <span class="feat-sub">Prebuilt working paper formats for GST audit, statutory audit, internal audit — CA selects the engagement type, CELLIX fills in the findings from Excel</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Management Letter Generation</span>
+            <span class="feat-sub">Findings from the Excel audit translate into management letter observations — "We noted the following discrepancies in ITC reconciliation for FY 2024-25..."</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Linked Cell References</span>
+            <span class="feat-sub">Every number in the Word report is linked back to its source cell in Excel — clicking the number takes you to the exact cell in the workbook, providing end-to-end traceability</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Indian Regulatory Language</span>
+            <span class="feat-sub">Report language understands CGST Act provisions, ICAI Standards on Auditing, Ind-AS terminology — not generic "compliance language" but India-specific professional phrasing</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Approval Before Finalization</span>
+            <span class="feat-sub">Draft generated → CA reviews → approves → document finalized and locked. All changes tracked. Approval recorded in the central audit trail.</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Consistency Checker</span>
+            <span class="feat-sub">Scans the Word document and cross-checks every figure against its source in Excel — flags if any number in the report doesn't match the workbook</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTLOOK -->
+    <div class="platform-card outlook">
+      <div class="platform-header">
+        <div class="platform-icon">📧</div>
+        <div class="platform-header-text">
+          <span class="platform-name">Microsoft Outlook</span>
+          <span class="platform-role">The Communicator — Client Emails, Report Delivery, Data Requests</span>
+        </div>
+        <span class="platform-phase phase-4">Phase 4</span>
+      </div>
+      <div class="platform-body">
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Context-Aware Email Drafting</span>
+            <span class="feat-sub">CA says "send mismatch summary to Sharma & Co." — CELLIX knows who Sharma & Co. is (from previous client context), drafts the email with the correct figures, attaches the reconciliation output</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">GST Mismatch Notification Templates</span>
+            <span class="feat-sub">Pre-formatted email templates for common CA communications — "Your GSTR-2B data shows ₹X in mismatches. Please review the attached reconciliation and confirm by [date]."</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Data Request Emails</span>
+            <span class="feat-sub">CELLIX detects missing data (e.g., ledger export not yet received for March) and drafts a reminder email requesting it — with the exact format specification needed for import</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Smart Attachment Handling</span>
+            <span class="feat-sub">When a client replies with an attachment (a Tally export, a bank statement), CELLIX in Outlook recognizes it and offers to process it directly into the relevant Excel workbook</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Report Delivery Workflow</span>
+            <span class="feat-sub">CA approves the Word report in Phase 3 → CELLIX drafts the delivery email with proper subject line, professional body, and the approved report attached — one click to send</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Email Archive to Context</span>
+            <span class="feat-sub">Previous emails with a client are indexed by CELLIX — when a CA asks "what was the last thing we communicated about their ITC issue?", CELLIX retrieves and summarizes it</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <div class="dot"></div>
+          <div>
+            <span class="feat-text">Approval Before Send</span>
+            <span class="feat-sub">Every CELLIX-drafted email is shown to the CA before sending — preview, edit, approve. No automated sending. The CA signs off every communication.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ===== SECTION 4: ARCHITECTURE ===== -->
+<section class="section" id="architecture">
+  <div class="section-tag">04 — System Architecture</div>
+  <h2>Three Layers, One Intelligence</h2>
+  <p>The architectural principle is simple: there are three distinct layers, and the intelligence lives in only one of them. The interface layer is thin. The integration layer is plumbing. The context layer is the product.</p>
+
+  <div class="layers">
+    <div class="layer-card">
+      <div class="layer-header">
+        <div class="layer-num">Layer 1</div>
+        <h3>Interface Layer</h3>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:4px;margin-bottom:0;">Where users interact — thin UI only</p>
+      </div>
+      <div class="layer-body">
+        <div class="layer-item">Excel Task Pane Add-in (Office.js + React)</div>
+        <div class="layer-item">Power BI Custom Visual / Add-in</div>
+        <div class="layer-item">Word Task Pane Add-in (Office.js)</div>
+        <div class="layer-item">Outlook Add-in (Office.js)</div>
+        <div class="layer-item">Google Sheets Sidebar (Apps Script) — Phase 2</div>
+        <div class="layer-item">Each interface sends user intent + local context to the CELLIX Core</div>
+        <div class="layer-item">Each interface receives structured patch plan and renders preview UI</div>
+        <div class="layer-item">Approval/rejection handled locally, result sent back to Core</div>
+      </div>
+    </div>
+
+    <div class="layer-card" style="border-color:rgba(0,212,170,0.2);">
+      <div class="layer-header" style="border-color:rgba(0,212,170,0.1);">
+        <div class="layer-num" style="color:var(--cellix);">Layer 2 — THE PRODUCT</div>
+        <h3>Context Layer (CELLIX Core)</h3>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:4px;margin-bottom:0;">Intelligence, memory, domain logic — this is CELLIX</p>
+      </div>
+      <div class="layer-body">
+        <div class="layer-item">User Context: who the CA is, their client list, current engagement</div>
+        <div class="layer-item">Data Context: what's in the workbook, column meanings, relationships</div>
+        <div class="layer-item">Workflow Context: what was done, what was approved, what was sent</div>
+        <div class="layer-item">GST Rules Engine: encoded CBIC rules, ITC eligibility, rate tables</div>
+        <div class="layer-item">Tally Pattern Library: known export formats and cleaning rules</div>
+        <div class="layer-item">Audit Trail DB: every approved action across all tools, timestamped</div>
+        <div class="layer-item">LLM Router: sends each task to the right model at the right cost</div>
+        <div class="layer-item">Verifier Engine: tests AI outputs before they are ever shown to the user</div>
+      </div>
+    </div>
+
+    <div class="layer-card">
+      <div class="layer-header">
+        <div class="layer-num">Layer 3</div>
+        <h3>Integration Layer</h3>
+        <p style="font-size:0.78rem;color:var(--muted);margin-top:4px;margin-bottom:0;">How tools connect — plumbing, not intelligence</p>
+      </div>
+      <div class="layer-body">
+        <div class="layer-item">Excel JavaScript API — read/write cells, ranges, formulas, sheets</div>
+        <div class="layer-item">Power BI REST API — push datasets, create visuals, refresh reports</div>
+        <div class="layer-item">Microsoft Graph API — access Word documents, Outlook emails, OneDrive files</div>
+        <div class="layer-item">Tally TCP/IP Connector — direct TDL integration for live ledger data</div>
+        <div class="layer-item">GSTN API — direct portal data fetch for GSTR-2A/2B reconciliation</div>
+        <div class="layer-item">Zoho Books / RazorpayX — SME accounting data import</div>
+        <div class="layer-item">PostgreSQL (audit trail) + Redis (session context cache)</div>
+        <div class="layer-item">Webhook system — event-driven triggers across all connected tools</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEXT ENGINE DEEP DIVE -->
+  <h3 style="margin-top:3rem; margin-bottom:0.5rem;">The Context Engine — What CELLIX Remembers</h3>
+  <p style="margin-bottom:0;">This is the most technically important part. Here's exactly what the Context Layer maintains for every CA session:</p>
+
+  <div class="context-grid">
+    <div class="context-card">
+      <h4>User Context</h4>
+      <div class="ctx-item">client_name: <span>"Sharma & Co. Pvt. Ltd."</span></div>
+      <div class="ctx-item">financial_year: <span>"FY 2024-25"</span></div>
+      <div class="ctx-item">engagement_type: <span>"GST Audit"</span></div>
+      <div class="ctx-item">ca_name: <span>"CA Priya Nair"</span></div>
+      <div class="ctx-item">gstin: <span>"29AABCS1234..."</span></div>
+      <div class="ctx-item">last_activity: <span>"GST Recon - Sept 2024"</span></div>
+    </div>
+    <div class="context-card">
+      <h4>Data Context</h4>
+      <div class="ctx-item">sheet_structure: <span>headers, types, ranges</span></div>
+      <div class="ctx-item">purchase_register: <span>Sheet2, rows 2–847</span></div>
+      <div class="ctx-item">gstr2b_data: <span>Sheet3, rows 2–612</span></div>
+      <div class="ctx-item">transformations: <span>₹ cleaned, dates normalized</span></div>
+      <div class="ctx-item">mismatches_found: <span>14 (₹2,34,500 value)</span></div>
+      <div class="ctx-item">approved_patches: <span>12 applied, 2 pending</span></div>
+    </div>
+    <div class="context-card">
+      <h4>Workflow Context</h4>
+      <div class="ctx-item">step_1: <span>✓ Tally export cleaned</span></div>
+      <div class="ctx-item">step_2: <span>✓ GST recon run</span></div>
+      <div class="ctx-item">step_3: <span>⟳ Dashboard pending</span></div>
+      <div class="ctx-item">step_4: <span>— Report not started</span></div>
+      <div class="ctx-item">step_5: <span>— Email not sent</span></div>
+      <div class="ctx-item">audit_trail_id: <span>"AT-2024-09-1472"</span></div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Why Context Persistence Matters</h4>
+    <p>When a CA opens Outlook after finishing the GST reconciliation in Excel, CELLIX already knows the client name, the financial year, the 14 mismatches found, and their rupee value. The email draft CELLIX generates is not a template — it references the actual findings from the actual session. This is the difference between a tool and an operating system.</p>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ===== SECTION 5: USE CASES ===== -->
+<section class="section" id="usecases">
+  <div class="section-tag">05 — Real CA Use Cases</div>
+  <h2>How It Works in a CA's Actual Day</h2>
+  <p>These are not hypothetical scenarios. These are the real workflows Indian CAs perform every day — and how CELLIX transforms them from multi-step manual operations into single-command actions.</p>
+
+  <!-- DEMO COMMAND BOX -->
+  <div class="demo-cmd">
+    <div class="cmd-prompt">CELLIX AI · GST Audit Workflow · Sharma & Co. FY 2024-25</div>
+    <div class="cmd-input">"Prepare the GST reconciliation for September, create a summary dashboard, draft the mismatch letter, and send it to the client"</div>
+    <div class="cmd-response">
+      <div class="cmd-step">
+        <div class="cmd-step-num">1</div>
+        <div class="cmd-step-text"><span class="tool-ref tc-excel">Excel</span> Reading purchase register (Sheet2, 847 rows) and GSTR-2B data (Sheet3, 612 rows). Cleaning ₹ symbols and date formats. Running fuzzy match reconciliation with ±1% amount tolerance...</div>
+      </div>
+      <div class="cmd-step">
+        <div class="cmd-step-num">2</div>
+        <div class="cmd-step-text"><span class="tool-ref tc-excel">Excel</span> Found 14 mismatches totalling ₹2,34,500. 11 are likely rounding differences. 3 require CA review. Showing preview — awaiting your approval before writing to sheet.</div>
+      </div>
+      <div class="cmd-step">
+        <div class="cmd-step-num">3</div>
+        <div class="cmd-step-text"><span class="tool-ref tc-cellix">CELLIX Core</span> Reconciliation approved. Audit trail entry AT-2024-09-1472 created. Saving context: 14 mismatches, ₹2,34,500 value, 3 flagged for review.</div>
+      </div>
+      <div class="cmd-step">
+        <div class="cmd-step-num">4</div>
+        <div class="cmd-step-text"><span class="tool-ref tc-powerbi">Power BI</span> Pushing reconciliation output to Power BI dataset. Building GST mismatch dashboard with supplier-wise breakdown and month-on-month trend. Preview ready — approve to publish.</div>
+      </div>
+      <div class="cmd-step">
+        <div class="cmd-step-num">5</div>
+        <div class="cmd-step-text"><span class="tool-ref tc-word">Word</span> Drafting GST mismatch letter using ICAI working paper template. Populated with: client name, GSTIN, period, 3 flagged items with explanations. All figures sourced from AT-2024-09-1472. Ready for your review.</div>
+      </div>
+      <div class="cmd-step">
+        <div class="cmd-step-num">6</div>
+        <div class="cmd-step-text"><span class="tool-ref tc-outlook">Outlook</span> Draft email ready for Sharma & Co. (accounts@sharmaandco.in). Subject: "GST Reconciliation — September 2024 — Action Required". Body references 3 mismatches with attached letter. Awaiting your send approval.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="usecase-list">
+
+    <div class="usecase">
+      <div class="usecase-num">01</div>
+      <div class="usecase-body">
+        <h4>End-to-End Monthly GST Workflow</h4>
+        <p>The most common monthly workflow for every practicing CA in India. Traditionally takes a full working day across multiple tools. With CELLIX, it becomes a supervised, approved, documented sequence that takes under 2 hours including review time.</p>
+        <div class="usecase-flow">
+          <span class="flow-step fs-excel">Tally Export</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-cellix">CELLIX Cleans</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-excel">GST Recon</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-powerbi">Dashboard</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-word">Letter</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-outlook">Send to Client</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="usecase">
+      <div class="usecase-num">02</div>
+      <div class="usecase-body">
+        <h4>Statutory Audit Working Papers</h4>
+        <p>For a statutory audit engagement, the CA needs to build trial balance, map to Schedule III, test key balances, document findings, and prepare working papers. CELLIX connects all of this across Excel (numbers), Word (documentation), and Outlook (communication with management).</p>
+        <div class="usecase-flow">
+          <span class="flow-step fs-excel">Trial Balance</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-cellix">Ind-AS Map</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-excel">Schedule III</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-powerbi">Ratios Dashboard</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-word">Audit Report</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-outlook">Management Letter</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="usecase">
+      <div class="usecase-num">03</div>
+      <div class="usecase-body">
+        <h4>Monthly MIS for SME Clients</h4>
+        <p>CA firms that manage bookkeeping and MIS for SME clients produce the same reports every month — P&L, cash flow, budget vs actual. CELLIX builds the template once, connects it to the client's Tally data, and refreshes it every month with a single approval command.</p>
+        <div class="usecase-flow">
+          <span class="flow-step fs-excel">Tally Data</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-cellix">MIS Engine</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-excel">P&L / CF</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-powerbi">Board Pack</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-outlook">Deliver to MD</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="usecase">
+      <div class="usecase-num">04</div>
+      <div class="usecase-body">
+        <h4>TDS Return Preparation and Filing</h4>
+        <p>Quarterly TDS computation, 26AS reconciliation, and return preparation involves Excel (computation), Word (justification notes for discrepancies), and Outlook (client confirmations and filing acknowledgements).</p>
+        <div class="usecase-flow">
+          <span class="flow-step fs-excel">TDS Ledger</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-cellix">26AS Match</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-excel">Discrepancy List</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-word">Reconciliation Note</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-outlook">Client Confirmation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="usecase">
+      <div class="usecase-num">05</div>
+      <div class="usecase-body">
+        <h4>Financial Year Closing for CA Firms</h4>
+        <p>Year-end closing involves reconciling all accounts, preparing final statements, generating audit schedules, and communicating with clients on year-end adjustments. CELLIX orchestrates the entire sequence with a maintained context thread across all tools.</p>
+        <div class="usecase-flow">
+          <span class="flow-step fs-excel">Final Trial Balance</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-cellix">Closing Checks</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-excel">Financial Statements</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-powerbi">Analytical Review</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-word">Audit Schedules</span>
+          <span class="flow-arrow">→</span>
+          <span class="flow-step fs-outlook">Director Sign-off</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ===== SECTION 6: ROADMAP ===== -->
+<section class="section" id="roadmap">
+  <div class="section-tag">06 — Implementation Roadmap</div>
+  <h2>Phase-by-Phase Build Plan</h2>
+  <p>This is not a "build everything at once" plan. Each phase adds a new platform only when the previous platform is genuinely excellent. The rule: if Excel experience is not 10x better than alternatives, there is no point adding Power BI. The foundation has to be unshakeable before expansion.</p>
+
+  <div class="callout warn">
+    <h4>The Most Important Rule</h4>
+    <p>Never move to the next phase until the current phase has at least 200 paying users who use it more than 3 times per week. Breadth without depth is how startups die. Excel has to be genuinely excellent before Power BI is touched.</p>
+  </div>
+
+  <div class="roadmap">
+
+    <div class="roadmap-phase">
+      <div class="phase-marker">
+        <div class="phase-num">01</div>
+        <span class="phase-tag2 phase-1">Now — Month 8</span>
+      </div>
+      <div class="phase-content">
+        <h3>Excel — The Unshakeable Foundation</h3>
+        <p>Build the deepest, most reliable Excel experience for Indian CAs. Every feature must work perfectly before Phase 2 is considered. This phase is not just about features — it's about building the context engine infrastructure that will power all future phases.</p>
+        <div class="phase-tools">
+          <span class="tool-chip tc-excel">Microsoft Excel</span>
+        </div>
+        <ul class="phase-features">
+          <li>Office.js task pane add-in with React sidebar</li>
+          <li>GST reconciliation engine with fuzzy matching (GSTR-2A/2B vs purchase register)</li>
+          <li>Tally export cleanup pipeline — ₹ symbols, date normalization, merged cell flattening</li>
+          <li>Formula generation with verifier layer — pre-suggestion testing on sample rows</li>
+          <li>Mandatory Preview → Approve → Apply workflow — hardcoded for every operation</li>
+          <li>Full audit trail with ICAI-format PDF export</li>
+          <li>ITC computation templates with encoded CBIC rules</li>
+          <li>Ind-AS Schedule III mapping from trial balance</li>
+          <li>AppSource listing and template library (10+ CA-specific templates)</li>
+          <li>CELLIX Core context engine — user, data, workflow context persistence infrastructure</li>
+          <li>Target: 200+ paying CA users, 3+ sessions per week per user</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-phase">
+      <div class="phase-marker">
+        <div class="phase-num">02</div>
+        <span class="phase-tag2 phase-2">Month 8–14</span>
+      </div>
+      <div class="phase-content">
+        <h3>Power BI + Google Sheets — Visual Intelligence and SME Coverage</h3>
+        <p>Two tracks run in parallel. Power BI extends CELLIX into dashboard generation for CA clients. Google Sheets opens the SME and startup market that runs on Workspace rather than Office. Both use the same Node.js backend and context engine built in Phase 1.</p>
+        <div class="phase-tools">
+          <span class="tool-chip tc-powerbi">Power BI</span>
+          <span class="tool-chip tc-sheets">Google Sheets</span>
+        </div>
+        <ul class="phase-features">
+          <li>Power BI: "Create dashboard from this reconciliation" — one command pushes structured data and builds client-ready visuals</li>
+          <li>Power BI: GST compliance dashboard template — supplier-wise ITC utilization, mismatch trends, filing calendar</li>
+          <li>Power BI: MIS reporting pack — P&L, cash flow, budget vs actual — auto-populated from Excel MIS data</li>
+          <li>Power BI: Context-aware visuals — CELLIX knows the data structure, so charts are semantically correct</li>
+          <li>Google Sheets: Apps Script sidebar — same AI core, new interface for Sheets-native users</li>
+          <li>Google Sheets: Full GST reconciliation, Tally cleanup, and audit trail — feature parity with Excel version</li>
+          <li>Google Sheets: Workspace Marketplace listing</li>
+          <li>Context engine upgrade: cross-tool session memory — Excel findings available in Power BI session</li>
+          <li>Target: 500+ total paid users, 50+ Power BI active users, ₹1.25Cr ARR</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-phase">
+      <div class="phase-marker">
+        <div class="phase-num">03</div>
+        <span class="phase-tag2 phase-3">Month 14–20</span>
+      </div>
+      <div class="phase-content">
+        <h3>Microsoft Word — Automated Documentation</h3>
+        <p>The natural extension of Excel and Power BI work into professional documentation. A CA who has completed a GST audit in Excel and visualized it in Power BI now needs to write the working papers and management letter. CELLIX already has all the context — the Word integration makes the documentation step near-automatic.</p>
+        <div class="phase-tools">
+          <span class="tool-chip tc-word">Microsoft Word</span>
+        </div>
+        <ul class="phase-features">
+          <li>Context-aware report drafting — pre-populated with real findings from Excel session, not generic templates</li>
+          <li>ICAI working paper template library — GST audit, statutory audit, internal audit, tax audit formats</li>
+          <li>Management letter generation — findings in professional language per ICAI Standards on Auditing</li>
+          <li>Linked cell references — every number in Word linked back to source cell in Excel workbook</li>
+          <li>Consistency checker — scan Word document and cross-check every figure against Excel source</li>
+          <li>Indian regulatory language engine — CGST Act provisions, SA references, Ind-AS terminology</li>
+          <li>Approval workflow for documents — draft → CA review → approve → locked and logged</li>
+          <li>Target: 1,000+ total paid users, 200+ Word integration users, ₹3Cr ARR</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-phase">
+      <div class="phase-marker">
+        <div class="phase-num">04</div>
+        <span class="phase-tag2 phase-4">Month 20–28</span>
+      </div>
+      <div class="phase-content">
+        <h3>Microsoft Outlook — Intelligent Client Communication</h3>
+        <p>The final piece. A CA who has reconciled, visualized, documented, and is now ready to communicate with the client — CELLIX drafts the email with the right context, the right attachments, and the right professional tone. The entire engagement workflow becomes one connected, documented, approved sequence.</p>
+        <div class="phase-tools">
+          <span class="tool-chip tc-outlook">Microsoft Outlook</span>
+        </div>
+        <ul class="phase-features">
+          <li>Context-aware email drafting — references actual findings from the engagement, not placeholder text</li>
+          <li>GST mismatch notification templates — professional client communication with correct figures</li>
+          <li>Data request emails — automatically generated when CELLIX detects missing data in a workflow</li>
+          <li>Smart attachment handling — incoming client attachments recognized and offered for processing into Excel</li>
+          <li>Report delivery workflow — approved Word document → drafted delivery email → one-click send</li>
+          <li>Email archive indexing — previous client communications searchable and summarizable by CELLIX</li>
+          <li>Full engagement thread — Excel session → Power BI → Word report → Outlook communication — all in one audit trail</li>
+          <li>Target: 2,500+ paid users, ₹6.24Cr ARR, full platform CELLIX deployed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-phase">
+      <div class="phase-marker">
+        <div class="phase-num">05</div>
+        <span class="phase-tag2" style="background:rgba(255,255,255,0.06);color:var(--muted);">Year 3+</span>
+      </div>
+      <div class="phase-content">
+        <h3>The Full Vision — Vertical AI Operating System for Indian Finance</h3>
+        <p>When all four tools are connected through the CELLIX context engine, something fundamentally new emerges. CELLIX is no longer four add-ins. It is the intelligence layer that every Indian CA relies on to move work from raw data to client communication without losing context, without manual copying, and without a single unreviewed change touching a professional file.</p>
+        <div class="phase-tools">
+          <span class="tool-chip tc-excel">Excel</span>
+          <span class="tool-chip tc-powerbi">Power BI</span>
+          <span class="tool-chip tc-word">Word</span>
+          <span class="tool-chip tc-outlook">Outlook</span>
+          <span class="tool-chip tc-sheets">Sheets</span>
+        </div>
+        <ul class="phase-features">
+          <li>Multi-engagement workspace — manage 20+ client engagements with independent context threads</li>
+          <li>CELLIX AI Model — fine-tuned on Indian CA workflow data collected from 2+ years of approve/reject signals</li>
+          <li>Regulatory update engine — when CBIC issues a new circular, CELLIX flags which client files are affected</li>
+          <li>Predictive workflow assistant — "Your 3B filing deadline is in 4 days. You have 3 clients with unresolved mismatches."</li>
+          <li>Junior staff quality gate across all tools — every output from every add-in goes through partner approval</li>
+          <li>CELLIX API — allow CA firms and enterprise finance teams to build their own workflows on the context engine</li>
+          <li>Target: ₹25Cr+ ARR, 10,000+ users, India's most trusted finance AI platform</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ===== SECTION 7: TRUST LAYER ===== -->
+<section class="section" id="trust">
+  <div class="section-tag">07 — The Non-Negotiable Trust Layer</div>
+  <h2>Approval Extends Across Every Tool</h2>
+  <p>The single most important design principle of CELLIX — mandatory human approval before any action — must extend across every platform integration without exception. As CELLIX expands to Power BI, Word, and Outlook, the approval philosophy must be preserved. A CA who approves a reconciliation in Excel expects the same control over what goes into the client dashboard, the audit report, and the email.</p>
+
+  <div class="trust-grid">
+    <div class="trust-card">
+      <span class="trust-icon">📊</span>
+      <h4>Excel — Cell-Level Approval</h4>
+      <p>Every formula, every cleaned value, every reconciliation output is shown in a diff preview before writing to any cell. The CA sees exactly which cells will change, what they currently contain, and what they will contain after approval. Reject any individual patch without affecting others.</p>
+    </div>
+    <div class="trust-card">
+      <span class="trust-icon">📈</span>
+      <h4>Power BI — Dashboard Approval</h4>
+      <p>Every dashboard generated by CELLIX is shown as a preview before being published to Power BI. The CA reviews each visual, verifies the data source, and approves the publish. No client dashboard is created without explicit CA sign-off. The approval is logged in the audit trail.</p>
+    </div>
+    <div class="trust-card">
+      <span class="trust-icon">📝</span>
+      <h4>Word — Document Approval</h4>
+      <p>Every AI-drafted document is presented in Word's tracked-changes view, showing exactly what CELLIX wrote. The CA reviews the content, edits as needed, and approves the final version. The document is then locked with an approval timestamp and the CA's name as the approving professional.</p>
+    </div>
+    <div class="trust-card">
+      <span class="trust-icon">📧</span>
+      <h4>Outlook — Send Approval</h4>
+      <p>Every AI-drafted email is shown in a preview panel with the recipient, subject, body, and attachments clearly displayed. The CA reads the full email, can edit any part of it, and then approves the send. CELLIX never sends any email autonomously. Every communication is approved before it leaves the firm.</p>
+    </div>
+    <div class="trust-card">
+      <span class="trust-icon">🔗</span>
+      <h4>Cross-Tool Audit Trail</h4>
+      <p>The central audit trail records every approved action across every tool in a single chronological log for each engagement. A single engagement record shows: what was cleaned in Excel, which dashboard was published in Power BI, which report was drafted in Word, and which email was sent from Outlook — all linked to approvals and timestamps.</p>
+    </div>
+    <div class="trust-card">
+      <span class="trust-icon">🔒</span>
+      <h4>Data Never Leaves Without Consent</h4>
+      <p>Client financial data shared with Outlook (in email attachments) or Power BI (in published dashboards) requires explicit approval at the point of sharing. CELLIX tracks what client data has been shared with whom and when — critical for professional liability and data privacy compliance under Indian data protection law.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <h4>Why This Is the Real Moat — Not the Features</h4>
+    <p>Microsoft Copilot can generate an email. It can create a chart. It can summarize a document. What it cannot do — and structurally will not do — is enforce a mandatory approval workflow across all of these actions with a unified audit trail that an ICAI inspector can review. The approval architecture is not a feature. It is the product's professional identity. Every CA who uses CELLIX is implicitly saying: this tool is safe enough to touch my client files. That trust is built one approved action at a time, and it is the hardest thing for any competitor to replicate.</p>
+  </div>
+</section>
+
+<!-- ===== FINAL VERDICT ===== -->
+<div class="verdict-final">
+  <h2>The End State: What CELLIX Becomes</h2>
+  <p>Today, CELLIX is an Excel add-in with deep India CA workflows. In two years, with each phase executed well, CELLIX becomes the intelligence layer that connects every tool an Indian CA uses — not by replacing Microsoft's products, but by making them aware of each other for the first time. A CA who uses CELLIX doesn't work in Excel, then Power BI, then Word, then Outlook. They work in <strong>one connected financial workflow</strong> where context is never lost, nothing is ever applied without approval, and every action across every tool is documented in a single professional audit trail. That is not an add-in. <strong>That is a vertical AI operating system for Indian finance.</strong></p>
+</div>
+
+</main>
+
+<footer>
+  CELLIX · Future Vision Document · Internal Reference · Not for Distribution · 2025
+</footer>
+
+</body>
+</html>

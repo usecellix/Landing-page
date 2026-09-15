@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CELLIX — Complete Strategy Masterguide (Excel-First)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #f5f2eb;
+  --surface: #ffffff;
+  --surface2: #f0ece3;
+  --ink: #1a1714;
+  --ink2: #3d3830;
+  --muted: #7a7060;
+  --border: rgba(26,23,20,0.1);
+  --accent: #c84b2f;
+  --accent2: #2563eb;
+  --accent3: #059669;
+  --accent4: #d97706;
+  --gold: #b5830a;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* GRAIN OVERLAY */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 200px;
+  opacity: 0.6;
+}
+
+/* SIDEBAR NAV */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0;
+  width: 220px;
+  background: var(--ink);
+  color: #e8e0d5;
+  padding: 2rem 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+.sidebar-logo {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 1rem;
+}
+.sidebar-logo span {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+  display: block;
+}
+.sidebar-logo small { color: rgba(255,255,255,0.35); font-size: 0.7rem; letter-spacing: 1px; text-transform: uppercase; }
+.nav-section { margin-bottom: 0.5rem; }
+.nav-section-label {
+  padding: 0.5rem 1.5rem 0.25rem;
+  font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); font-weight: 600;
+}
+.sidebar a {
+  display: block; padding: 0.35rem 1.5rem;
+  color: rgba(255,255,255,0.55); font-size: 0.82rem;
+  text-decoration: none; transition: all 0.15s;
+  border-left: 2px solid transparent;
+}
+.sidebar a:hover { color: #fff; border-left-color: var(--accent); background: rgba(255,255,255,0.04); }
+
+/* MAIN */
+main { margin-left: 220px; padding: 0; }
+.page-wrap { max-width: 900px; margin: 0 auto; padding: 4rem 3rem; position: relative; z-index: 1; }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 6rem 3rem;
+  background: var(--ink);
+  position: relative; overflow: hidden;
+}
+.hero::after {
+  content: 'CELLIX';
+  position: absolute; right: -2rem; bottom: -3rem;
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: 18vw; color: rgba(255,255,255,0.03);
+  pointer-events: none; line-height: 1;
+}
+.hero-wrap { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 1.5rem;
+  border: 1px solid rgba(200,75,47,0.4);
+  padding: 4px 12px; border-radius: 2px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900; font-size: clamp(3rem, 6vw, 5rem);
+  color: #fff; line-height: 1.05;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero-desc { color: rgba(255,255,255,0.5); max-width: 580px; font-size: 1.05rem; margin-bottom: 3rem; }
+.hero-stats { display: flex; gap: 3rem; flex-wrap: wrap; }
+.hero-stat {}
+.hero-stat .num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.5rem; color: #fff; line-height: 1; }
+.hero-stat .lbl { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 4px; }
+
+/* SECTION */
+.section { padding: 5rem 3rem; border-bottom: 1px solid var(--border); }
+.section:nth-child(even) { background: var(--surface); }
+.section-inner { max-width: 900px; margin: 0 auto; }
+.section-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.5rem;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800; line-height: 1.15;
+  margin-bottom: 0.75rem; color: var(--ink);
+}
+h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--ink); }
+h4 { font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem; color: var(--ink2); }
+p { margin-bottom: 0.8rem; color: var(--ink2); }
+
+/* PRODUCT CARDS */
+.products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
+.prod-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.prod-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.prod-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.prod-name { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.1rem; }
+.prod-stage {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 2px; font-weight: 500;
+}
+.stage-beta { background: #dbeafe; color: #1d4ed8; }
+.stage-enterprise { background: #dcfce7; color: #15803d; }
+.stage-suite { background: #fef3c7; color: #92400e; }
+.stage-vertical { background: #fce7f3; color: #9d174d; }
+.stage-unknown { background: #f3f4f6; color: #6b7280; }
+.stage-india { background: #d1fae5; color: #065f46; }
+
+.prod-tagline { padding: 0.75rem 1.5rem; font-size: 0.82rem; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface2); font-style: italic; }
+
+.prod-body { padding: 1.5rem; }
+.prod-section-head {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 0.6rem; margin-top: 1.25rem;
+}
+.prod-section-head:first-child { margin-top: 0; }
+
+.feat-list { list-style: none; }
+.feat-list li {
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  font-size: 0.84rem; color: var(--ink2);
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.feat-list li:last-child { border-bottom: none; }
+.feat-list li::before { content: '—'; color: var(--accent); flex-shrink: 0; font-weight: 700; }
+.feat-sub { color: var(--muted); font-size: 0.76rem; display: block; margin-top: 1px; }
+
+.gap-box {
+  margin-top: 1rem;
+  background: #fff5f5;
+  border-left: 3px solid var(--accent);
+  padding: 0.75rem 1rem;
+  border-radius: 0 4px 4px 0;
+}
+.gap-box strong { color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+.gap-box p { font-size: 0.82rem; color: var(--ink2); margin: 0; }
+
+.price-chip {
+  display: inline-block; margin-top: 0.75rem;
+  background: var(--ink); color: #fff;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem; padding: 4px 10px; border-radius: 2px;
+}
+
+/* CELLIX CARD — SPECIAL */
+.prod-card.cellix-card {
+  border-color: var(--accent3);
+  box-shadow: 0 0 0 1px var(--accent3), 0 4px 20px rgba(5,150,105,0.08);
+}
+.cellix-card .prod-header { background: var(--ink); }
+.cellix-card .prod-name { color: #fff; }
+
+/* COMPARISON TABLE */
+.comp-table-wrap { overflow-x: auto; margin-top: 2rem; border: 1px solid var(--border); border-radius: 4px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 700px; }
+thead { background: var(--ink); color: #fff; }
+th { padding: 12px 14px; text-align: left; font-weight: 600; font-size: 0.75rem; letter-spacing: 0.5px; white-space: nowrap; }
+th.cellix-th { color: var(--accent3); }
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--surface2); }
+.row-label { font-weight: 600; color: var(--ink); font-size: 0.82rem; white-space: nowrap; }
+.cell-cellix { background: rgba(5,150,105,0.04) !important; }
+.yes { color: var(--accent3); font-weight: 700; }
+.no { color: var(--accent); font-weight: 600; }
+.partial { color: var(--accent4); font-weight: 600; }
+.na { color: var(--muted); }
+
+/* SCORE BARS */
+.score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.score-label { width: 160px; font-size: 0.82rem; flex-shrink: 0; }
+.score-bar-wrap { flex: 1; background: var(--surface2); border-radius: 2px; height: 8px; overflow: hidden; }
+.score-bar { height: 100%; border-radius: 2px; }
+.score-val { width: 32px; font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: var(--muted); }
+
+/* SEGMENTS */
+.segments-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 2rem; }
+.seg-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+.seg-header { padding: 1rem 1.25rem; background: var(--ink2); color: #fff; }
+.seg-header h4 { color: #fff; font-size: 0.9rem; margin: 0; }
+.seg-body { padding: 1.25rem; }
+.winner-row { display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem; }
+.winner-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem; letter-spacing: 1px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px; font-weight: 600;
+}
+.wb-cellix { background: rgba(5,150,105,0.12); color: var(--accent3); }
+.wb-shortcut { background: rgba(37,99,235,0.12); color: var(--accent2); }
+.wb-o11 { background: rgba(217,119,6,0.12); color: var(--accent4); }
+.wb-claude { background: rgba(200,75,47,0.12); color: var(--accent); }
+
+/* VERDICT BOX */
+.verdict-box {
+  background: var(--ink);
+  color: #fff; border-radius: 4px;
+  padding: 2.5rem; margin: 2rem 0;
+}
+.verdict-box h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.5rem; margin-bottom: 0.75rem; }
+.verdict-box p { color: rgba(255,255,255,0.65); margin: 0; }
+.verdict-box strong { color: var(--accent); }
+
+/* CALLOUT */
+.callout {
+  border-left: 3px solid var(--accent4);
+  background: #fffbeb;
+  padding: 1rem 1.25rem; border-radius: 0 4px 4px 0; margin: 1.5rem 0;
+}
+.callout h4 { color: var(--accent4); font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.callout p { font-size: 0.84rem; color: var(--ink2); margin: 0; }
+.callout.danger { border-color: var(--accent); background: #fff5f5; }
+.callout.danger h4 { color: var(--accent); }
+.callout.success { border-color: var(--accent3); background: #f0fdf4; }
+.callout.success h4 { color: var(--accent3); }
+
+/* GTM */
+.gtm-phase {
+  border: 1px solid var(--border);
+  border-radius: 4px; margin-bottom: 2rem;
+  overflow: hidden; background: var(--surface);
+}
+.gtm-phase-header {
+  padding: 1.25rem 1.5rem;
+  background: var(--ink2); color: #fff;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.gtm-phase-header h3 { color: #fff; font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 1rem; margin: 0; }
+.gtm-phase-header .phase-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 1px;
+  padding: 3px 8px; border-radius: 2px;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+}
+.gtm-phase-body { padding: 1.5rem; }
+.gtm-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+.gtm-step {
+  background: var(--surface2); border-radius: 4px;
+  padding: 1rem 1.1rem; border-left: 3px solid var(--accent);
+}
+.gtm-step.blue { border-left-color: var(--accent2); }
+.gtm-step.green { border-left-color: var(--accent3); }
+.gtm-step.gold { border-left-color: var(--accent4); }
+.gtm-step h4 { font-size: 0.85rem; margin-bottom: 0.3rem; }
+.gtm-step p { font-size: 0.8rem; color: var(--muted); margin: 0; }
+
+/* CA CAPTURE */
+.ca-steps { counter-reset: ca-step; }
+.ca-step {
+  counter-increment: ca-step;
+  display: flex; gap: 1.5rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.ca-step:last-child { border-bottom: none; }
+.ca-step-num {
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-weight: 900;
+  font-size: 1rem; color: var(--accent);
+}
+.ca-step-num::before { content: counter(ca-step); }
+.ca-step-content h4 { font-size: 1rem; margin-bottom: 0.4rem; font-family: 'Playfair Display', serif; font-weight: 700; }
+.ca-step-content p { font-size: 0.84rem; color: var(--ink2); margin-bottom: 0.5rem; }
+.ca-tactic {
+  display: inline-block; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 2px;
+  padding: 2px 8px; font-size: 0.75rem; color: var(--ink2);
+  margin: 2px; font-family: 'IBM Plex Mono', monospace;
+}
+
+/* PAIN TABLE */
+.pain-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 1.5rem; }
+.pain-table th { background: var(--ink); color: #fff; padding: 10px 14px; text-align: left; font-size: 0.75rem; font-weight: 600; }
+.pain-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.pain-table tr:last-child td { border-bottom: none; }
+.pain-table tr:nth-child(even) td { background: var(--surface2); }
+.pain-high { color: var(--accent); font-weight: 600; }
+.pain-med { color: var(--accent4); font-weight: 600; }
+
+/* PRICING SECTION */
+.pricing-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.pricing-card {
+  border: 1px solid var(--border); border-radius: 4px;
+  overflow: hidden; background: var(--surface);
+}
+.pricing-card.highlight { border-color: var(--accent3); box-shadow: 0 0 0 1px var(--accent3); }
+.pricing-tier { padding: 1rem; background: var(--surface2); border-bottom: 1px solid var(--border); }
+.pricing-tier .tier-name { font-weight: 700; font-size: 0.85rem; }
+.pricing-tier .tier-price { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--ink); line-height: 1; margin-top: 4px; }
+.pricing-tier .tier-price span { font-size: 0.75rem; font-family: 'IBM Plex Sans', sans-serif; font-weight: 400; color: var(--muted); }
+.pricing-features { padding: 1rem; }
+.pricing-features li { font-size: 0.78rem; color: var(--ink2); padding: 3px 0; list-style: none; }
+.pricing-features li::before { content: '✓ '; color: var(--accent3); font-weight: 700; }
+.pricing-target { padding: 0 1rem 1rem; font-size: 0.72rem; color: var(--muted); font-style: italic; }
+
+/* RISK TABLE */
+.risk-row { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 0; border-bottom: 1px solid var(--border); }
+.risk-row:last-child { border-bottom: none; }
+.risk-cell { padding: 1rem 1.25rem; font-size: 0.82rem; }
+.risk-cell.risk-name { background: var(--surface2); font-weight: 600; color: var(--ink); border-right: 1px solid var(--border); }
+.risk-cell.risk-why { color: var(--ink2); border-right: 1px solid var(--border); }
+.risk-cell.risk-counter { color: var(--accent3); }
+.risk-header-row { display: grid; grid-template-columns: 200px 1fr 1fr; background: var(--ink); color: #fff; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; }
+.risk-header-row div { padding: 10px 1.25rem; }
+
+/* KPIS */
+.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem; }
+.kpi-num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2rem; color: var(--ink); line-height: 1; }
+.kpi-num.green { color: var(--accent3); }
+.kpi-num.red { color: var(--accent); }
+.kpi-num.gold { color: var(--gold); }
+.kpi-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before { content:''; position:absolute; left:7px; top:0; bottom:0; width:1px; background: var(--border); }
+.tl-item { position: relative; padding-bottom: 2rem; }
+.tl-dot {
+  position: absolute; left: -2rem; top: 4px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--accent); border: 3px solid var(--bg);
+}
+.tl-dot.blue { background: var(--accent2); }
+.tl-dot.green { background: var(--accent3); }
+.tl-dot.gold { background: var(--accent4); }
+.tl-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+.tl-tag.blue { color: var(--accent2); }
+.tl-tag.green { color: var(--accent3); }
+.tl-tag.gold { color: var(--accent4); }
+
+/* MOAT CARDS */
+.moat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem; }
+.moat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; }
+.moat-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.moat-card h4 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; margin-bottom: 0.4rem; }
+.moat-card p { font-size: 0.82rem; color: var(--muted); margin: 0; }
+.moat-strength {
+  display: inline-block; margin-top: 0.75rem;
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px;
+}
+.ms-high { background: rgba(5,150,105,0.1); color: var(--accent3); }
+.ms-mid { background: rgba(217,119,6,0.1); color: var(--accent4); }
+
+/* CHANNEL CARDS */
+.channel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.channel-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1.25rem;
+  border-top: 3px solid var(--accent);
+}
+.channel-card.blue { border-top-color: var(--accent2); }
+.channel-card.green { border-top-color: var(--accent3); }
+.channel-card.gold { border-top-color: var(--accent4); }
+.channel-card h4 { font-size: 0.88rem; margin-bottom: 0.5rem; }
+.channel-card .metric { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+.channel-card p { font-size: 0.8rem; color: var(--muted); margin: 0.5rem 0 0; }
+
+/* CONTENT CALENDAR */
+.content-week { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 1rem; }
+.content-week-header { padding: 0.75rem 1.25rem; background: var(--surface2); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.85rem; }
+.content-week-body { padding: 1rem 1.25rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.content-item { }
+.content-item .day { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+.content-item .topic { font-size: 0.82rem; color: var(--ink2); margin-top: 2px; }
+
+/* OUTREACH TEMPLATES */
+.outreach-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 1.5rem; overflow: hidden; }
+.outreach-header { padding: 0.75rem 1.25rem; background: var(--ink2); color: #fff; font-size: 0.82rem; font-weight: 600; display: flex; justify-content: space-between; }
+.outreach-body { padding: 1.25rem; font-size: 0.84rem; color: var(--ink2); white-space: pre-wrap; font-family: 'IBM Plex Mono', monospace; background: var(--surface2); line-height: 1.7; }
+
+/* FOOTER */
+footer { background: var(--ink); color: rgba(255,255,255,0.3); text-align: center; padding: 2rem; font-size: 0.78rem; }
+
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  main { margin-left: 0; }
+  .products-grid, .segments-grid, .gtm-steps, .kpi-grid, .moat-grid, .channel-grid { grid-template-columns: 1fr; }
+  .pricing-cards { grid-template-columns: 1fr 1fr; }
+  .risk-row, .risk-header-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>CELLIX</span>
+    <small>Strategy Masterguide</small>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Market</div>
+    <a href="#landscape">01 — Battlefield Overview</a>
+    <a href="#products">02 — All 7 Products Dissected</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Competition</div>
+    <a href="#features">03 — Feature Matrix</a>
+    <a href="#pricing">04 — Pricing War</a>
+    <a href="#scoring">05 — Who Wins & Why</a>
+    <a href="#segments">06 — Segment Winners</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">CELLIX</div>
+    <a href="#moat">07 — Your Real Moat</a>
+    <a href="#ca-pain">08 — CA Pain Map</a>
+    <a href="#ca-capture">09 — Capture CAs Guide</a>
+    <a href="#channels">10 — Channels & Content</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Execution</div>
+    <a href="#gtm">11 — Full GTM Strategy</a>
+    <a href="#pricing-cellix">12 — CELLIX Pricing Plan</a>
+    <a href="#roadmap">13 — 90-Day Roadmap</a>
+    <a href="#risks">14 — Risks & Counters</a>
+    <a href="#kpis">15 — KPIs & Targets</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ========== HERO ========== -->
+<div class="hero" id="top">
+  <div class="hero-wrap">
+    <div class="hero-eyebrow">CELLIX — Complete Strategy Masterguide 2025 · Excel-First · Excel-First Edition</div>
+    <h1>The Full Playbook<br>to Win <em>India's</em><br>Spreadsheet AI Race</h1>
+    <p class="hero-desc">Every competitor dissected. Every feature compared. Every channel mapped. Excel-first MVP strategy for capturing Indian CAs, enterprises, and SMEs — starting where India's serious accounting professionals already work.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">₹57Cr</div><div class="lbl">ARR ceiling from CAs alone (10% market)</div></div>
+      <div class="hero-stat"><div class="num">0</div><div class="lbl">India-native CA spreadsheet AI tools today</div></div>
+      <div class="hero-stat"><div class="num">2–3yr</div><div class="lbl">Moat window before globals localize</div></div>
+      <div class="hero-stat"><div class="num">400K+</div><div class="lbl">Chartered Accountants in India</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 1: BATTLEFIELD ========== -->
+<div class="section" id="landscape">
+  <div class="section-inner">
+    <div class="section-tag">01 — Market Landscape</div>
+    <h2>The AI Spreadsheet Battlefield</h2>
+    <p>When Anthropic launched Claude in Excel in 2025, a lot of founders panicked. They shouldn't have. Claude's move <em>validates</em> the market — it doesn't close it. Here is the honest picture of what actually happened and where the gaps are.</p>
+
+    <div class="verdict-box" style="margin-top:2rem;">
+      <h3>The Core Truth</h3>
+      <p>Claude in Excel is a <strong>horizontal feature</strong> bundled with a $20/month English-language subscription, built for US/EU finance professionals who already use Claude. It does not speak GST. It does not understand Tally exports. It does not have an ICAI-grade audit trail. It does not price for ₹999/month. The Indian CA in Coimbatore filing GSTR-2B from a messy Tally dump is simply not Anthropic's user. That CA is <strong>CELLIX's user.</strong> You are not competing with Anthropic. You are filling the market they didn't build for.</p>
+    </div>
+
+    <h3 style="margin-top:2rem;">Why Claude's Entry is Good News for You</h3>
+    <p>Anthropic just spent millions educating the world that AI inside spreadsheets is real, useful, and worth paying for. They validated the product category. Indian CAs will now hear about "AI for Excel/Sheets" from multiple directions — Claude, Gemini, news coverage. When they search for an India-specific alternative that handles GST and is priced in rupees, CELLIX is the answer. Anthropic is doing your top-of-funnel for free.</p>
+
+    <div class="callout success">
+      <h4>Market Timing Signal</h4>
+      <p>Indian CAs, audit firms, and enterprise finance teams overwhelmingly use Microsoft Excel — it is the professional standard for client files, audit working papers, and statutory schedules. The accounting services market is growing at 10.17% CAGR to 2033. AI startup funding hit ₹6,500 crore in 2024 — a 40% year-on-year increase. Starting with Excel puts CELLIX directly inside the environment India's most valuable finance professionals already trust.</p>
+    </div>
+
+    <h3 style="margin-top:2rem;">The Seven Players, Honestly Assessed</h3>
+    <p>Here are all seven products in the battlefield — Claude in Excel, Shortcut, o11, Carousel, Crunched, Bitboard, and CELLIX — positioned against each other with brutal honesty about what each actually does and who they're actually for.</p>
+  </div>
+</div>
+
+<!-- ========== SECTION 2: PRODUCTS DISSECTED ========== -->
+<div class="section" id="products">
+  <div class="section-inner">
+    <div class="section-tag">02 — All 7 Products Dissected</div>
+    <h2>Every Competitor, Feature by Feature</h2>
+    <p>Not marketing summaries — actual capability breakdowns with honest gap analysis. Read these before you decide what CELLIX needs to beat.</p>
+
+    <div class="products-grid">
+
+      <!-- CLAUDE IN EXCEL -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-name">Claude in Excel</div>
+          <div class="prod-stage stage-beta">Beta · Pro/Max/Team/Ent</div>
+        </div>
+        <div class="prod-tagline">"AI that understands your entire workbook with cell-level citations"</div>
+        <div class="prod-body">
+          <div class="prod-section-head">Core Features</div>
+          <ul class="feat-list">
+            <li>Workbook-wide Q&A — ask "why does C14 show this?" and get traced multi-tab explanation with cell citations<span class="feat-sub">Best in class at reasoning about inherited, complex models</span></li>
+            <li>Scenario testing — update one assumption, Claude propagates across all dependent cells while preserving formula logic<span class="feat-sub">Shows highlighted changes before committing — not auto-apply</span></li>
+            <li>Error tracing — root-cause diagnosis of #REF!, #VALUE!, circular references with plain-English fix suggestions<span class="feat-sub">Traces formula chains across multiple sheets automatically</span></li>
+            <li>Financial model drafting — build from scratch based on natural language requirements (e.g. "3-statement model with quarterly periods")<span class="feat-sub">Generates structure + formulas, not just individual cells</span></li>
+            <li>Template population — fill existing templates with data while maintaining all existing formula structures<span class="feat-sub">Useful for recurring reports where structure is fixed</span></li>
+            <li>Change transparency — every edit highlighted with explanation; no black-box writes<span class="feat-sub">User can accept or reject individual suggestions</span></li>
+          </ul>
+          <div class="prod-section-head">Platform & File Support</div>
+          <ul class="feat-list">
+            <li>Excel desktop add-in (.xlsx and .xlsm files only)</li>
+            <li>File size limits tied to Claude subscription tier (Pro/Max/Team/Enterprise)</li>
+            <li>Works within existing Claude Enterprise security framework</li>
+            <li>No Google Sheets support — Excel only</li>
+          </ul>
+          <div class="prod-section-head">Pricing</div>
+          <div class="price-chip">Included: Claude Pro ~₹1,700/mo · Max ~₹4,200/mo · Team ~₹10K+</div>
+          <div class="gap-box">
+            <strong>India-Critical Gaps</strong>
+            <p>Zero GST/ITC/TDS knowledge. No Tally/Zoho integration. No India pricing. No Sheets support (India's dominant platform). No forced approval workflow — explanations ≠ mandatory review. No ICAI-grade audit trail. Hallucination risk on Indian tax rules.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHORTCUT -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-name">Shortcut.ai</div>
+          <div class="prod-stage stage-enterprise">Enterprise · Sales-Led</div>
+        </div>
+        <div class="prod-tagline">"The most powerful Excel AI Agent in the world"</div>
+        <div class="prod-body">
+          <div class="prod-section-head">Core Features</div>
+          <ul class="feat-list">
+            <li>Excel-native plugin — 100% Excel feature parity including macros, VBA, keyboard shortcuts, large files<span class="feat-sub">Web app variant claims 95% parity; desktop plugin is the flagship</span></li>
+            <li>Formula-driven outputs — never hard-codes values; generates proper dynamic formulas so models stay live<span class="feat-sub">Critical for FP&A: changing one assumption updates everything downstream</span></li>
+            <li>Non-destructive editing — places edits precisely without overwriting any existing cell, row, or named range<span class="feat-sub">Shows exact cells changed before any write happens</span></li>
+            <li>Full undo/restore stack — revert any change sequence at any granularity with complete history<span class="feat-sub">Not just undo — you can restore any historical state of the spreadsheet</span></li>
+            <li>Professional-grade auto-formatting — automatically matches industry-standard number formats, borders, styles<span class="feat-sub">Outputs look like Goldman Sachs model templates, not LLM drafts</span></li>
+            <li>Accuracy-first design — "verifiably accurate outputs, mathematical precision above all else" as stated company principle<span class="feat-sub">Formula outputs are tested before suggestion, not just generated</span></li>
+            <li>Speed benchmarks — claims 6× faster than first-year analysts on standard financial modeling tasks<span class="feat-sub">Confirmed via head-to-head challenge sessions they publish</span></li>
+          </ul>
+          <div class="prod-section-head">Security & Enterprise</div>
+          <ul class="feat-list">
+            <li>SOC 2 Type I certified, currently pursuing Type II<span class="feat-sub">Matters enormously for banks and regulated institutions</span></li>
+            <li>Zero-data-retention agreements with all underlying AI providers</li>
+            <li>AES-256 encryption at rest, TLS 1.3 in transit</li>
+            <li>Role-based access controls, full audit log, continuous penetration testing</li>
+          </ul>
+          <div class="prod-section-head">Pricing</div>
+          <div class="price-chip">Not public — Enterprise/sales-led — likely $50–$150/user/month</div>
+          <div class="gap-box">
+            <strong>India-Critical Gaps</strong>
+            <p>Excel-only (India is Sheets-dominant for SMEs). Zero India presence, no GST/ITC/TDS logic, no Tally/Zoho connectors. Opaque enterprise pricing kills India SME adoption. Aimed entirely at Wall Street/US consulting culture. Not remotely priced for Indian market.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- O11 -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-name">o11.ai</div>
+          <div class="prod-stage stage-suite">M365 Suite · Freemium</div>
+        </div>
+        <div class="prod-tagline">"The AI Workspace Inside — supercharges your work across Microsoft 365"</div>
+        <div class="prod-body">
+          <div class="prod-section-head">PowerPoint / Slides Features</div>
+          <ul class="feat-list">
+            <li>Full decks in seconds — turn an outline, Word doc, or prompt into a complete branded PowerPoint deck instantly<span class="feat-sub">Most impressive single feature; genuinely saves hours of slide building</span></li>
+            <li>Smart brand layout — automatically applies firm's color palette, fonts, logo, and slide styles<span class="feat-sub">Works off a style guide you upload once</span></li>
+            <li>Dynamic chart/table sync — refresh all charts/tables across an entire deck from a single updated data source</li>
+          </ul>
+          <div class="prod-section-head">Excel / Modeling Features</div>
+          <ul class="feat-list">
+            <li>Model Anything — generate complex spreadsheet formulas and full model structures via natural language<span class="feat-sub">Treats Excel as one of many tools, not the primary focus</span></li>
+            <li>Dataset cleaning — clean, deduplicate, and organize large datasets with natural language commands</li>
+            <li>Error detection — proactively flags potential modeling errors and formula inconsistencies</li>
+          </ul>
+          <div class="prod-section-head">Document Features</div>
+          <ul class="feat-list">
+            <li>Draft Anything — long-form reports, legal docs, research from prompts with citations to sources<span class="feat-sub">Style and tone adjustment built in; reads like a human wrote it</span></li>
+            <li>Data room — upload and reason across thousands of documents simultaneously ("Zero Context Limits")<span class="feat-sub">Every insight cites exact paragraph in source document</span></li>
+            <li>Semantic search — search meaning across entire knowledge base, not just keyword matching</li>
+          </ul>
+          <div class="prod-section-head">Pricing (Tiers Visible, No Numbers)</div>
+          <div class="price-chip">Free (limited) → Pro → MAX → Enterprise (SSO, compliance, dedicated AM)</div>
+          <div class="gap-box">
+            <strong>India-Critical Gaps</strong>
+            <p>M365-first architecture means Google Sheets (India's #1 platform) is secondary. No India-specific compliance, GST, or Tally workflows. Breadth over depth — Excel features shallower than Shortcut. No CA-grade audit trail. Global pricing likely not India-optimized.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAROUSEL -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-name">usecarousel.com</div>
+          <div class="prod-stage stage-vertical">Vertical · Finance</div>
+        </div>
+        <div class="prod-tagline">"Productivity tools for bankers and consultants"</div>
+        <div class="prod-body">
+          <div class="prod-section-head">What is Publicly Known</div>
+          <ul class="feat-list">
+            <li>Vertically positioned — explicitly for investment bankers and management consultants<span class="feat-sub">Implies: comps tables, LBO models, CIM formatting, pitch decks</span></li>
+            <li>Productivity "toolset" framing — positioned beyond just Excel AI, likely covering slides + docs<span class="feat-sub">This is inferred from "bankers & consultants" workflow patterns</span></li>
+            <li>Referral-led GTM — "Help us become #1 for bankers & consultants, earn $50" on homepage<span class="feat-sub">Signals early-stage community growth playbook, not yet at scale</span></li>
+            <li>Finance-workflow design — implicitly assumes comps/LBO/DCF patterns from the positioning</li>
+          </ul>
+          <div class="prod-section-head">What is Unknown (Limited Public Info)</div>
+          <ul class="feat-list">
+            <li>Exact feature set — site content minimal, likely behind auth wall</li>
+            <li>Excel/Sheets/Slides support — not confirmed from public content</li>
+            <li>Pricing — not publicly visible</li>
+            <li>India presence — zero visible India-specific content</li>
+          </ul>
+          <div class="price-chip">Pricing: Not public — likely freemium or invite-only at this stage</div>
+          <div class="gap-box">
+            <strong>CELLIX Threat Level: Low for India</strong>
+            <p>Carousel is early-stage and US/UK finance focused. No India localization, no GST/CA workflows. Their vertical (investment banking) is a small India market vs. CELLIX's CA/SME target which is 100x larger.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRUNCHED -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-name">usecrunched.com</div>
+          <div class="prod-stage stage-unknown">Limited Public Info</div>
+        </div>
+        <div class="prod-tagline">AI spreadsheet / BI tool — details not publicly accessible</div>
+        <div class="prod-body">
+          <div class="prod-section-head">What Can Be Inferred</div>
+          <ul class="feat-list">
+            <li>Operates in the AI spreadsheet or BI space based on category positioning<span class="feat-sub">Site did not load for scraping — details behind auth or dynamically loaded</span></li>
+            <li>Name "Crunched" implies data processing / analysis angle<span class="feat-sub">Could be analytics-first rather than formula-generation first</span></li>
+            <li>Unknown: Excel-first vs Sheets-first vs BI dashboards focus</li>
+            <li>Unknown: Vertical (finance, ops, SaaS metrics) vs horizontal positioning</li>
+            <li>Unknown: Pricing model — per seat, usage-based, or workspace</li>
+            <li>Unknown: India presence, India-specific features, or rupee pricing</li>
+            <li>Unknown: Developer API or integration platform capabilities</li>
+          </ul>
+          <div class="prod-section-head">Research Recommendation</div>
+          <ul class="feat-list">
+            <li>Manually inspect usecrunched.com and sign up for trial to assess capabilities</li>
+            <li>Check Product Hunt profile for feature descriptions and user reviews</li>
+            <li>Search LinkedIn for founders to understand their target market</li>
+          </ul>
+          <div class="gap-box">
+            <strong>CELLIX Position</strong>
+            <p>Cannot be compared without live product data. Treat as "monitor but don't prioritize." Almost certainly US-focused based on category peers. Not a current India threat.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BITBOARD -->
+      <div class="prod-card">
+        <div class="prod-header">
+          <div class="prod-name">bitboard.work</div>
+          <div class="prod-stage stage-unknown">Limited Public Info</div>
+        </div>
+        <div class="prod-tagline">AI for spreadsheets/BI — details not publicly accessible</div>
+        <div class="prod-body">
+          <div class="prod-section-head">What Can Be Inferred</div>
+          <ul class="feat-list">
+            <li>"Bit" + "board" naming suggests BI dashboards or data board reporting angle<span class="feat-sub">Could be more analytics/visualization than formula-manipulation focused</span></li>
+            <li>If BI-first, it competes less directly with CELLIX's formula/audit approach<span class="feat-sub">BI tools and spreadsheet AI tools serve different jobs-to-be-done</span></li>
+            <li>Unknown: Excel/Sheets support, platform requirements</li>
+            <li>Unknown: Target segment, pricing, India presence</li>
+            <li>Unknown: Whether it handles formula generation or focuses on read/visualize only</li>
+          </ul>
+          <div class="prod-section-head">Research Recommendation</div>
+          <ul class="feat-list">
+            <li>Check bitboard.work directly — sign up for free trial</li>
+            <li>If BI-focused (charts, dashboards): not a direct CELLIX competitor</li>
+            <li>If formula-manipulation focused: assess depth of India-specific coverage</li>
+          </ul>
+          <div class="gap-box">
+            <strong>CELLIX Position</strong>
+            <p>Likely not a direct India competitor based on available signals. BI dashboards and CA-grade formula editing are adjacent but not overlapping markets. Monitor quarterly.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CELLIX -->
+      <div class="prod-card cellix-card">
+        <div class="prod-header">
+          <div class="prod-name" style="color:#fff;">CELLIX (Your Product)</div>
+          <div class="prod-stage stage-india">India-First · CA-Grade</div>
+        </div>
+        <div class="prod-tagline">AI that manipulates spreadsheets safely, predictably, and auditably — built for Indian CAs and SMEs</div>
+        <div class="prod-body">
+          <div class="prod-section-head">Safety & Trust Layer (Core Moat)</div>
+          <ul class="feat-list">
+            <li>Mandatory Preview → Approve → Apply — no AI write to any cell without explicit human approval<span class="feat-sub">Not optional, not a setting — hardcoded into the product philosophy</span></li>
+            <li>Verifier layer — AI formula tested against sample rows before suggestion, with confidence score + risk rating (low/medium/high)<span class="feat-sub">Catches hallucinations before they reach the sheet. No competitor does this.</span></li>
+            <li>Diff viewer — before/after at cell and range level, visible in sidebar before any action<span class="feat-sub">CA can see exactly what changes, then approve or reject each patch</span></li>
+            <li>Full audit trail — timestamps, user ID, cell range, before value, after value, approval status, reason<span class="feat-sub">One-click export to PDF for ICAI working paper</span></li>
+            <li>Undo anytime — all AI-driven changes reversible at any point, including bulk undo of an entire session</li>
+            <li>Read-only scan first — never writes before fully understanding sheet structure (headers, tabs, named ranges)</li>
+            <li>Data minimization — no sheet data stored beyond session unless enterprise SLA explicitly requires audit log retention</li>
+          </ul>
+          <div class="prod-section-head">India-Specific Workflows</div>
+          <ul class="feat-list">
+            <li>GST reconciliation — GSTR-2A/2B vs purchase register with fuzzy matching for split invoices, date mismatches, credit notes<span class="feat-sub">No global AI does this. Saves 3–6 hours of manual work per CA per month.</span></li>
+            <li>ITC computation — Input Tax Credit calculation with eligible/ineligible split, reversal logic<span class="feat-sub">Template updated each GST circular — keeps pace with CBIC notifications</span></li>
+            <li>TDS computation — Section-wise TDS rates, challan reconciliation, 26AS matching</li>
+            <li>Ind-AS schedule generation — Schedule III balance sheet, P&L with proper classification<span class="feat-sub">Maps client trial balance data to correct Ind-AS line items</span></li>
+            <li>Tally export cleanup — handles merged cells, ₹ symbol in numeric columns, text-dates, duplicate rows<span class="feat-sub">70% of Indian SMEs use Tally — this makes CELLIX indispensable for their finance team</span></li>
+            <li>GSTR-1/3B template auto-fill — from source data to GST return format in one workflow</li>
+            <li>HSN/SAC code lookup — suggest correct HSN codes for product descriptions</li>
+          </ul>
+          <div class="prod-section-head">Platform Coverage</div>
+          <ul class="feat-list">
+            <li>Microsoft Excel — Office.js task pane add-in (Phase 1 MVP, primary platform for Indian CAs, audit firms, and enterprise finance teams)<span class="feat-sub">Excel is the professional standard — audit working papers, statutory schedules, and client files all live here</span></li>
+            <li>Google Sheets — Apps Script sidebar add-on (Phase 2, for SME finance teams and tech-forward practices)<span class="feat-sub">160–180M active Sheets users in India — a massive Phase 2 market after Excel is established</span></li>
+            <li>Shared backend — same Node.js API powers both platforms; build once, run everywhere</li>
+          </ul>
+          <div class="prod-section-head">India Pricing</div>
+          <ul class="feat-list">
+            <li>Freemium — 50 credits/month free (no credit card required)<span class="feat-sub">Higher than any competitor's free tier; virality is the goal</span></li>
+            <li>Pro — ₹999/month (solo CAs, consultants, startup analysts)</li>
+            <li>Team — ₹6,999/month (CA firms 2–10 staff, SME finance teams)</li>
+            <li>Enterprise — ₹50K–2L/month custom (large firms, GCCs, on-prem LLM option)</li>
+          </ul>
+          <div class="gap-box" style="border-left-color: var(--accent3); background: #f0fdf4;">
+            <strong style="color: var(--accent3);">CELLIX Unique Advantages</strong>
+            <p>The only tool with mandatory approval + verifier layer. The only tool with GST fuzzy-match reconciliation. The only tool with Tally integration. The only tool with ICAI-audit-ready trail. The only tool priced for India. Excel-native Phase 1 means you enter directly where Indian CAs already work — no platform switch required. Google Sheets follows in Phase 2 to capture the SME and startup segment.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end products-grid -->
+  </div>
+</div>
+
+<!-- ========== SECTION 3: FEATURE MATRIX ========== -->
+<div class="section" id="features">
+  <div class="section-inner">
+    <div class="section-tag">03 — Feature Matrix</div>
+    <h2>Complete Head-to-Head Feature Comparison</h2>
+    <p>Every dimension that matters for the Indian CA/SME market — how each product handles it, and where CELLIX is the only or the best option.</p>
+
+    <div class="comp-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:180px;">Capability</th>
+            <th class="cellix-th">CELLIX</th>
+            <th>Claude Excel</th>
+            <th>Shortcut</th>
+            <th>o11</th>
+            <th>Carousel</th>
+            <th>Crunched/Bitboard</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="7" style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:600;letter-spacing:1px;padding:8px 14px;text-transform:uppercase;">Platform Coverage</td></tr>
+          <tr>
+            <td class="row-label">Google Sheets</td>
+            <td class="cell-cellix"><span class="partial">~ Phase 2</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="partial">~ Secondary</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Microsoft Excel</td>
+            <td class="cell-cellix"><span class="yes">✓ Core MVP</span></td>
+            <td><span class="yes">✓ Core</span></td>
+            <td><span class="yes">✓ Native</span></td>
+            <td><span class="yes">✓ M365</span></td>
+            <td><span class="partial">~ Likely</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">PowerPoint/Slides</td>
+            <td class="cell-cellix"><span class="no">✗ Not planned</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="yes">✓ Core feature</span></td>
+            <td><span class="partial">~ Likely</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Word/Docs support</td>
+            <td class="cell-cellix"><span class="no">✗ Not planned</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="yes">✓ Core feature</span></td>
+            <td><span class="partial">~ Likely</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+
+          <tr><td colspan="7" style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:600;letter-spacing:1px;padding:8px 14px;text-transform:uppercase;">Safety & Governance</td></tr>
+          <tr>
+            <td class="row-label">Preview before write</td>
+            <td class="cell-cellix"><span class="yes">✓ Mandatory</span></td>
+            <td><span class="partial">~ Explains only</span></td>
+            <td><span class="yes">✓ Shows changes</span></td>
+            <td><span class="no">✗ Auto-applies</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Forced approval per patch</td>
+            <td class="cell-cellix"><span class="yes">✓ Hardcoded</span></td>
+            <td><span class="no">✗ Not enforced</span></td>
+            <td><span class="no">✗ Not enforced</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Formula verifier layer</td>
+            <td class="cell-cellix"><span class="yes">✓ Pre-suggestion test</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="partial">~ Accuracy focus</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Audit trail (compliance)</td>
+            <td class="cell-cellix"><span class="yes">✓ ICAI-grade</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="yes">✓ Cell traceability</span></td>
+            <td><span class="no">✗ Not visible</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Risk scoring per patch</td>
+            <td class="cell-cellix"><span class="yes">✓ Low/Med/High</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Undo AI changes</td>
+            <td class="cell-cellix"><span class="yes">✓ Session + bulk</span></td>
+            <td><span class="partial">~ Limited</span></td>
+            <td><span class="yes">✓ Full stack</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+
+          <tr><td colspan="7" style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:600;letter-spacing:1px;padding:8px 14px;text-transform:uppercase;">India-Specific Features</td></tr>
+          <tr>
+            <td class="row-label">GST reconciliation</td>
+            <td class="cell-cellix"><span class="yes">✓ Core workflow</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">ITC / TDS computation</td>
+            <td class="cell-cellix"><span class="yes">✓ Templates</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Ind-AS schedules</td>
+            <td class="cell-cellix"><span class="yes">✓ Template library</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Tally import + cleanup</td>
+            <td class="cell-cellix"><span class="yes">✓ P0 integration</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">₹ formatting / edge cases</td>
+            <td class="cell-cellix"><span class="yes">✓ Core spec</span></td>
+            <td><span class="no">✗ Generic</span></td>
+            <td><span class="no">✗ Generic</span></td>
+            <td><span class="no">✗ Generic</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">ICAI compliance framing</td>
+            <td class="cell-cellix"><span class="yes">✓ Positioned here</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Regional language UI</td>
+            <td class="cell-cellix"><span class="partial">~ Phase 2</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+          </tr>
+
+          <tr><td colspan="7" style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:600;letter-spacing:1px;padding:8px 14px;text-transform:uppercase;">Excel Depth</td></tr>
+          <tr>
+            <td class="row-label">Macro / VBA support</td>
+            <td class="cell-cellix"><span class="no">✗ Not prioritized</span></td>
+            <td><span class="partial">~ Limited</span></td>
+            <td><span class="yes">✓ Full compat.</span></td>
+            <td><span class="partial">~ Via Excel</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Large file handling</td>
+            <td class="cell-cellix"><span class="partial">~ Backend limit</span></td>
+            <td><span class="partial">~ Plan-limited</span></td>
+            <td><span class="yes">✓ Explicitly</span></td>
+            <td><span class="yes">✓ Unlimited claimed</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Cross-sheet formula logic</td>
+            <td class="cell-cellix"><span class="yes">✓ Multi-tab context</span></td>
+            <td><span class="yes">✓ Best in class</span></td>
+            <td><span class="yes">✓ Native</span></td>
+            <td><span class="partial">~ Good</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+
+          <tr><td colspan="7" style="background:var(--ink);color:#fff;font-size:0.72rem;font-weight:600;letter-spacing:1px;padding:8px 14px;text-transform:uppercase;">Pricing & Access</td></tr>
+          <tr>
+            <td class="row-label">India-specific pricing</td>
+            <td class="cell-cellix"><span class="yes">✓ ₹999/mo Pro</span></td>
+            <td><span class="no">✗ ~₹1,700/mo</span></td>
+            <td><span class="no">✗ Enterprise quotes</span></td>
+            <td><span class="partial">~ Unclear INR</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Freemium tier</td>
+            <td class="cell-cellix"><span class="yes">✓ 50 free credits</span></td>
+            <td><span class="no">✗ Needs paid Claude</span></td>
+            <td><span class="no">✗ None visible</span></td>
+            <td><span class="yes">✓ Free add-in</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">On-prem LLM option</td>
+            <td class="cell-cellix"><span class="yes">✓ Enterprise</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="no">✗ None visible</span></td>
+            <td><span class="no">✗ None</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">SOC 2 / Enterprise sec.</td>
+            <td class="cell-cellix"><span class="partial">~ Planned</span></td>
+            <td><span class="yes">✓ Anthropic level</span></td>
+            <td><span class="yes">✓ SOC 2 Type I</span></td>
+            <td><span class="yes">✓ Enterprise tier</span></td>
+            <td><span class="na">Unknown</span></td>
+            <td><span class="na">Unknown</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 4: PRICING WAR ========== -->
+<div class="section" id="pricing">
+  <div class="section-inner">
+    <div class="section-tag">04 — Pricing War</div>
+    <h2>The Pricing Battleground</h2>
+    <p>Pricing in this space is not just about numbers — it's about access philosophy. Here's how every player positions on price, what it reveals about their target customer, and how CELLIX should think about its India-first pricing architecture.</p>
+
+    <h3 style="margin-top:1.5rem;">Competitor Pricing Reality</h3>
+
+    <div class="comp-table-wrap" style="margin-top:1rem;">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Free Tier</th>
+            <th>Entry Paid</th>
+            <th>Mid Tier</th>
+            <th>Enterprise</th>
+            <th>India Viability</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">CELLIX</td>
+            <td>50 credits/mo</td>
+            <td>₹999/mo Pro</td>
+            <td>₹6,999/mo Team</td>
+            <td>₹50K–2L/mo custom</td>
+            <td><span class="yes">✓ Designed for India</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Claude in Excel</td>
+            <td>None (needs Claude plan)</td>
+            <td>~₹1,700/mo (Claude Pro)</td>
+            <td>~₹4,200/mo (Claude Max)</td>
+            <td>Claude Team/Enterprise (~₹10K+)</td>
+            <td><span class="partial">~ Possible but costly</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Shortcut.ai</td>
+            <td>None visible</td>
+            <td>Not public (~$50+/mo?)</td>
+            <td>Not public</td>
+            <td>Sales-led, quote-based</td>
+            <td><span class="no">✗ Enterprise pricing kills SME/CA adoption</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">o11.ai</td>
+            <td>Free add-in (limited)</td>
+            <td>Pro (no number shown)</td>
+            <td>MAX tier</td>
+            <td>Enterprise (SSO, AM)</td>
+            <td><span class="partial">~ Freemium helps; INR pricing unclear</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Carousel</td>
+            <td>Unknown</td>
+            <td>Unknown</td>
+            <td>Unknown</td>
+            <td>Unknown</td>
+            <td><span class="na">Not assessable</span></td>
+          </tr>
+          <tr>
+            <td class="row-label">Crunched/Bitboard</td>
+            <td>Unknown</td>
+            <td>Unknown</td>
+            <td>Unknown</td>
+            <td>Unknown</td>
+            <td><span class="na">Not assessable</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:2rem;">CELLIX Pricing Philosophy</h3>
+    <p>The right pricing for India is not just about being cheap — it's about aligning your price point to the perceived value of time saved. A solo CA billing at ₹2,000/hour gets that rate for their expertise. CELLIX saves them 5+ hours/month on GST reconciliation alone. That's ₹10,000 of time saved for ₹999/month. Frame it that way — always.</p>
+
+    <div class="pricing-cards" style="margin-top:1.5rem;">
+      <div class="pricing-card">
+        <div class="pricing-tier">
+          <div class="tier-name">Freemium</div>
+          <div class="tier-price">₹0 <span>/month</span></div>
+        </div>
+        <ul class="pricing-features">
+          <li>50 AI credits/month</li>
+          <li>Formula generation</li>
+          <li>Error detection</li>
+          <li>3 GST templates</li>
+          <li>Excel only (Phase 1)</li>
+          <li>Basic audit log (7 days)</li>
+        </ul>
+        <div class="pricing-target">Excel-using solo CAs and junior accountants trialling the product. CA firms testing before committing to Pro.</div>
+      </div>
+      <div class="pricing-card highlight">
+        <div class="pricing-tier">
+          <div class="tier-name" style="color:var(--accent3);">Pro ★ Most Popular</div>
+          <div class="tier-price">₹999 <span>/month</span></div>
+        </div>
+        <ul class="pricing-features">
+          <li>500 AI credits/month</li>
+          <li>All GST/ITC/TDS workflows</li>
+          <li>Tally import (basic)</li>
+          <li>Full audit trail (90 days)</li>
+          <li>Sheets + Excel (Phase 2)</li>
+          <li>20 India templates</li>
+          <li>Priority email support</li>
+        </ul>
+        <div class="pricing-target">Solo CA practices. Startup founders. SME finance leads.</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-tier">
+          <div class="tier-name">Team</div>
+          <div class="tier-price">₹6,999 <span>/month</span></div>
+        </div>
+        <ul class="pricing-features">
+          <li>5 user seats included</li>
+          <li>2,000 AI credits/month</li>
+          <li>Full Tally/Zoho integration</li>
+          <li>Unlimited audit trail</li>
+          <li>Multi-client workspaces</li>
+          <li>Role-based permissions</li>
+          <li>Phone support</li>
+          <li>Custom templates</li>
+        </ul>
+        <div class="pricing-target">CA firms 2–10 staff. SME finance departments. Startup finance teams.</div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-tier">
+          <div class="tier-name">Enterprise</div>
+          <div class="tier-price">₹50K+ <span>/month</span></div>
+        </div>
+        <ul class="pricing-features">
+          <li>Unlimited seats</li>
+          <li>On-prem LLM option</li>
+          <li>SSO / SAML integration</li>
+          <li>Custom compliance setup</li>
+          <li>CERT-In documentation</li>
+          <li>Dedicated account manager</li>
+          <li>SLA guarantees</li>
+          <li>API access</li>
+        </ul>
+        <div class="pricing-target">Large CA firms. GCCs. Government accounting depts. Listed companies.</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:1.5rem;">
+      <h4>Annual Plan Strategy</h4>
+      <p>Offer annual plans at a 2-month discount: ₹9,999/year for Pro (save ₹1,989). Indian CAs and SMEs prefer annual billing as it simplifies accounting. Annual commitment also dramatically improves your cash flow and reduces churn. Target 40% of paid users to opt for annual by end of Year 1.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 5: WHO WINS ========== -->
+<div class="section" id="scoring">
+  <div class="section-inner">
+    <div class="section-tag">05 — Capability Scoring</div>
+    <h2>Who Wins on Each Dimension?</h2>
+    <p>A 0–10 score across the dimensions that matter most for the Indian market. These are reasoned judgements based on available public product data, not marketing claims.</p>
+
+    <div style="margin-top:2rem;">
+      <h3 style="margin-bottom:1.25rem;">Excel/Sheets AI Depth (Formula accuracy, cross-sheet reasoning, verifier)</h3>
+      <div class="score-row"><div class="score-label">CELLIX</div><div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:var(--accent3);"></div></div><div class="score-val">8/10</div></div>
+      <div class="score-row"><div class="score-label">Shortcut.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:95%;background:var(--accent2);"></div></div><div class="score-val">9.5/10</div></div>
+      <div class="score-row"><div class="score-label">Claude in Excel</div><div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:var(--muted);"></div></div><div class="score-val">8/10</div></div>
+      <div class="score-row"><div class="score-label">o11.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:65%;background:var(--muted);"></div></div><div class="score-val">6.5/10</div></div>
+      <div class="score-row"><div class="score-label">Carousel/Crunched/Bitboard</div><div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:var(--muted);"></div></div><div class="score-val">?/10</div></div>
+
+      <h3 style="margin-bottom:1.25rem; margin-top:2rem;">India-Specific Compliance & Workflows (GST, Tally, Ind-AS, ICAI)</h3>
+      <div class="score-row"><div class="score-label">CELLIX</div><div class="score-bar-wrap"><div class="score-bar" style="width:95%;background:var(--accent3);"></div></div><div class="score-val">9.5/10</div></div>
+      <div class="score-row"><div class="score-label">Shortcut.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:5%;background:var(--muted);"></div></div><div class="score-val">0.5/10</div></div>
+      <div class="score-row"><div class="score-label">Claude in Excel</div><div class="score-bar-wrap"><div class="score-bar" style="width:10%;background:var(--muted);"></div></div><div class="score-val">1/10</div></div>
+      <div class="score-row"><div class="score-label">o11.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:5%;background:var(--muted);"></div></div><div class="score-val">0.5/10</div></div>
+      <div class="score-row"><div class="score-label">Carousel/others</div><div class="score-bar-wrap"><div class="score-bar" style="width:5%;background:var(--muted);"></div></div><div class="score-val">0/10</div></div>
+
+      <h3 style="margin-bottom:1.25rem; margin-top:2rem;">Safety, Approval Workflow & Audit Trail</h3>
+      <div class="score-row"><div class="score-label">CELLIX</div><div class="score-bar-wrap"><div class="score-bar" style="width:95%;background:var(--accent3);"></div></div><div class="score-val">9.5/10</div></div>
+      <div class="score-row"><div class="score-label">Shortcut.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:80%;background:var(--accent2);"></div></div><div class="score-val">8/10</div></div>
+      <div class="score-row"><div class="score-label">Claude in Excel</div><div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:var(--muted);"></div></div><div class="score-val">5/10</div></div>
+      <div class="score-row"><div class="score-label">o11.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:30%;background:var(--muted);"></div></div><div class="score-val">3/10</div></div>
+
+      <h3 style="margin-bottom:1.25rem; margin-top:2rem;">India Pricing Accessibility</h3>
+      <div class="score-row"><div class="score-label">CELLIX</div><div class="score-bar-wrap"><div class="score-bar" style="width:95%;background:var(--accent3);"></div></div><div class="score-val">9.5/10</div></div>
+      <div class="score-row"><div class="score-label">o11.ai (freemium)</div><div class="score-bar-wrap"><div class="score-bar" style="width:60%;background:var(--accent2);"></div></div><div class="score-val">6/10</div></div>
+      <div class="score-row"><div class="score-label">Claude in Excel</div><div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:var(--muted);"></div></div><div class="score-val">4/10</div></div>
+      <div class="score-row"><div class="score-label">Shortcut.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:10%;background:var(--muted);"></div></div><div class="score-val">1/10</div></div>
+
+      <h3 style="margin-bottom:1.25rem; margin-top:2rem;">Platform Coverage for Indian Users</h3>
+      <div class="score-row"><div class="score-label">CELLIX</div><div class="score-bar-wrap"><div class="score-bar" style="width:90%;background:var(--accent3);"></div></div><div class="score-val">9/10</div></div>
+      <div class="score-row"><div class="score-label">o11.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:55%;background:var(--accent2);"></div></div><div class="score-val">5.5/10</div></div>
+      <div class="score-row"><div class="score-label">Claude in Excel</div><div class="score-bar-wrap"><div class="score-bar" style="width:40%;background:var(--muted);"></div></div><div class="score-val">4/10</div></div>
+      <div class="score-row"><div class="score-label">Shortcut.ai</div><div class="score-bar-wrap"><div class="score-bar" style="width:35%;background:var(--muted);"></div></div><div class="score-val">3.5/10</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 6: SEGMENT WINNERS ========== -->
+<div class="section" id="segments">
+  <div class="section-inner">
+    <div class="section-tag">06 — Segment Winners</div>
+    <h2>Who Wins Which User Segment</h2>
+    <p>The market is not winner-takes-all. Different products win different segments. Here is the honest breakdown of who dominates where — and why CELLIX owns the segments that matter for India.</p>
+
+    <div class="segments-grid">
+      <div class="seg-card">
+        <div class="seg-header"><h4>🇮🇳 Indian CAs — Solo Practices (72K firms)</h4></div>
+        <div class="seg-body">
+          <div class="winner-row"><span class="winner-badge wb-cellix">CELLIX Wins</span><span style="font-size:0.82rem;color:var(--ink2);">by wide margin</span></div>
+          <p style="font-size:0.83rem;color:var(--ink2);">Zero competition here. No global tool handles GST recon, Tally cleanup, or ICAI audit trails. No local tool has AI-powered spreadsheet manipulation. This segment is CELLIX's to lose. Win condition: solve GST reconciliation reliably, price at ₹999/month, and get 3 CA WhatsApp groups spreading the word.</p>
+          <div class="callout success" style="margin-top:0.75rem;"><h4>CELLIX Advantage</h4><p>Every single differentiator you have maps directly to this segment's pain. This is your beachhead.</p></div>
+        </div>
+      </div>
+
+      <div class="seg-card">
+        <div class="seg-header"><h4>🇮🇳 CA Firms — 2–10 Staff (28K+ firms)</h4></div>
+        <div class="seg-body">
+          <div class="winner-row"><span class="winner-badge wb-cellix">CELLIX Wins</span><span style="font-size:0.82rem;color:var(--ink2);">with team plan</span></div>
+          <p style="font-size:0.83rem;color:var(--ink2);">The "quality gate on junior staff work" positioning is extremely powerful for this segment. Senior partners want to review junior spreadsheet work before it reaches clients. CELLIX's mandatory approval workflow and audit trail are literally what these partners need. Team plan at ₹6,999/month covers 5 seats — about ₹1,400/person, well within budget for firms billing clients at ₹1,500–5,000/hour.</p>
+        </div>
+      </div>
+
+      <div class="seg-card">
+        <div class="seg-header"><h4>🇮🇳 Indian SME Finance Teams (7.7M digitally mature SMEs)</h4></div>
+        <div class="seg-body">
+          <div class="winner-row"><span class="winner-badge wb-cellix">CELLIX Wins</span><span style="font-size:0.82rem;color:var(--ink2);">Phase 2 target</span></div>
+          <p style="font-size:0.83rem;color:var(--ink2);">After establishing in Excel (Phase 1), CELLIX's Phase 2 Google Sheets add-on directly serves the SME stack. Tally + Sheets is the standard for Indian SME finance — and CAs who adopt CELLIX on Excel will recommend it to their SME clients when the Sheets version launches. MIS reports, cash flow dashboards, vendor reconciliation — all recurring monthly workflows that create strong retention. Win this segment with use-case-specific templates for each industry vertical (trading, manufacturing, retail).</p>
+        </div>
+      </div>
+
+      <div class="seg-card">
+        <div class="seg-header"><h4>🇺🇸 US/EU Enterprise Excel Users</h4></div>
+        <div class="seg-body">
+          <div class="winner-row"><span class="winner-badge wb-shortcut">Shortcut Wins</span><span style="font-size:0.82rem;color:var(--ink2);">by a mile</span></div>
+          <p style="font-size:0.83rem;color:var(--ink2);">Macro compatibility, 100% Excel parity, SOC 2, zero-retention AI deals, RBAC — all specifically designed for US/EU financial institutions. This is not CELLIX's market and you should not try to compete here. Shortcut has a multi-year head start in product depth and enterprise trust for this specific segment.</p>
+        </div>
+      </div>
+
+      <div class="seg-card">
+        <div class="seg-header"><h4>🌐 M365 Orgs — Decks + Docs + Excel</h4></div>
+        <div class="seg-body">
+          <div class="winner-row"><span class="winner-badge wb-o11">o11 Wins</span><span style="font-size:0.82rem;color:var(--ink2);">breadth advantage</span></div>
+          <p style="font-size:0.83rem;color:var(--ink2);">For organizations needing AI across PowerPoint, Word, data rooms, and Excel with unlimited context and citations — o11's full M365 suite is hard to beat. CELLIX doesn't compete here (and shouldn't try to). If an Indian GCC wants full M365 AI, o11 is a real option. Your angle in GCCs is the finance team specifically, not the whole org.</p>
+        </div>
+      </div>
+
+      <div class="seg-card">
+        <div class="seg-header"><h4>💻 Individual Claude Subscribers (Global)</h4></div>
+        <div class="seg-body">
+          <div class="winner-row"><span class="winner-badge wb-claude">Claude Wins</span><span style="font-size:0.82rem;color:var(--ink2);">free marginal cost</span></div>
+          <p style="font-size:0.83rem;color:var(--ink2);">If someone already pays ₹1,700/month for Claude Pro, the Excel add-in is free on top. For general formula debugging and model Q&A, this is compelling enough. CELLIX should not try to win this segment. Your users are India-specific professionals who need GST, Tally, and compliance — not general-purpose LLM subscribers.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="verdict-box" style="margin-top:2rem;">
+      <h3>The Global Race Result</h3>
+      <p>There is no single winner. <strong>Shortcut owns deep Excel governance for US/EU finance.</strong> <strong>o11 owns M365 breadth for cross-app AI.</strong> <strong>Claude in Excel is the default for existing Claude subscribers.</strong> And <strong>India — CAs, SMEs, startups, and enterprises — is an unclaimed market.</strong> No one is building for the CA filing GSTR-2B from a Tally export at ₹999/month with an ICAI audit trail. That is your market. You don't compete in the global race — you run a completely different race on a completely different track.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 7: MOAT ========== -->
+<div class="section" id="moat">
+  <div class="section-inner">
+    <div class="section-tag">07 — Your Real Moat</div>
+    <h2>CELLIX's Defensible Advantages</h2>
+    <p>A moat is only real if it's hard for competitors to copy quickly. Here are CELLIX's genuine moats — not feature-parity claims, but structural advantages that take time, trust, and domain expertise to replicate.</p>
+
+    <div class="moat-grid">
+      <div class="moat-card">
+        <div class="moat-icon">🔐</div>
+        <h4>Mandatory Safety Architecture</h4>
+        <p>The Preview → Approve → Apply flow with a verifier layer is not a UI preference — it's a product philosophy baked into every interaction. Gemini and Claude won't implement mandatory per-patch approval because it kills their UX simplicity story. Shortcut shows changes but doesn't enforce per-patch approval. This is CELLIX's unique design position.</p>
+        <span class="moat-strength ms-high">Strength: High — product design moat</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">🧾</div>
+        <h4>GST Domain Intelligence</h4>
+        <p>GSTR-2A/2B vs purchase register reconciliation with fuzzy matching for split invoices, credit notes, and date mismatches is not a prompt engineering problem — it's encoded domain logic built by someone who understands Indian GST. Anthropic won't build this. Google won't prioritize this. This is the Tally-to-Sheets bridge India has needed for 7 years.</p>
+        <span class="moat-strength ms-high">Strength: Very High — domain knowledge moat</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">📊</div>
+        <h4>Dual Platform Coverage</h4>
+        <p>Excel-native Phase 1 (for CA firms, audit practices, and enterprises) + Google Sheets Phase 2 (for SME finance teams and startups) with a shared backend is the complete India coverage play. Starting with Excel means entering the highest-value, highest-willingness-to-pay segment first. The shared backend means Sheets support in Phase 2 requires only a new frontend layer — the AI, GST logic, and audit trail are already built.</p>
+        <span class="moat-strength ms-high">Strength: High — distribution moat</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">🔗</div>
+        <h4>Tally Integration (P0 Priority)</h4>
+        <p>70% of Indian SMEs use Tally as their primary accounting software. Tally's export format is messy, inconsistent, and full of merged cells and ₹ formatting issues. Building a reliable Tally import + cleanup pipeline is a 4–8 week engineering investment that no global competitor will make for India alone. Once built, this becomes a switching cost — users won't leave a tool that handles their existing Tally workflow.</p>
+        <span class="moat-strength ms-high">Strength: Very High — integration moat</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">🏛️</div>
+        <h4>ICAI Trust & Compliance Framing</h4>
+        <p>Positioning as "ICAI-compliant audit-ready working papers" turns CELLIX from a productivity tool into a professional obligation. CAs must document their work. CELLIX's audit trail IS that documentation. This reframes the sales conversation from "nice to have" to "need to have." No global competitor is positioned for ICAI scrutiny — this is a trust moat built through community and positioning, not just code.</p>
+        <span class="moat-strength ms-high">Strength: Very High — regulatory positioning moat</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">🤝</div>
+        <h4>CA Community Network Effects</h4>
+        <p>India's CA community is dense, WhatsApp-heavy, and extremely word-of-mouth driven. A trusted tool spreads through ICAI study groups, regional practice WhatsApp groups, and firm-to-firm referrals faster than any advertising. Each CA who uses CELLIX and finds it reliable is a walking sales channel to their peer network. Templates shared between CAs create viral loops no global tool can replicate from outside the community.</p>
+        <span class="moat-strength ms-high">Strength: Very High — community network moat</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">💰</div>
+        <h4>India-First Pricing Architecture</h4>
+        <p>₹999/month Pro is not just "cheaper" — it's priced to align with Indian CA billing economics and SME software budgets. US-headquartered companies like Anthropic cannot sustainably undercut ₹999 for the Indian market without structural changes to their cost base and pricing strategy. You have a durable pricing advantage for at least 2–3 years simply by being India-native.</p>
+        <span class="moat-strength ms-mid">Strength: Medium — pricing moat (time-bound)</span>
+      </div>
+      <div class="moat-card">
+        <div class="moat-icon">🛡️</div>
+        <h4>On-Prem LLM for Enterprise</h4>
+        <p>Large CA firms and enterprise accounting departments in India cannot legally or ethically send client financial data to a US cloud without explicit data processing agreements. An on-prem LLM option (or India-data-residency option) unlocks enterprise deals that globals literally cannot close in India. This is a unique enterprise unlock — position it as "Made in India AI" for the government-adjacent enterprise segment.</p>
+        <span class="moat-strength ms-mid">Strength: Medium-High — compliance moat for enterprise</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 8: CA PAIN MAP ========== -->
+<div class="section" id="ca-pain">
+  <div class="section-inner">
+    <div class="section-tag">08 — CA Pain Map</div>
+    <h2>The Real Pain of Indian CAs — Mapped to CELLIX</h2>
+    <p>Before building features, understand the exact workflows that consume CAs' time every month. These are the problems you need to solve — not generic "formula generation," but these specific recurring nightmares.</p>
+
+    <table class="pain-table">
+      <thead>
+        <tr>
+          <th>CA Workflow</th>
+          <th>Time Lost Today</th>
+          <th>Pain Level</th>
+          <th>Root Cause</th>
+          <th>CELLIX Solution</th>
+          <th>Retention Power</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>GST Reconciliation</strong><br><small>(GSTR-2A/2B vs Purchase Register)</small></td>
+          <td>3–6 hrs/month per client</td>
+          <td><span class="pain-high">🔴 Extreme</span></td>
+          <td>Partial matches, split invoices, date formats, credit notes — manual VLOOKUP fails constantly</td>
+          <td>AI fuzzy-match recon within Excel — tolerance thresholds for amounts, dates, invoice numbers. Flagged mismatches with one-click accept/reject. Audit-ready output.</td>
+          <td><strong>Very High</strong> — mandatory monthly workflow, compliance obligation</td>
+        </tr>
+        <tr>
+          <td><strong>Tally Export Cleanup</strong><br><small>(Ledger → Sheets)</small></td>
+          <td>1–2 hrs per export</td>
+          <td><span class="pain-high">🔴 High</span></td>
+          <td>₹ in numeric columns, merged cells, inconsistent dates, blank rows, duplicate entries</td>
+          <td>Automated cleaning pipeline — detects column types, fixes formatting, deduplicates, flags anomalies with explanation</td>
+          <td><strong>Very High</strong> — weekly workflow, every client's data starts here</td>
+        </tr>
+        <tr>
+          <td><strong>ITC Computation</strong><br><small>(Input Tax Credit eligibility)</small></td>
+          <td>2–4 hrs/quarter per entity</td>
+          <td><span class="pain-high">🔴 High</span></td>
+          <td>Complex eligibility rules, reversal logic, GSTR-2A matching, frequent CBIC rule changes</td>
+          <td>Pre-encoded ITC rules with eligibility/ineligibility split. Updated per CBIC notifications. Risk-flagged on ambiguous items.</td>
+          <td><strong>High</strong> — quarterly + critical for client cash flow</td>
+        </tr>
+        <tr>
+          <td><strong>Audit Working Papers</strong><br><small>(Documentation for ICAI)</small></td>
+          <td>30 min–2 hrs per file</td>
+          <td><span class="pain-med">🟡 Medium</span></td>
+          <td>Manual documentation of changes, no standardized format, junior errors hard to trace</td>
+          <td>Auto-generated audit log for every AI action. Export to PDF. ICAI-compliant format with timestamped approvals.</td>
+          <td><strong>Very High</strong> — professional obligation, not optional</td>
+        </tr>
+        <tr>
+          <td><strong>Ind-AS Schedule Generation</strong><br><small>(Schedule III, Notes)</small></td>
+          <td>4–8 hrs per entity per year</td>
+          <td><span class="pain-med">🟡 Medium</span></td>
+          <td>Mapping trial balance to Ind-AS classifications is tedious and error-prone for non-specialists</td>
+          <td>Upload trial balance → AI maps to Schedule III → Preview → Approve → Formatted output with explanations</td>
+          <td><strong>High</strong> — annual statutory filing requirement</td>
+        </tr>
+        <tr>
+          <td><strong>Client MIS Reports</strong><br><small>(P&L, Cash Flow, Dashboard)</small></td>
+          <td>2–5 hrs/month per client</td>
+          <td><span class="pain-med">🟡 Medium</span></td>
+          <td>Different clients want different formats. Junior staff spend hours reformatting the same data.</td>
+          <td>Natural language → structured report template → approve → formatted MIS. Save as client-specific template for reuse.</td>
+          <td><strong>High</strong> — monthly recurring, high client visibility</td>
+        </tr>
+        <tr>
+          <td><strong>Bank Reconciliation</strong><br><small>(Books vs Bank Statement)</small></td>
+          <td>1–3 hrs/month per entity</td>
+          <td><span class="pain-med">🟡 Medium</span></td>
+          <td>Multiple payment methods, UPI transactions, bounced cheques, auto-debits — all needing matching</td>
+          <td>AI-assisted matching with fuzzy logic for amount/date tolerance. Unmatched items flagged with suggested resolution.</td>
+          <td><strong>Medium</strong> — monthly but less complex than GST recon</td>
+        </tr>
+        <tr>
+          <td><strong>26AS vs Books TDS Matching</strong><br><small>(Form 26AS reconciliation)</small></td>
+          <td>2–4 hrs/quarter</td>
+          <td><span class="pain-med">🟡 Medium</span></td>
+          <td>Deductor errors, timing differences, missing entries — all need manual cross-checking</td>
+          <td>Upload 26AS export + TDS ledger → AI matches → flags discrepancies → approve resolution → audit trail</td>
+          <td><strong>High</strong> — quarterly ITR filing dependency</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout success" style="margin-top:1.5rem;">
+      <h4>Product Strategy Insight</h4>
+      <p>GST Reconciliation and Tally Export Cleanup are your first two features — not formula generation. These are the most painful, most universal, and most recurring workflows for Indian CAs. If you solve just these two reliably, every Indian CA will use CELLIX every single month by obligation. Formula generation is table stakes — pain-point workflows are your acquisition engine.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 9: CA CAPTURE ========== -->
+<div class="section" id="ca-capture">
+  <div class="section-inner">
+    <div class="section-tag">09 — Capture CAs Guide</div>
+    <h2>End-to-End Guide: Capturing India's CAs</h2>
+    <p>This is the complete tactical playbook — from first outreach to community dominance. Follow this sequence and you will have 500+ paying CAs within 12 months without spending heavily on ads.</p>
+
+    <div class="ca-steps">
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>Recruit 20 Manual Beta CAs Before Writing Any Code</h4>
+          <p>The most important step is the one most founders skip. Before you build a single line of production code, recruit 20 solo CAs to be your beta users. Run the backend manually — they describe their problem, you run the AI yourself, you send back results through a simple interface. This is the "Wizard of Oz" validation approach. In 4 weeks of this, you will learn: which exact workflows they repeat every month, what their spreadsheet data actually looks like (not what you imagine it looks like), which edge cases break simple formula generation, and what words they use to describe their pain.</p>
+          <p>Every pattern you observe in 20 manual sessions becomes your first prompt template and verifier rule. This saves months of building the wrong thing.</p>
+          <div>
+            <span class="ca-tactic">LinkedIn DMs to "Chartered Accountant" profiles in Kerala/TN</span>
+            <span class="ca-tactic">ICAI member directories</span>
+            <span class="ca-tactic">CA Telegram/WhatsApp groups</span>
+            <span class="ca-tactic">Typeform screener: tools used, monthly pain, hours on GST recon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>Build GST Recon as Your Single Hero Feature</h4>
+          <p>GST reconciliation is monthly, mandatory, painful, and universal. Every Indian CA with more than 5 clients spends 3–6 hours per client every month on this. If you solve it reliably, CELLIX becomes a monthly must-use by compliance obligation alone. This is your retention engine disguised as a feature.</p>
+          <p>Build the "Upload your GSTR-2A download + Purchase Register → Get reconciliation result in 5 minutes" flow in Excel before anything else. The fuzzy matching (handling split invoices, date mismatches, credit notes) is the hard part — but that's exactly your moat. Make it dead-simple to use. The sophistication should be invisible; the output should be clear and approvable.</p>
+          <p>Give this feature free to all users for the first 3 months of launch. Let it spread through CA communities on its own. This is your acquisition Trojan horse.</p>
+          <div>
+            <span class="ca-tactic">Free for all tiers in launch quarter</span>
+            <span class="ca-tactic">Fuzzy match engine with configurable tolerance</span>
+            <span class="ca-tactic">One-click audit-ready PDF output</span>
+            <span class="ca-tactic">Handle credit notes and negative amounts natively</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>ICAI Chapter Partnerships — Your Zero-CAC Distribution Channel</h4>
+          <p>The Institute of Chartered Accountants of India has regional chapters across every major city and many smaller towns. These chapters regularly organize CPE (Continuing Professional Education) programs, webinars, and workshops. They are actively looking for relevant content to offer their members — and "AI tools for CA productivity" is exactly the kind of contemporary topic they want.</p>
+          <p>Contact 3–5 regional ICAI chapter secretaries (Kerala, Tamil Nadu, Maharashtra, Karnataka are strong starts given tech adoption curves). Propose a free 60-minute webinar: "How AI is Transforming GST Reconciliation for CA Practices." Do not pitch CELLIX for the first 50 minutes. Teach genuinely useful content — save the demo for the last 10 minutes. Offer ICAI chapter members a 3-month free Pro trial as the CTA. One chapter webinar exposes you to 300–2,000 CAs at once. This is your highest-leverage early acquisition channel.</p>
+          <div>
+            <span class="ca-tactic">60-min webinar: teach first, pitch last</span>
+            <span class="ca-tactic">3-month free Pro trial for ICAI members</span>
+            <span class="ca-tactic">Co-branded certificate of participation (CAs love CPE credits)</span>
+            <span class="ca-tactic">Chapter newsletter mention + website listing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>CA WhatsApp Groups — The Real Viral Distribution Layer</h4>
+          <p>India's CA community runs primarily on WhatsApp. There are thousands of groups: ICAI study groups, regional practice groups, GST update channels, audit discussion groups, CA friends-of-friends circles. This is where CAs share knowledge, news, and product recommendations — and they trust peer recommendations far more than any advertising.</p>
+          <p>The strategy: get into 10–15 relevant groups legitimately (join through connections, not as a marketer). Provide genuine value for 4–6 weeks before mentioning CELLIX — share GST circulars, ICAI notifications, useful Excel shortcuts. Build trust as a knowledgeable community member. Then, when you have your first 3–4 success stories, share them: "A CA friend of mine used this tool to cut their month-end GST recon from 4 hours to 45 minutes. Here's the demo." That one message from a trusted community member is worth thousands of LinkedIn ads.</p>
+          <div>
+            <span class="ca-tactic">Join via existing CA connections</span>
+            <span class="ca-tactic">4 weeks of value before any pitch</span>
+            <span class="ca-tactic">Video testimonials from beta CAs for sharing</span>
+            <span class="ca-tactic">One-page case study shareable image format (WhatsApp-optimized)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>The Template Library — Your Viral Content Flywheel</h4>
+          <p>Build and give away 20+ free templates for the most common CA workflows. Each template should be: immediately useful without CELLIX (so people actually use it), but powered by CELLIX when installed as an add-on (so it creates an install funnel). Good starting templates: GST Reconciliation Template, Schedule III Balance Sheet, TDS Computation Sheet, Bank Reconciliation Template, Cash Flow Forecast, ITC Register, Form 26AS matching sheet, Vendor Reconciliation, Board Pack Template, Budget vs Actual Dashboard.</p>
+          <p>CAs share templates with each other constantly — it's embedded in their professional culture. Make each template shareable from within the add-on with a single click. Include a subtle "Made with CELLIX — try free at usecellix.com" footer in each shared template. Every shared template is a new CELLIX install opportunity. Build a public template marketplace on usecellix.com where CAs can browse, preview, and install templates in one click.</p>
+          <div>
+            <span class="ca-tactic">20 templates at launch</span>
+            <span class="ca-tactic">One-click install from template gallery</span>
+            <span class="ca-tactic">Community submissions with upvotes</span>
+            <span class="ca-tactic">"Shared by [name], CA" attribution builds community</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>LinkedIn Content Strategy — 3 Posts Per Week for 6 Months</h4>
+          <p>LinkedIn is where Indian CAs engage with professional content, follow peers, and discover tools. The CA LinkedIn community is growing rapidly — from 2K to 11K+ active CA professionals in the last 2 years. A consistent, valuable content presence here builds brand awareness, trust, and inbound leads with virtually zero spend.</p>
+          <p>Content mix: Monday — a concrete "before and after" Excel tip (GST formula, Tally cleanup trick, Ind-AS shortcut). Wednesday — a short video demo (90 seconds) showing a real CA Excel workflow being done in 5 minutes with CELLIX. Friday — an insight or question that sparks CA community discussion ("How much time does your practice spend on GST recon every month?"). Target hashtags: #charteredaccountant #gst #icai #catools #tally #indas. Tag relevant ICAI officials and CA thought leaders occasionally to expand reach. Publish consistently for 6 months before judging content ROI — LinkedIn is a long game but the compounding is significant.</p>
+          <div>
+            <span class="ca-tactic">Mon: Spreadsheet tip / formula</span>
+            <span class="ca-tactic">Wed: 90-sec product demo video</span>
+            <span class="ca-tactic">Fri: CA community discussion prompt</span>
+            <span class="ca-tactic">Target: 50K+ impressions/month by month 4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>CA-to-CA Referral Program — Your Lowest-CAC Growth Engine</h4>
+          <p>CAs are a high-trust community where peer recommendations drive nearly all tool adoption. Build a referral program with genuinely attractive incentives on both sides. Referring CA: gets 1 month free for each referral who activates, and 3 months free when they refer 3 CAs. Referred CA: gets a 3-month free Pro trial (not a discount — a full free period removes the payment barrier entirely). This structure means the referring CA has strong incentive to evangelize, and the referred CA has enough time to genuinely validate the product before committing.</p>
+          <p>Solo CAs often work in informal networks with 5–10 close peers from their ICAI batch, article years, or regional network. One activated, enthusiastic CA in a tight network of 10 = potentially 10 new users. Track referral chains to identify your "super-referrers" early — they deserve special treatment (free annual plan, early access to features, co-authored case study on LinkedIn).</p>
+          <div>
+            <span class="ca-tactic">Refer 1: get 1 month free</span>
+            <span class="ca-tactic">Refer 3: get 3 months free</span>
+            <span class="ca-tactic">Referred CA: 3 months free trial</span>
+            <span class="ca-tactic">Super-referrer recognition program</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>The "Junior Staff Quality Gate" Pitch for CA Firms</h4>
+          <p>For CA firms with 2–10 staff, the biggest pain is not the principal CA's time — it's the senior reviewing and correcting junior staff work before it reaches clients. Junior staff make formula errors, miss GST classifications, and use inconsistent formats. Partners spend hours fixing these mistakes and re-checking client files.</p>
+          <p>Position CELLIX for this segment not as an "AI assistant" but as a "quality gate on every junior spreadsheet before it leaves your firm." Every formula a junior CA writes gets verified. Every client file gets an auto-generated change log. Partners can see exactly what changed and who approved it. This reframes the conversation from "productivity tool" (optional) to "quality assurance system" (mandatory for any serious practice). Price the Team plan at ₹6,999/month for 5 users — about ₹1,400/person — and pitch it against the cost of one client file correction error.</p>
+          <div>
+            <span class="ca-tactic">Lead with "quality gate" not "AI assistant"</span>
+            <span class="ca-tactic">Show partner-level review dashboard mockup</span>
+            <span class="ca-tactic">Demo: junior creates formula → AI verifies → partner approves</span>
+            <span class="ca-tactic">ROI: one prevented error > 3 months of subscription</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>Case Studies — Build Proof Cases Loudly and Early</h4>
+          <p>After your first 10 paying CAs, do structured 30-minute interviews with each one. Specific questions: What specific task did you use CELLIX for first? How many hours did it save compared to your old process? What would you have done without it? Would you recommend it to other CAs? If yes, why in one sentence? Get a short video testimonial if they're willing — even 45 seconds on a phone is gold. If not, a written quote with their name and city.</p>
+          <p>Publish these as case studies on LinkedIn and your website. Format them as: the CA's problem → the specific workflow they used → the time saved → their quote. "How Ramesh CA Practice in Coimbatore Cut Month-End GST Recon from 5 Hours to 40 Minutes" is a headline that every Indian CA will stop scrolling for. Real numbers, real names, real cities — this builds the trust that no amount of feature marketing can replicate.</p>
+          <div>
+            <span class="ca-tactic">30-min structured interview after first 3 months</span>
+            <span class="ca-tactic">Video testimonial (phone quality is fine)</span>
+            <span class="ca-tactic">Publish on LinkedIn, website, and in CA WhatsApp groups</span>
+            <span class="ca-tactic">Target: 10 case studies published by Month 6</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ca-step">
+        <div class="ca-step-num"></div>
+        <div class="ca-step-content">
+          <h4>Pricing Framing — Always ROI, Never Software Cost</h4>
+          <p>Indian CAs are price-sensitive but not irrational. They already pay ₹18,000+/year for Tally, ₹15,000+ for practice management software, and ₹10,000+ in ICAI membership fees. ₹999/month for CELLIX is not a high ask — but only if the value is framed correctly.</p>
+          <p>Never lead with "CELLIX costs ₹999/month." Always lead with: "CELLIX saves you 5+ hours of GST reconciliation work every month. At your billing rate of ₹1,500–3,000/hour, that's ₹7,500–15,000 of your time recovered — for ₹999/month." This framing makes ₹999 feel like a 10x–15x ROI, not an expense. Build this ROI calculator directly into your onboarding flow and landing page. Make it interactive: "Enter your hourly billing rate → See how much time CELLIX saves → See your monthly ROI." This single page element will convert more users than any feature comparison table.</p>
+          <div>
+            <span class="ca-tactic">ROI calculator on homepage (interactive)</span>
+            <span class="ca-tactic">"Hours saved per month" as primary metric</span>
+            <span class="ca-tactic">Annual plan: ₹9,999 (2 months free)</span>
+            <span class="ca-tactic">Student/Articleship plan: ₹299/month (future users)</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end ca-steps -->
+  </div>
+</div>
+
+<!-- ========== SECTION 10: CHANNELS ========== -->
+<div class="section" id="channels">
+  <div class="section-inner">
+    <div class="section-tag">10 — Channels & Content</div>
+    <h2>Acquisition Channels — Ranked by ROI for India</h2>
+
+    <div class="channel-grid">
+      <div class="channel-card">
+        <h4>CA WhatsApp Groups</h4>
+        <div class="metric">CAC: ~₹200–500</div>
+        <p>Highest trust, lowest cost. Peer recommendations in CA circles convert at 30–40% because trust is already established. Build presence in 10–15 groups over 4–6 weeks before any pitch. Share genuinely useful content daily.</p>
+      </div>
+      <div class="channel-card green">
+        <h4>ICAI Chapter Webinars</h4>
+        <div class="metric" style="color:var(--accent3);">CAC: ~₹100–300</div>
+        <p>Single highest-leverage channel in the early months. One 60-minute webinar reaches 300–2,000 CAs with ICAI institutional credibility. Target 2 chapters/month starting Month 3. Co-present with a well-known ICAI faculty member for extra authority.</p>
+      </div>
+      <div class="channel-card blue">
+        <h4>LinkedIn Content</h4>
+        <div class="metric" style="color:var(--accent2);">CAC: ~₹500–1,500</div>
+        <p>Best for awareness and brand building. 3 posts/week: Monday tip, Wednesday demo, Friday discussion. Takes 3–4 months to compound but then runs with minimal cost. Target: 10K followers within 12 months from India CA/finance audience.</p>
+      </div>
+      <div class="channel-card">
+        <h4>Microsoft AppSource (Phase 1) + Google Workspace Marketplace (Phase 2)</h4>
+        <div class="metric">CAC: ~₹800–2,000</div>
+        <p>AppSource is where Excel add-ins are discovered by CA firms and enterprise finance teams. A strong listing with "GST," "CA," "India," and "Tally" keywords puts CELLIX directly in front of Indian Excel users. Google Workspace Marketplace becomes a major channel from Phase 2 onwards when the Sheets add-on launches.</p>
+      </div>
+      <div class="channel-card gold">
+        <h4>Template Library (SEO + Viral)</h4>
+        <div class="metric" style="color:var(--accent4);">CAC: ~₹50–200</div>
+        <p>Free templates drive organic traffic ("GST reconciliation template Google Sheets" gets thousands of India searches/month), create installs, and spread virally through sharing. Each installed template is a captive marketing message. Lowest CAC channel over time.</p>
+      </div>
+      <div class="channel-card green">
+        <h4>Referral Program</h4>
+        <div class="metric" style="color:var(--accent3);">CAC: ~₹300–600</div>
+        <p>CA-to-CA referrals convert at extremely high rates because the referred person already trusts the referrer. Incentivize both parties generously (3 months free for referrer who brings 3 users). Identify super-referrers early — they will drive 30–40% of your CA user base.</p>
+      </div>
+      <div class="channel-card blue">
+        <h4>YouTube / Video Demos</h4>
+        <div class="metric" style="color:var(--accent2);">CAC: ~₹400–1,200</div>
+        <p>Hindi + English 3–8 minute demo videos for each CA workflow. "How to reconcile GSTR-2A in 5 minutes using CELLIX" style titles with exact problem/solution framing. YouTube is India's #2 search engine — CAs who search for GST workflow help will find these. Build a playlist of 20+ videos in Year 1.</p>
+      </div>
+      <div class="channel-card">
+        <h4>SEO / Content Blog</h4>
+        <div class="metric">CAC: ~₹200–800 (long-term)</div>
+        <p>Slow to build but compounds infinitely. Target keywords: "GST reconciliation formula Excel," "Tally to Google Sheets import," "Ind-AS schedule template," "GSTR-2B reconciliation." Write detailed, genuinely useful guides that rank on Google. Each ranked article is a permanent, zero-CAC acquisition channel.</p>
+      </div>
+      <div class="channel-card gold">
+        <h4>CA Study Group Partnerships</h4>
+        <div class="metric" style="color:var(--accent4);">CAC: ~₹150–400</div>
+        <p>CA articleship students (future practicing CAs) use study groups heavily. Partner with large CA coaching institutes (Becker, Aldine, local coaching centres) to offer CELLIX as a productivity tool for students. These students become paying solo CAs in 2–3 years — you acquire future customers at student prices today.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2.5rem; margin-bottom:1rem;">12-Week Content Calendar (Weeks 1–12)</h3>
+
+    <div class="content-week">
+      <div class="content-week-header">Weeks 1–4 — Build Presence & Authority</div>
+      <div class="content-week-body">
+        <div class="content-item">
+          <div class="day">Monday</div>
+          <div class="topic">GST Recon: Why VLOOKUP fails on split invoices (problem post, no pitch)</div>
+        </div>
+        <div class="content-item">
+          <div class="day">Wednesday</div>
+          <div class="topic">Video: Clean a messy Tally export in 3 minutes with AI</div>
+        </div>
+        <div class="content-item">
+          <div class="day">Friday</div>
+          <div class="topic">"Poll: How many hours does your practice spend on GST recon each month?"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-week">
+      <div class="content-week-header">Weeks 5–8 — First Case Studies & Social Proof</div>
+      <div class="content-week-body">
+        <div class="content-item">
+          <div class="day">Monday</div>
+          <div class="topic">Case Study: "How Priya CA, Coimbatore saved 20 hrs/month on GST recon"</div>
+        </div>
+        <div class="content-item">
+          <div class="day">Wednesday</div>
+          <div class="topic">Video: CELLIX beta demo — GSTR-2A reconciliation live walkthrough</div>
+        </div>
+        <div class="content-item">
+          <div class="day">Friday</div>
+          <div class="topic">Thread: "The 5 most common Tally export problems and how to fix each one"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-week">
+      <div class="content-week-header">Weeks 9–12 — Launch Push & Referral Activation</div>
+      <div class="content-week-body">
+        <div class="content-item">
+          <div class="day">Monday</div>
+          <div class="topic">Announcement: "CELLIX is live — 3 months free for first 100 CA signups"</div>
+        </div>
+        <div class="content-item">
+          <div class="day">Wednesday</div>
+          <div class="topic">Video: Full platform walkthrough — every India CA feature</div>
+        </div>
+        <div class="content-item">
+          <div class="day">Friday</div>
+          <div class="topic">Referral launch: "Refer a CA colleague, both of you get 3 months free"</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2.5rem; margin-bottom:1rem;">Outreach Templates</h3>
+
+    <div class="outreach-card">
+      <div class="outreach-header">
+        <span>LinkedIn DM — Initial CA Beta Outreach</span>
+        <span style="font-weight:400;opacity:0.7;">Send to 50 solo CA profiles/week</span>
+      </div>
+      <div class="outreach-body">Hi [Name],
+
+I noticed you're a practicing CA in [City]. I'm building CELLIX — a tool 
+specifically for CAs that automates GST reconciliation from Tally/Zoho exports 
+directly in Microsoft Excel, with a full audit trail for ICAI working papers.
+
+We're looking for 20 CA beta testers this month. You'd get:
+• 6 months free Pro access
+• Your specific workflows prioritized in our build
+• A 30-min onboarding call with me personally
+
+I know this is a cold message, so feel free to ignore it! But if GST 
+reconciliation or Tally cleanup takes significant time in your practice, 
+I'd love 15 minutes to show you what we're building.
+
+Would a quick call work this week?
+
+Thanks,
+[Your Name]</div>
+    </div>
+
+    <div class="outreach-card">
+      <div class="outreach-header">
+        <span>WhatsApp Message — Sharing in CA Groups (after trust is built)</span>
+        <span style="font-weight:400;opacity:0.7;">Share only after 4+ weeks of genuine contribution</span>
+      </div>
+      <div class="outreach-body">Sharing something that genuinely helped me this month-end 🙏
+
+We all know the GSTR-2A vs purchase register pain. I spent 30+ minutes 
+on it last quarter. This time I tried CELLIX — an AI tool built specifically 
+for Indian CA workflows. It matched my 800-row purchase register against 
+GSTR-2A in about 8 minutes inside Excel itself, flagged 14 mismatches, and 
+showed me exact reasons for each one.
+
+The output was audit-ready — I just approved the reconciliation and 
+downloaded the working paper.
+
+They're offering 3 months free for CAs this month. Not an ad — genuinely 
+just sharing because it saved me hours.
+
+Try link: [usecellix.com/ca-free]
+
+Curious if others find it useful too!</div>
+    </div>
+
+    <div class="outreach-card">
+      <div class="outreach-header">
+        <span>ICAI Chapter Email — Webinar Proposal</span>
+        <span style="font-weight:400;opacity:0.7;">Send to chapter secretary / CPE coordinator</span>
+      </div>
+      <div class="outreach-body">Subject: CPE Webinar Proposal — AI Tools for CA Practice Efficiency
+
+Dear [Chapter Secretary Name],
+
+I hope you're well. I'm [Name], founder of CELLIX — an AI tool built 
+specifically for Indian CA workflows, focusing on GST reconciliation and 
+Tally data management.
+
+I'd like to propose a 60-minute CPE webinar for [Chapter Name] members:
+
+**"How AI is Transforming GST Reconciliation for CA Practices in 2025"**
+
+Topics covered:
+• GSTR-2A/2B reconciliation challenges and AI solutions
+• Automating Tally export cleanup in Google Sheets
+• Maintaining ICAI-compliant audit trails for AI-assisted work
+• Live demo with real CA workflow scenarios
+
+We'll provide CPE participation certificates and cover all technical setup.
+No cost to the chapter. All attendees receive 3 months free access to CELLIX.
+
+Would the chapter be open to scheduling this for [Month]? I'm happy to 
+work around your CPE calendar.
+
+Warm regards,
+[Your Name]
+[Contact]</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 11: GTM STRATEGY ========== -->
+<div class="section" id="gtm">
+  <div class="section-inner">
+    <div class="section-tag">11 — Full GTM Strategy</div>
+    <h2>India Go-To-Market: Phase-by-Phase</h2>
+    <p>Three phases, 24 months, from zero to ₹6.24 crore ARR. Each phase has a clear target segment, primary channels, and measurable milestones before moving to the next phase.</p>
+
+    <div class="gtm-phase">
+      <div class="gtm-phase-header">
+        <h3>Phase 1 — CA Niche Domination</h3>
+        <span class="phase-tag">Month 1–6</span>
+      </div>
+      <div class="gtm-phase-body">
+        <p><strong>Target:</strong> 72,000 solo CA practices and small CA firms (2–5 staff) across India, starting in South India (Kerala, Tamil Nadu, Karnataka). Entry platform is Microsoft Excel — the tool every established CA already has and uses for client files.</p>
+        <p><strong>Why this segment first:</strong> Highest pain (GST recon), strongest community distribution (ICAI chapters + WhatsApp groups), lowest CAC (peer referrals), and highest brand-building value (CAs talk to other CAs and to their SME clients).</p>
+        <p><strong>Primary channels:</strong> ICAI chapter webinars, CA WhatsApp groups, LinkedIn content, AppSource template listing, and direct LinkedIn outreach to 1,000 CA profiles. Excel-first positioning resonates immediately with experienced CAs who already live in Excel.</p>
+        <div class="gtm-steps" style="margin-top:1.25rem;">
+          <div class="gtm-step">
+            <h4>Month 1–2: Build + 20 Beta CAs</h4>
+            <p>Office.js Excel add-in MVP. GST recon as hero feature. Wizard-of-Oz beta with 20 manual CA sessions in Excel. Record every workflow pattern and edge case.</p>
+          </div>
+          <div class="gtm-step">
+            <h4>Month 2–3: Template Library + Content</h4>
+            <p>Publish 10 free CA templates on Microsoft AppSource. Launch LinkedIn content calendar. Hindi + English Excel demo video. First ICAI chapter webinar.</p>
+          </div>
+          <div class="gtm-step">
+            <h4>Month 3–4: Public Launch + Referral</h4>
+            <p>Product Hunt India launch. Press: YourStory, Inc42. Referral program live. Target: 100 active users, 20 paid at ₹999/mo = ₹19,800 MRR.</p>
+          </div>
+          <div class="gtm-step">
+            <h4>Month 4–6: CA Firm Sales</h4>
+            <p>Target 2–10 staff CA firms with Team plan. "Quality gate" positioning. Close first 5 firm accounts at ₹6,999/mo. Start Excel add-in build. Target MRR: ₹60,000+</p>
+          </div>
+        </div>
+        <p style="margin-top:1.25rem;"><strong>Phase 1 exit criteria:</strong> 200+ active users, 50+ paid accounts, ₹60K+ MRR, 5 published case studies, 2 ICAI chapter partnerships established.</p>
+      </div>
+    </div>
+
+    <div class="gtm-phase">
+      <div class="gtm-phase-header" style="background:var(--accent2);">
+        <h3>Phase 2 — SME Finance Expansion</h3>
+        <span class="phase-tag">Month 6–12</span>
+      </div>
+      <div class="gtm-phase-body">
+        <p><strong>Target:</strong> 7.7 million digitally mature Indian SMEs with dedicated finance teams, focusing on manufacturing, trading, and retail sectors with heavy Tally usage and monthly MIS reporting needs.</p>
+        <p><strong>Why this segment second:</strong> SMEs often follow their CA's tool recommendations — Phase 1 CA adoption creates organic SME referrals. Tally integration (launched in this phase) unlocks this segment's most critical workflow need.</p>
+        <div class="gtm-steps" style="margin-top:1.25rem;">
+          <div class="gtm-step blue">
+            <h4>Month 6–7: Google Sheets Add-on Launch</h4>
+            <p>Launch Apps Script Google Sheets sidebar using the same Node.js backend. Now cover 100% of Indian market — Excel for CA firms and enterprises, Sheets for SME finance teams and startup analysts.</p>
+          </div>
+          <div class="gtm-step blue">
+            <h4>Month 7–9: Tally Integration (P0)</h4>
+            <p>Launch Tally import connector. Dedicated landing page: "Connect Tally to Google Sheets with AI cleanup." This unlocks the 70% SME Tally market. Major differentiator milestone.</p>
+          </div>
+          <div class="gtm-step blue">
+            <h4>Month 9–10: SME Community & Partnerships</h4>
+            <p>NASSCOM product conclave presence. Zoho Books integration. RazorpayX partnership exploration. SME finance community webinars. Target: 500 paid users total.</p>
+          </div>
+          <div class="gtm-step blue">
+            <h4>Month 10–12: Team Plan Push</h4>
+            <p>Push Team plan to SME finance departments. "5-seat package for your finance team" positioning. Target: 100 team accounts. India FinTech Forum showcase. ARR target: ₹1.25 crore.</p>
+          </div>
+        </div>
+        <p style="margin-top:1.25rem;"><strong>Phase 2 exit criteria:</strong> 1,500+ active users, 500+ paid accounts, 50+ team accounts, Tally integration live, ₹1.25 crore ARR.</p>
+      </div>
+    </div>
+
+    <div class="gtm-phase">
+      <div class="gtm-phase-header" style="background:var(--accent4);">
+        <h3>Phase 3 — Enterprise & GCC</h3>
+        <span class="phase-tag">Month 12–24</span>
+      </div>
+      <div class="gtm-phase-body">
+        <p><strong>Target:</strong> Global Capability Centres (GCCs) in Pune, Bengaluru, Hyderabad. Large CA audit firms (20–100 staff). Listed company finance departments. Government accounting departments.</p>
+        <p><strong>Why this segment third:</strong> Enterprise sales cycles are long (3–6 months). You need proof cases, SOC 2 certification, on-prem LLM capability, and a strong product before enterprise can say yes. Phases 1 and 2 build all of these.</p>
+        <div class="gtm-steps" style="margin-top:1.25rem;">
+          <div class="gtm-step gold">
+            <h4>Month 12–15: GCC Outreach</h4>
+            <p>Land with FP&A team (freemium → Pro). Land, Expand, Scale motion. SSO, audit logs, and on-prem LLM option as enterprise unlock. SOC 2 certification process start.</p>
+          </div>
+          <div class="gtm-step gold">
+            <h4>Month 15–18: Mid-Market CA Firms</h4>
+            <p>Target 20–100 staff CA firms. ICAI compliance certification as key sales tool. Custom data rooms and multi-client audit dashboards. First 3 enterprise accounts closed.</p>
+          </div>
+          <div class="gtm-step gold">
+            <h4>Month 18–21: Tier 2/3 City Expansion</h4>
+            <p>Hindi UI launch. Coimbatore, Surat, Indore, Nagpur CA markets. Lower CAC, higher loyalty, dense CA populations. Regional language content on LinkedIn and YouTube.</p>
+          </div>
+          <div class="gtm-step gold">
+            <h4>Month 21–24: Strategic Partnerships</h4>
+            <p>Zoho/Tally co-marketing. ICAI official partnership. Google for Startups program. Seed funding round. Target: ₹6.24 crore ARR, 10+ enterprise accounts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 12: CELLIX PRICING PLAN ========== -->
+<div class="section" id="pricing-cellix">
+  <div class="section-inner">
+    <div class="section-tag">12 — CELLIX Pricing Plan</div>
+    <h2>CELLIX Pricing Architecture — Full Detail</h2>
+
+    <h3>How to Frame CELLIX's Pricing to CAs</h3>
+    <p>The single most powerful pricing framing: "CELLIX costs less than 30 minutes of your billing rate, and saves you 20+ hours every month." Build an interactive ROI calculator on your homepage. Input: billing rate + number of clients. Output: time saved/month + money saved/month + CELLIX cost + net ROI. A CA billing at ₹2,000/hour with 15 clients saves ₹30,000+ of billable time monthly — for ₹999. The math is overwhelming.</p>
+
+    <div class="callout success">
+      <h4>Annual vs Monthly Strategy</h4>
+      <p>Push annual plans hard from day one. Offer 2 months free on annual (₹9,999/year vs ₹11,988/year monthly equivalent). Indian CAs and SMEs prefer annual billing as it simplifies their own accounting. Annual subscribers churn at 1/3 the rate of monthly subscribers. Offer an additional 10% cashback via Razorpay/PhonePe for annual payments to remove payment friction.</p>
+    </div>
+
+    <h3 style="margin-top:1.5rem;">Credit System Design</h3>
+    <div class="comp-table-wrap">
+      <table>
+        <thead>
+          <tr><th>Action Type</th><th>Credits Used</th><th>Rationale</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="row-label">Formula generation (simple)</td><td>1 credit</td><td>Single formula, low compute</td></tr>
+          <tr><td class="row-label">Formula generation (complex/multi-sheet)</td><td>3 credits</td><td>Multi-step reasoning required</td></tr>
+          <tr><td class="row-label">GST reconciliation (up to 500 rows)</td><td>10 credits</td><td>High compute, fuzzy matching</td></tr>
+          <tr><td class="row-label">GST reconciliation (500–2000 rows)</td><td>25 credits</td><td>Large dataset processing</td></tr>
+          <tr><td class="row-label">Tally cleanup (per import)</td><td>5 credits</td><td>Moderate processing + pattern detection</td></tr>
+          <tr><td class="row-label">Audit trail export (PDF)</td><td>2 credits</td><td>Report generation</td></tr>
+          <tr><td class="row-label">Ind-AS schedule generation</td><td>15 credits</td><td>Complex rule-based mapping</td></tr>
+          <tr><td class="row-label">Error detection scan (full sheet)</td><td>3 credits</td><td>Read-only scan, moderate compute</td></tr>
+          <tr><td class="row-label">Bank reconciliation</td><td>8 credits</td><td>Matching engine + fuzzy logic</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 13: ROADMAP ========== -->
+<div class="section" id="roadmap">
+  <div class="section-inner">
+    <div class="section-tag">13 — 90-Day Roadmap</div>
+    <h2>Your First 90 Days — Week by Week</h2>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Week 1–2</div>
+        <h3>Recruit + Research (Zero Code)</h3>
+        <p>Reach out to 50 CAs on LinkedIn targeting solo practices in Kerala, Tamil Nadu, Karnataka. Goal: confirm 20 yes for beta. Set up 30-minute discovery calls with Typeform screener. Questions: What accounting software do you use? What takes longest each month-end? How many hours on GST recon? Would you pay ₹999/month for 5+ hours saved? These 20 conversations will reshape your feature priorities more than any market research.</p>
+        <p><strong>Deliverable:</strong> 20 confirmed beta CAs, recorded interviews, top 3 workflows prioritized, sample data sets from willing participants.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Week 3–4</div>
+        <h3>MVP Build — Microsoft Excel Add-in (Office.js)</h3>
+        <p>Office.js task pane add-in with a React/HTML sidebar UI. Backend: Node.js + Express + GPT-4o API (or Claude Sonnet for better formula reasoning). Implement: (1) Workbook header + sample row extraction via Excel JavaScript API, (2) Natural language → JSON patch plan, (3) Preview card showing before/after for each proposed change, (4) Accept/Reject buttons, (5) Audit log entry on accept. Verifier layer can be basic at this stage — test formula on sample rows, flag if output error rate is above threshold. Submit to Microsoft AppSource review in parallel (takes 1–3 weeks).</p>
+        <p><strong>Deliverable:</strong> Working Excel add-in that can generate and preview formula patches with basic approve/reject flow and audit logging. AppSource submission in progress.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Week 5–6</div>
+        <h3>GST Recon Feature Build</h3>
+        <p>This is the critical path item. Build the GST reconciliation workflow: upload GSTR-2A download (JSON/CSV) + Purchase Register → fuzzy matching engine (Python/Node) with configurable tolerance for invoice number, amount, date → match report with matched/partial/unmatched categories → preview with reason per mismatch → approve → downloadable PDF output. Fuzzy matching is the hard part. Use Python's rapidfuzz library or implement Levenshtein distance matching for invoice numbers. Amount tolerance should be configurable (±₹1, ±₹10, ±1%).</p>
+        <p><strong>Deliverable:</strong> Working GST reconciliation feature that handles split invoices, credit notes, and date format mismatches.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-tag">Week 7–8</div>
+        <h3>Beta Testing with 20 CAs + Iteration</h3>
+        <p>Deploy to 20 beta CAs. Conduct a 30-minute onboarding session with each one. Watch them use the tool (screen share if possible). After 2 weeks of usage, do a feedback session: what worked, what broke, what took too long, what was confusing. Prioritize the top 3 issues they all encountered and fix them before public launch. Also identify the 2–3 workflows they asked for most that you haven't built yet — these become your post-launch roadmap.</p>
+        <p><strong>Deliverable:</strong> 20 beta users trained and active, top 3 issues fixed, V1.1 shipped to beta cohort.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot green"></div>
+        <div class="tl-tag green">Week 9–10</div>
+        <h3>Template Library + Microsoft AppSource</h3>
+        <p>Build and publish 10 free CA Excel templates on Microsoft AppSource and your website. Each template should be immediately usable without CELLIX installed, but show a "Try with CELLIX AI" button that prompts add-in installation. AppSource listing optimization: include "GST," "CA," "India," "Tally," "audit" in title, description, and keyword tags. Create an appealing banner with Indian CA workflow screenshots in Excel. Simultaneously create Hindi + English 3-minute Excel demo video and publish on YouTube and LinkedIn. Also begin Apps Script Sheets sidebar build in parallel for Phase 2.</p>
+        <p><strong>Deliverable:</strong> 10 Excel templates live, AppSource listing approved, demo video published, Sheets sidebar build started.</p>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot green"></div>
+        <div class="tl-tag green">Week 11–12</div>
+        <h3>Public Launch + First ICAI Webinar</h3>
+        <p>Public launch on Product Hunt India (aim for Product of the Day in Productivity category). Press outreach to YourStory, Inc42, Economic Times Tech — personalized emails to journalists who cover SaaS, fintech, and CA community. Simultaneously, run first ICAI chapter webinar (should be confirmed by Week 4). Activate referral program. Set up billing with Razorpay (supports UPI, NEFT, credit cards — essential for India payments). Offer first 100 Excel add-in signups 3 months free to seed word-of-mouth. Target audience: CA firms and solo CAs who use Excel daily for client work.</p>
+        <p><strong>Deliverable:</strong> Product Hunt launch, ₹0 to first 50 paid users (Excel), referral program live, Razorpay billing set up.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 14: RISKS ========== -->
+<div class="section" id="risks">
+  <div class="section-inner">
+    <div class="section-tag">14 — Risks & Counters</div>
+    <h2>Every Serious Risk, Honestly Assessed</h2>
+
+    <div style="border:1px solid var(--border); border-radius:4px; overflow:hidden; margin-top:1.5rem;">
+      <div class="risk-header-row">
+        <div>Risk</div>
+        <div>Why it Seems Scary</div>
+        <div>Why CELLIX Survives It</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">Anthropic adds India localization to Claude Excel</div>
+        <div class="risk-cell risk-why">Anthropic has significant resources. They could add GST templates and Indian workflows if India becomes a priority market.</div>
+        <div class="risk-cell risk-counter">GST fuzzy-match logic is encoded domain intelligence, not prompt templates. Tally integration is a product investment (not an LLM feature). Mandatory approval workflow is a design choice they won't make (kills UX simplicity). India pricing requires India-native cost structure. Realistically 2–3 years before this risk materializes.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">Google Gemini improves Sheets AI natively</div>
+        <div class="risk-cell risk-why">Google has native Sheets access and is aggressively integrating Gemini. They could add formula AI features at no extra cost to Workspace users.</div>
+        <div class="risk-cell risk-counter">Gemini in Sheets auto-applies changes without mandatory approval. This is a fundamental UX choice Google will not reverse — it conflicts with their simplicity positioning. CAs will never trust auto-apply for client files. Your Preview → Approve → ICAI audit trail is the compliance moat Gemini structurally cannot replicate without rebuilding their product philosophy.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">Shortcut.ai enters India market</div>
+        <div class="risk-cell risk-why">Shortcut is technically the best Excel AI. If they add India pricing and GST features, they could compete directly.</div>
+        <div class="risk-cell risk-counter">Shortcut is Excel-only and US/EU enterprise-focused. Adapting for India requires: Sheets support rebuild, India pricing structure change, GST domain knowledge acquisition, Tally integration build, regional sales and support hiring. That's a 2+ year company pivot for a focused startup already winning in their current market. They won't do it.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">An Indian copycat builds the same thing fast</div>
+        <div class="risk-cell risk-why">Once CELLIX is visible, a well-funded Indian startup could copy the product concept quickly with more resources.</div>
+        <div class="risk-cell risk-counter">CA trust is built through community relationships, ICAI partnerships, and consistent reliability — not code. Your 20-CA beta cohort, ICAI chapter webinar relationships, template library, and referral network cannot be copy-pasted. Ship V1 in 4 weeks. Establish community presence and first case studies before any copycat can even plan their product. Community moats compound while code moats erode.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">CAs don't pay for software / price resistance</div>
+        <div class="risk-cell risk-why">Indian CAs are known for price sensitivity and historically using pirated software or free tools.</div>
+        <div class="risk-cell risk-counter">CAs already pay ₹18K+/year for Tally, ₹15K+ for practice management software, and thousands in ICAI fees. The issue isn't willingness to pay — it's value justification. ₹999/month is trivial vs. 5 hours of their time saved monthly. Frame it as ROI (₹10,000 of time saved for ₹999), offer a genuine 3-month free trial (removes payment barrier), and let GST recon time savings speak for themselves. CAs will pay for things that demonstrably save them professional time.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">Google changes Apps Script policies or restrictions</div>
+        <div class="risk-cell risk-why">CELLIX's Sheets MVP depends on Google Apps Script. Policy changes could restrict what add-ons can do.</div>
+        <div class="risk-cell risk-counter">Apps Script is Google's official, commercially supported add-on platform with thousands of enterprise deployments. Major restrictions are very unlikely without long deprecation notice. Additionally, building toward the Excel add-in (Phase 2) means you're not single-platform dependent by Month 6. The shared backend architecture means a platform switch doesn't require rebuilding your AI layer.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">AI hallucinations on GST rules damage trust</div>
+        <div class="risk-cell risk-why">If CELLIX makes an incorrect GST classification and a CA doesn't catch it, it could damage client relationships and CELLIX's reputation.</div>
+        <div class="risk-cell risk-counter">This is why the verifier layer, mandatory preview, and risk scoring exist. CELLIX should never silently apply any GST-related formula or classification. Every suggestion shows confidence score and risk level. The mandatory approval workflow means a CA always sees and approves before anything touches their file. Additionally, encode GST rules as hard constraints (not LLM prompts) where possible — rules-based logic for known GST rates, formula patterns, and eligibility conditions reduces hallucination risk fundamentally.</div>
+      </div>
+
+      <div class="risk-row">
+        <div class="risk-cell risk-name">LLM API costs erode margins as scale increases</div>
+        <div class="risk-cell risk-why">At ₹2.5–3 per API call, high-volume users on the free or low-tier plan could make unit economics negative.</div>
+        <div class="risk-cell risk-counter">The credit system directly ties API cost to credit consumption. Limit free tier to 50 credits/month (~₹125–150 in API costs at most). Pro tier at ₹999/month with 500 credits = ~₹1,250–1,500 in API costs = 60%+ gross margin before hosting/infra. As you scale, negotiate volume discounts with OpenAI/Anthropic (typical at $1M+/year API spend). Additionally, cache frequent GST rule queries and template generations to reduce repeat API calls — these are deterministic, not user-specific.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SECTION 15: KPIs ========== -->
+<div class="section" id="kpis">
+  <div class="section-inner">
+    <div class="section-tag">15 — KPIs & Targets</div>
+    <h2>The Numbers That Tell You If It's Working</h2>
+
+    <h3 style="margin-bottom:1rem;">Revenue Milestones</h3>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-num green">₹19K</div>
+        <div class="kpi-label">MRR at Month 3 — 20 paid CAs at ₹999</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num green">₹60K</div>
+        <div class="kpi-label">MRR at Month 6 — 50 pro + 5 team accounts</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num green">₹1.25Cr</div>
+        <div class="kpi-label">ARR at Month 12 — 500 paid users</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num gold">₹6.24Cr</div>
+        <div class="kpi-label">ARR at Month 24 — 2,500 users + enterprise</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num gold">₹25Cr</div>
+        <div class="kpi-label">ARR at Year 3 — 10K users + 20 enterprise</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-num red">₹57Cr</div>
+        <div class="kpi-label">ARR ceiling — 10% of CA market at ₹1,200/mo avg</div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2rem; margin-bottom:1rem;">Product KPIs — What to Track Weekly</h3>
+    <div class="comp-table-wrap">
+      <table>
+        <thead>
+          <tr><th>Metric</th><th>Target (Month 3)</th><th>Target (Month 6)</th><th>Target (Month 12)</th><th>Why it Matters</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="row-label">Time to first AI action</td>
+            <td>&lt;5 minutes</td>
+            <td>&lt;3 minutes</td>
+            <td>&lt;2 minutes</td>
+            <td>Friction in first use kills activation</td>
+          </tr>
+          <tr>
+            <td class="row-label">Week 1 retention</td>
+            <td>&gt;40%</td>
+            <td>&gt;45%</td>
+            <td>&gt;50%</td>
+            <td>India SaaS benchmark is 35% — exceed it</td>
+          </tr>
+          <tr>
+            <td class="row-label">Month 1 retention</td>
+            <td>&gt;25%</td>
+            <td>&gt;30%</td>
+            <td>&gt;35%</td>
+            <td>Paid retention must be &gt;70% by Month 6</td>
+          </tr>
+          <tr>
+            <td class="row-label">GST recon completions/week</td>
+            <td>20</td>
+            <td>80</td>
+            <td>400</td>
+            <td>North Star: this is your core value delivery</td>
+          </tr>
+          <tr>
+            <td class="row-label">Patch acceptance rate</td>
+            <td>&gt;70%</td>
+            <td>&gt;75%</td>
+            <td>&gt;80%</td>
+            <td>Low acceptance = AI is wrong or confusing</td>
+          </tr>
+          <tr>
+            <td class="row-label">Free → Paid conversion</td>
+            <td>8%</td>
+            <td>12%</td>
+            <td>15%</td>
+            <td>Industry benchmark: 5–8%. Aim higher.</td>
+          </tr>
+          <tr>
+            <td class="row-label">Referrals per paid user</td>
+            <td>0.3</td>
+            <td>0.5</td>
+            <td>0.8</td>
+            <td>K-factor &gt;1 = viral growth without paid acquisition</td>
+          </tr>
+          <tr>
+            <td class="row-label">NPS score</td>
+            <td>&gt;50</td>
+            <td>&gt;60</td>
+            <td>&gt;70</td>
+            <td">High NPS = CA community word-of-mouth</td>
+          </tr>
+          <tr>
+            <td class="row-label">Support tickets/100 users</td>
+            <td>&lt;15</td>
+            <td>&lt;10</td>
+            <td>&lt;8</td>
+            <td>CA users need reliable, low-friction tool</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="verdict-box" style="margin-top:2.5rem;">
+      <h3>The Bottom Line: You Have Real Space. Here's How to Own It.</h3>
+      <p>Claude in Excel is a feature. Shortcut is a US enterprise product. o11 is an M365 suite. None of them are building for the Indian CA who needs GST reconciliation, Tally cleanup, and an ICAI audit trail at ₹999/month inside their Excel workbook. <strong>That is your market. It is real, it is large (₹57Cr ARR from CAs alone), and it is unoccupied right now.</strong> You have a 2–3 year window of genuine moat before any global player localizes for India. The single most important thing you can do today: recruit 20 CAs for your beta, run sessions manually, and learn what their actual spreadsheet pain looks like. Everything else follows from that.</p>
+    </div>
+  </div>
+</div>
+</main>
+<footer>CELLIX Strategy Masterguide · Excel-First Edition · India Market Intelligence 2025</footer>
+</body>
+</html>

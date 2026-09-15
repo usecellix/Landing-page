@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Entrance animations prerender at their start state (opacity:0). With JS
+         enabled framer-motion animates them in; without it, reveal them so the
+         copy is never visually hidden. -->
+    <noscript>
+      <style>
+        [style*="opacity:0"] {
+          opacity: 1 !important;
+          filter: none !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+
+    <!-- Everything between these markers is replaced per route at build time by
+         scripts/prerender.mjs, from the meta in src/routes.tsx. What is written
+         here is the homepage set, used verbatim by `npm run dev`. -->
+    <!--seo:start-->
+    <title>CELLIX — Intelligent Excel AI built for Indian CAs and finance professionals</title>
+    <meta
+      name="description"
+      content="CELLIX helps Chartered Accountants and commerce professionals work smarter in Excel — GST reconciliation, Tally cleanup, and audit-ready work with your approval on every change."
+    />
+    <!--seo:end-->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+# https://www.usecellix.com/
+
+User-agent: *
+Allow: /
+
+# Transactional routes — noindex, and ?plan= would multiply near-duplicate URLs.
+Disallow: /checkout
+
+# AI crawlers — explicitly allowed so CELLIX can be retrieved and cited
+# when people ask assistants about GST reconciliation or Tally cleanup.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://www.usecellix.com/sitemap.xml
