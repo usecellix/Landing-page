@@ -1,21 +1,20 @@
 /**
  * Details used by /privacy and /terms.
  *
- * TODO before certification: the three placeholder values below are published
- * verbatim on public legal pages. Set the matching env vars (or edit the
- * fallbacks) with the registered entity name, its registered address, and the
- * grievance officer's name — India's DPDP Act 2023 requires a named contact for
- * data-principal complaints.
+ * No registered business entity yet — Cellix operates as founder Mohammed
+ * Azharudheen individually, so his name is used for both the entity name and
+ * the DPDP Act 2023 grievance officer contact. Update these (and set the
+ * matching env vars) if/when Cellix incorporates.
  */
 
 export const legalEntityName =
-  import.meta.env.VITE_LEGAL_ENTITY_NAME ?? '[Registered entity name]'
+  import.meta.env.VITE_LEGAL_ENTITY_NAME ?? 'Mohammed Azharudheen'
 
 export const legalEntityAddress =
   import.meta.env.VITE_LEGAL_ENTITY_ADDRESS ?? 'Kalamassery, Kerala, India'
 
 export const grievanceOfficerName =
-  import.meta.env.VITE_GRIEVANCE_OFFICER ?? '[Grievance Officer name]'
+  import.meta.env.VITE_GRIEVANCE_OFFICER ?? 'Mohammed Azharudheen'
 
 /** Courts named in the governing-law clause. */
 export const governingLawVenue =
