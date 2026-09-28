@@ -7,6 +7,7 @@ import { PricingPage } from '@/pages/PricingPage'
 import { CheckoutPage } from '@/pages/CheckoutPage'
 import { CheckoutSuccessPage } from '@/pages/CheckoutSuccessPage'
 import { LoginPage } from '@/pages/LoginPage'
+import { RegisterPage } from '@/pages/RegisterPage'
 import { AppLayout } from '@/components/app/AppLayout'
 import { DashboardPage } from '@/pages/app/DashboardPage'
 import { ChatPage } from '@/pages/app/ChatPage'
@@ -190,7 +191,17 @@ export const routes: RouteDef[] = [
     element: <LoginPage />,
     meta: {
       title: 'Sign in — Cellix Excel',
-      description: 'Sign in to Cellix with Google or Microsoft.',
+      description: 'Sign in to Cellix with Google, Microsoft, or email and password.',
+      noindex: true,
+      clientOnly: true,
+    },
+  },
+  {
+    path: '/register',
+    element: <RegisterPage />,
+    meta: {
+      title: 'Create your account — Cellix Excel',
+      description: 'Create a Cellix account with email and password.',
       noindex: true,
       clientOnly: true,
     },
