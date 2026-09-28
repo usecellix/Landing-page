@@ -23,6 +23,6 @@ export const instagramUrl = import.meta.env.VITE_INSTAGRAM_URL ?? ''
 export const facebookUrl = import.meta.env.VITE_FACEBOOK_URL ?? ''
 export const xUrl = import.meta.env.VITE_X_URL ?? ''
 
-/** cellix_backend — same env var name the Excel add-in (frontend/) uses. */
+/** Backend API base. Dev: `/api` (Vite proxy). Prod: public API host. */
 export const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL ?? 'https://api.usecellix.com'

@@ -1,9 +1,24 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useSession, signInWithProvider, type SocialProvider } from '@/lib/auth-client'
+import {
+  useSession,
+  signIn,
+  signInWithEmailPassword,
+  notifyExcelLoginComplete,
+  type SocialProvider,
+} from '@/lib/auth-client'
 import { cn } from '@/lib/utils'
 import cellixLogo from '@/assets/cellix-logo.png'
+
+/** Keep the submit spinner visible briefly so success doesn't flash instantly. */
+const SUBMIT_MIN_MS = 900
+
+function waitAtLeast(startedAt: number, minMs: number): Promise<void> {
+  const remaining = minMs - (Date.now() - startedAt)
+  if (remaining <= 0) return Promise.resolve()
+  return new Promise((resolve) => setTimeout(resolve, remaining))
+}
 
 /** Inline brand marks — avoids pulling a whole icon pack for two logos. */
 function GoogleMark() {
@@ -40,19 +55,56 @@ function MicrosoftMark() {
   )
 }
 
+function FormBusyOverlay({ label }: { label: string }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-[2px]"
+      role="status"
+      aria-live="polite"
+      aria-label={label}
+    >
+      <div className="h-7 w-7 animate-spin rounded-full border-2 border-border border-t-accent" />
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </div>
+  )
+}
+
 export function LoginPage() {
-  const { data: session, isPending } = useSession()
+  const { data: session, isPending, refetch: refetchSession } = useSession()
   const [searchParams] = useSearchParams()
   const [pendingProvider, setPendingProvider] = useState<SocialProvider | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [notice, setNotice] = useState<string | null>(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [emailPending, setEmailPending] = useState(false)
+  // Opened from the Excel add-in's "Log in with email and password" link
+  // (openEmailLoginPage in client/src/auth/useAuth.ts) — success here
+  // notifies the add-in's waiting SSE connection (notifyExcelLoginComplete)
+  // instead of redirecting to /app, with a plain "go back to Excel" message
+  // as the fallback if that push doesn't land (tab closed, connection drop).
+  const fromExcel = searchParams.get('from') === 'excel'
+  const excelToken = searchParams.get('token')
 
   useEffect(() => {
     if (searchParams.get('error')) {
       setError('That sign-in did not complete. Please try again.')
     }
+    if (searchParams.get('registered')) {
+      setNotice('Account created. Sign in below.')
+    }
   }, [searchParams])
 
-  if (isPending) {
+  // Fires once a session exists on this tab (either provider) when opened
+  // from Excel — pushes completion to the add-in's waiting SSE connection.
+  // Skip while emailPending so notify runs once from handleEmailSignIn with loading held.
+  useEffect(() => {
+    if (fromExcel && excelToken && session?.user && !emailPending) {
+      void notifyExcelLoginComplete(excelToken)
+    }
+  }, [fromExcel, excelToken, session, emailPending])
+
+  if (isPending && !emailPending) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div
@@ -64,7 +116,10 @@ export function LoginPage() {
     )
   }
 
-  if (session?.user) {
+  if (session?.user && !emailPending) {
+    if (fromExcel) {
+      return <SignedInFromExcel />
+    }
     return <Navigate to="/app" replace />
   }
 
@@ -72,16 +127,56 @@ export function LoginPage() {
     setError(null)
     setPendingProvider(provider)
     try {
-      await signInWithProvider(provider)
-      // On success the browser leaves for the provider; nothing after this runs.
+      const callbackURL = fromExcel
+        ? `${window.location.origin}/login?from=excel&token=${encodeURIComponent(excelToken ?? '')}`
+        : `${window.location.origin}/app`
+      await signIn.social({
+        provider,
+        callbackURL,
+        errorCallbackURL: `${window.location.origin}/login?error=oauth`,
+      })
     } catch {
       setError('Could not start sign-in. Please try again.')
       setPendingProvider(null)
     }
   }
 
+  async function handleEmailSignIn(event: React.FormEvent) {
+    event.preventDefault()
+    setError(null)
+    setNotice(null)
+    setEmailPending(true)
+    const startedAt = Date.now()
+    try {
+      const { error: signInError } = await signInWithEmailPassword(email, password)
+      if (signInError) {
+        setError(signInError.message ?? 'Invalid email or password.')
+        await waitAtLeast(startedAt, SUBMIT_MIN_MS)
+        return
+      }
+      await refetchSession()
+      if (fromExcel && excelToken) {
+        await notifyExcelLoginComplete(excelToken)
+      }
+      await waitAtLeast(startedAt, SUBMIT_MIN_MS)
+      if (!fromExcel) {
+        window.location.href = '/app'
+      }
+    } catch {
+      setError('Could not sign in. Please try again.')
+      await waitAtLeast(startedAt, SUBMIT_MIN_MS)
+    } finally {
+      setEmailPending(false)
+    }
+  }
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-16">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-background px-6 py-16">
+      {emailPending ? (
+        <FormBusyOverlay
+          label={fromExcel ? 'Signing you in — connecting to Excel…' : 'Signing you in…'}
+        />
+      ) : null}
       <Link to="/" className="mb-10">
         <img src={cellixLogo} alt="cellix" className="h-8 w-auto brightness-0" />
       </Link>
@@ -96,9 +191,16 @@ export function LoginPage() {
           Sign in to Cellix
         </h1>
         <p className="mt-2 text-center text-sm leading-relaxed text-muted-foreground">
-          Use the same account you use in the Excel add-in — your sessions and
-          credits follow you here.
+          {fromExcel
+            ? 'Sign in here, then switch back to Excel — it will pick up automatically.'
+            : 'Use the same account you use in the Excel add-in — your sessions and credits follow you here.'}
         </p>
+
+        {notice && !error && (
+          <p className="mt-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-2.5 text-sm text-emerald-700">
+            {notice}
+          </p>
+        )}
 
         {error && (
           <p
@@ -115,7 +217,7 @@ export function LoginPage() {
             label="Continue with Google"
             icon={<GoogleMark />}
             pending={pendingProvider === 'google'}
-            disabled={pendingProvider !== null}
+            disabled={pendingProvider !== null || emailPending}
             onClick={() => void handleSignIn('google')}
           />
           <ProviderButton
@@ -123,10 +225,76 @@ export function LoginPage() {
             label="Continue with Microsoft"
             icon={<MicrosoftMark />}
             pending={pendingProvider === 'microsoft'}
-            disabled={pendingProvider !== null}
+            disabled={pendingProvider !== null || emailPending}
             onClick={() => void handleSignIn('microsoft')}
           />
         </div>
+
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-xs text-muted-foreground">or</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        <form className="mt-6 space-y-3" onSubmit={(e) => void handleEmailSignIn(e)}>
+          <div>
+            <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-foreground">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={emailPending || pendingProvider !== null}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent disabled:opacity-60"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="password"
+              className="mb-1.5 block text-xs font-medium text-foreground"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={emailPending || pendingProvider !== null}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none focus:border-accent disabled:opacity-60"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={emailPending || pendingProvider !== null}
+            className={cn(
+              'flex w-full items-center justify-center gap-2.5 rounded-lg bg-accent px-4 py-3 text-sm font-medium text-white transition-colors',
+              'hover:bg-accent/90 disabled:cursor-not-allowed disabled:opacity-60',
+            )}
+          >
+            {emailPending ? 'Signing in…' : 'Log in with email'}
+          </button>
+        </form>
+
+        <p className="mt-5 text-center text-sm text-muted-foreground">
+          Don&apos;t have an account?{' '}
+          <Link
+            to={
+              fromExcel
+                ? `/register?from=excel&token=${encodeURIComponent(excelToken ?? '')}`
+                : '/register'
+            }
+            className="font-medium text-foreground underline underline-offset-2 hover:text-accent"
+          >
+            Register
+          </Link>
+        </p>
 
         <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
           By continuing you agree to our{' '}
@@ -138,6 +306,28 @@ export function LoginPage() {
             Privacy Policy
           </Link>
           .
+        </p>
+      </motion.div>
+    </div>
+  )
+}
+
+function SignedInFromExcel() {
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6 py-16 text-center">
+      <Link to="/" className="mb-10">
+        <img src={cellixLogo} alt="cellix" className="h-8 w-auto brightness-0" />
+      </Link>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-sm"
+      >
+        <h1 className="font-display text-2xl tracking-tight text-foreground">You're signed in</h1>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          You can close this tab now and go back to Excel — the add-in will switch over
+          automatically.
         </p>
       </motion.div>
     </div>

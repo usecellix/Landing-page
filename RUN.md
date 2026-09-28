@@ -7,7 +7,7 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:5173/** in your browser.
+Open **https://localhost:5173/** in your browser (HTTPS — required for the Excel email-login flow).
 
 ---
 
@@ -49,28 +49,32 @@ browser to apply one to.
    npm run start:dev
    ```
 
-2. **Point this app at it.** Create `.env` here if the backend isn't on the
-   default `http://localhost:4001`:
+2. **Point this app at the backend via the Vite proxy** (required for email/password
+   cookies to stick). Create/update `.env` here:
    ```
-   VITE_API_BASE_URL=http://localhost:4001
+   VITE_API_BASE_URL=/api
+   VITE_BACKEND_TARGET=http://127.0.0.1:4001
    ```
+   Do **not** set `VITE_API_BASE_URL=http://localhost:4001` while this site is
+   served over HTTPS — that is cross-site and breaks `SameSite=Lax` session cookies.
 
 3. **Let the backend trust this origin.** Better Auth only accepts a session
    cookie for an origin in its `trustedOrigins`, and CORS has to allow it too.
-   In `cellix_backend/.env`:
+   In `Server/.env` (Excel add-in stays `CLIENT_ORIGIN`; Landing is separate):
    ```
-   CLIENT_ORIGIN=http://localhost:5173
+   CLIENT_ORIGIN=https://localhost:3000
+   MARKETING_SITE_ORIGIN=https://localhost:5173,https://localhost:5174
    ```
-   (Vite picks the next free port if 5173 is taken — use whichever it prints.)
+   (Vite picks the next free port if 5173 is taken — add whichever it prints.)
 
-4. **OAuth redirect URIs.** Add this origin's callback to both providers'
-   consoles, or sign-in returns an error:
+4. **OAuth redirect URIs.** Add the Excel add-in's callbacks (Better Auth
+   `BETTER_AUTH_URL`) to both providers' consoles:
    ```
-   http://localhost:4001/api/auth/callback/google
-   http://localhost:4001/api/auth/callback/microsoft
+   https://localhost:3000/api/auth/callback/google
+   https://localhost:3000/api/auth/callback/microsoft
    ```
-   The callback goes to the **backend**, not this app — Better Auth is mounted
-   there and redirects to `/app` afterwards.
+   The callback goes to the **backend via the add-in proxy**, not this app —
+   Better Auth is mounted there and redirects to `/app` afterwards.
 
 ### Payments
 
