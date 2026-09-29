@@ -2,5 +2,15 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/api/auth/:path*",
+      "destination": "https://api.usecellix.com/api/auth/:path*"
+    },
+    {
+      "source": "/api/:path*",
+      "destination": "https://api.usecellix.com/:path*"
+    },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
