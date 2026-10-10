@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -78,13 +78,24 @@ export function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailPending, setEmailPending] = useState(false)
-  // Opened from the Excel add-in's "Log in with email and password" link
-  // (openEmailLoginPage in client/src/auth/useAuth.ts) — success here
-  // notifies the add-in's waiting SSE connection (notifyExcelLoginComplete)
-  // instead of redirecting to /app, with a plain "go back to Excel" message
-  // as the fallback if that push doesn't land (tab closed, connection drop).
+  // Opened from the Excel add-in (openEmailLoginPage in
+  // frontend/src/auth/useAuth.ts) — success here notifies the add-in's
+  // waiting SSE connection (notifyExcelLoginComplete) instead of
+  // redirecting to /app, with a plain "go back to Excel" message as the
+  // fallback if that push doesn't land (tab closed, connection drop).
   const fromExcel = searchParams.get('from') === 'excel'
   const excelToken = searchParams.get('token')
+  // Google from Excel pre-selects the provider instead of showing the
+  // picker — see handleSignIn's auto-trigger effect below. Office's
+  // displayDialogAsync used to drive this directly and read the session via
+  // a same-origin cookie; that cookie is set on THIS origin
+  // (BETTER_AUTH_URL), which a dialog served from the add-in's own origin
+  // could never see, so Google sign-in always reported "cancelled" even
+  // after succeeding (AppSource certification, Oct 7 2026). Routing through
+  // this page instead reuses the same pairing-token hand-off that already
+  // works for email/password.
+  const autoProvider = searchParams.get('provider')
+  const autoTriggeredRef = useRef(false)
 
   useEffect(() => {
     if (searchParams.get('error')) {
@@ -103,6 +114,25 @@ export function LoginPage() {
       void notifyExcelLoginComplete(excelToken)
     }
   }, [fromExcel, excelToken, session, emailPending])
+
+  // Auto-starts Google (the only provider the Excel add-in sends here) once
+  // the session check resolves, so this page's first paint is the Google
+  // redirect rather than requiring a click on a page the user only sees for
+  // an instant. Guarded by a ref, not state, so it fires exactly once even
+  // though `session`/`isPending` change again when signIn.social() itself
+  // triggers a re-render.
+  useEffect(() => {
+    if (
+      fromExcel &&
+      autoProvider === 'google' &&
+      !isPending &&
+      !session?.user &&
+      !autoTriggeredRef.current
+    ) {
+      autoTriggeredRef.current = true
+      void handleSignIn('google')
+    }
+  })
 
   if (isPending && !emailPending) {
     return (
