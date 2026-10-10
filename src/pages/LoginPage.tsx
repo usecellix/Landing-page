@@ -8,6 +8,7 @@ import {
   notifyExcelLoginComplete,
   type SocialProvider,
 } from '@/lib/auth-client'
+import { api } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import cellixLogo from '@/assets/cellix-logo.png'
 
@@ -78,6 +79,33 @@ export function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailPending, setEmailPending] = useState(false)
+  // Hides the Microsoft button when the backend has no Entra ID credentials
+  // configured (MICROSOFT_CLIENT_ID/SECRET) — clicking it used to throw
+  // Better Auth's CLIENT_ID_AND_SECRET_REQUIRED on the live site, since this
+  // button was always rendered regardless of whether the provider actually
+  // worked. Defaults true (don't flash the button away on a slow/failed
+  // health check — a provider that WAS configured a second ago is more
+  // likely still configured than this one request failed for a real
+  // reason), flips to false only once GET /auth/health positively confirms
+  // it's unavailable.
+  const [microsoftEnabled, setMicrosoftEnabled] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+    api
+      .get<{ providers: string[] }>('/auth/health')
+      .then((health) => {
+        if (!cancelled) setMicrosoftEnabled(health.providers.includes('microsoft'))
+      })
+      .catch(() => {
+        // Network/server hiccup — leave the button as-is rather than hide a
+        // real option over a transient failure.
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   // Opened from the Excel add-in (openEmailLoginPage in
   // frontend/src/auth/useAuth.ts) — success here notifies the add-in's
   // waiting SSE connection (notifyExcelLoginComplete) instead of
@@ -250,14 +278,16 @@ export function LoginPage() {
             disabled={pendingProvider !== null || emailPending}
             onClick={() => void handleSignIn('google')}
           />
-          <ProviderButton
-            provider="microsoft"
-            label="Continue with Microsoft"
-            icon={<MicrosoftMark />}
-            pending={pendingProvider === 'microsoft'}
-            disabled={pendingProvider !== null || emailPending}
-            onClick={() => void handleSignIn('microsoft')}
-          />
+          {microsoftEnabled ? (
+            <ProviderButton
+              provider="microsoft"
+              label="Continue with Microsoft"
+              icon={<MicrosoftMark />}
+              pending={pendingProvider === 'microsoft'}
+              disabled={pendingProvider !== null || emailPending}
+              onClick={() => void handleSignIn('microsoft')}
+            />
+          ) : null}
         </div>
 
         <div className="mt-6 flex items-center gap-3">
