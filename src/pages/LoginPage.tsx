@@ -86,14 +86,20 @@ export function LoginPage() {
   // worked. Defaults true (don't flash the button away on a slow/failed
   // health check — a provider that WAS configured a second ago is more
   // likely still configured than this one request failed for a real
-  // reason), flips to false only once GET /auth/health positively confirms
-  // it's unavailable.
+  // reason), flips to false only once GET /sign-in-providers positively
+  // confirms it's unavailable. NOT /auth/providers or anything under /auth
+  // — this app's apiBaseUrl is `/api` in production, and vercel.json's
+  // `/api/auth/:path*` rewrite keeps that prefix (it exists only for Better
+  // Auth's own catch-all), which would send `/auth/*` here to a path the
+  // backend's auth-prefixed controllers never register. Confirmed live:
+  // 404 even after the backend had restarted onto the commit with this
+  // endpoint.
   const [microsoftEnabled, setMicrosoftEnabled] = useState(true)
 
   useEffect(() => {
     let cancelled = false
     api
-      .get<{ providers: string[] }>('/auth/health')
+      .get<{ providers: string[] }>('/sign-in-providers')
       .then((health) => {
         if (!cancelled) setMicrosoftEnabled(health.providers.includes('microsoft'))
       })
